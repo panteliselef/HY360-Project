@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Employee {
 
@@ -13,6 +15,7 @@ public class Employee {
     private String IBAN;
     private String bankName;
     private int departmentId;
+    private ArrayList<Child> children = new ArrayList<>();
 
     public Employee(String fname, String lname, String address, String phone, String IBAN, String bankName) {
         this.fname = fname;
@@ -21,7 +24,6 @@ public class Employee {
         this.phone = phone;
         this.IBAN = IBAN;
         this.bankName = bankName;
-
         Date d = new Date(System.currentTimeMillis());
         startedAt = d;
     }
@@ -68,5 +70,13 @@ public class Employee {
 
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public void addChild(Child ch){
+        children.add(ch);
+    }
+
+    public List<Child> getChildren() {
+        return children;
     }
 }
