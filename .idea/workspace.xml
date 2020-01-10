@@ -6,20 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a288b5a-6aad-4025-9d6d-ec97dfc1b4da" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ExampleAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ExampleAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Employee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ExampleAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ExampleAPI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/db/CS360DB.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/db/CS360DB.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/db/DeptDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/db/DeptDB.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/db/EmpDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/db/EmpDB.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/Department.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Department.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/Employee.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Employee.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/servlets/TestServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/servlets/TestServlet.class" afterDir="false" />
-    </list>
+    <list default="true" id="1a288b5a-6aad-4025-9d6d-ec97dfc1b4da" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -197,7 +184,7 @@
       <updated>1577873961803</updated>
       <workItem from="1577873966284" duration="7176000" />
       <workItem from="1577902585550" duration="3175000" />
-      <workItem from="1578680969778" duration="3389000" />
+      <workItem from="1578680969778" duration="3661000" />
     </task>
     <servers />
   </component>
@@ -213,25 +200,25 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="482" y="154" key="DetectedRootsChooserDialog/0.0.1440.900@0.0.1440.900" timestamp="1577878572679" />
-    <state width="1398" height="200" key="GridCell.Tab.0.bottom" timestamp="1578688959866">
+    <state width="1398" height="200" key="GridCell.Tab.0.bottom" timestamp="1578689496413">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="200" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1578688959866" />
+    <state width="1398" height="200" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1578689496413" />
     <state width="958" height="253" key="GridCell.Tab.0.bottom/0.23.1440.813@0.23.1440.813" timestamp="1577896201803" />
-    <state width="1398" height="200" key="GridCell.Tab.0.center" timestamp="1578688959865">
+    <state width="1398" height="200" key="GridCell.Tab.0.center" timestamp="1578689496412">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="200" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1578688959865" />
+    <state width="1398" height="200" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1578689496412" />
     <state width="958" height="253" key="GridCell.Tab.0.center/0.23.1440.813@0.23.1440.813" timestamp="1577896201800" />
-    <state width="1398" height="200" key="GridCell.Tab.0.left" timestamp="1578688959864">
+    <state width="1398" height="200" key="GridCell.Tab.0.left" timestamp="1578689496411">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="200" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1578688959864" />
+    <state width="1398" height="200" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1578689496411" />
     <state width="958" height="253" key="GridCell.Tab.0.left/0.23.1440.813@0.23.1440.813" timestamp="1577896201799" />
-    <state width="1398" height="200" key="GridCell.Tab.0.right" timestamp="1578688959866">
+    <state width="1398" height="200" key="GridCell.Tab.0.right" timestamp="1578689496413">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="200" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1578688959866" />
+    <state width="1398" height="200" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1578689496413" />
     <state width="958" height="253" key="GridCell.Tab.0.right/0.23.1440.813@0.23.1440.813" timestamp="1577896201803" />
     <state width="958" height="253" key="GridCell.Tab.1.bottom" timestamp="1577896823962">
       <screen x="0" y="0" width="1440" height="900" />
