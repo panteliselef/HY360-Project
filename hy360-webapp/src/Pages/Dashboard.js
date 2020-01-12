@@ -16,7 +16,7 @@ class Dashboard extends Component {
 		return (
 			<div className="App">
 				{/* <Button type="primary">Button</Button> */}
-				<TestLayout2></TestLayout2>
+				<TestLayout2 routeLocation={this.props.location}></TestLayout2>
 			</div>
 		);
 	}

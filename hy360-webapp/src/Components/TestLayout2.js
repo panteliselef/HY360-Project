@@ -1,8 +1,11 @@
 import React from 'react';
-import { Layout, Menu, Breadcrumb, Icon, Slider } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Slider, Typography, Row, Col } from 'antd';
+import RegisterPage from '../Pages/RegisterPage';
+import { Link } from 'react-router-dom';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
+const { Title } = Typography;
 
 class TestLayout2 extends React.Component {
 	state = {
@@ -18,12 +21,19 @@ class TestLayout2 extends React.Component {
 		return (
 			<Layout style={{ minHeight: '100vh' }}>
 				<Header className="header">
-					<div className="logo" />
-					<Menu theme="dark" mode="horizontal" defaultSelectedKeys={[ '2' ]} style={{ lineHeight: '64px' }}>
+					<Row type="flex" justify="start" align="middle" style={{ height: '100%' }}>
+						<Col span={24}>
+							<Title level={2} style={{ textAlign: 'left', margin: 'auto', color: '#fff' }}>
+								HY360 - Project
+							</Title>
+						</Col>
+					</Row>
+					{/* <div className="logo" /> */}
+					{/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[ '2' ]} style={{ lineHeight: '64px' }}>
 						<Menu.Item key="1">nav 1</Menu.Item>
 						<Menu.Item key="2">nav 2</Menu.Item>
 						<Menu.Item key="3">nav 3</Menu.Item>
-					</Menu>
+					</Menu> */}
 				</Header>
 				<Layout>
 					<Sider width={200} style={{ background: '#fff' }}>
@@ -31,8 +41,12 @@ class TestLayout2 extends React.Component {
 							mode="inline"
 							defaultSelectedKeys={[ '1' ]}
 							defaultOpenKeys={[ 'sub1' ]}
+							selectedKeys={[this.props.routeLocation.pathname ]}
 							style={{ height: '100%', borderRight: 0 }}
 						>
+							<Menu.Item key="/about">
+								<Link to="/about">About</Link>
+							</Menu.Item>
 							<SubMenu
 								key="sub1"
 								title={
@@ -42,7 +56,9 @@ class TestLayout2 extends React.Component {
 									</span>
 								}
 							>
-								<Menu.Item key="1">option1</Menu.Item>
+								<Menu.Item key="/option1">
+									<Link to="/option1">option1</Link>
+								</Menu.Item>
 								<Menu.Item key="2">option2</Menu.Item>
 								<Menu.Item key="3">option3</Menu.Item>
 								<Menu.Item key="4">option4</Menu.Item>
@@ -77,12 +93,12 @@ class TestLayout2 extends React.Component {
 							</SubMenu>
 						</Menu>
 					</Sider>
-					<Layout style={{ padding: '0 24px 24px' }}>
-						<Breadcrumb style={{ margin: '16px 0' }}>
+					<Layout style={{ padding: '24px 24px' }}>
+						{/* <Breadcrumb style={{ margin: '16px 0' }}>
 							<Breadcrumb.Item>Home</Breadcrumb.Item>
 							<Breadcrumb.Item>List</Breadcrumb.Item>
 							<Breadcrumb.Item>App</Breadcrumb.Item>
-						</Breadcrumb>
+						</Breadcrumb> */}
 						<Content
 							style={{
 								background: '#fff',
@@ -91,7 +107,7 @@ class TestLayout2 extends React.Component {
 								minHeight: 280
 							}}
 						>
-							Content
+							<RegisterPage />
 						</Content>
 					</Layout>
 				</Layout>
