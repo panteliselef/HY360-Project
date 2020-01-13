@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Menu, Breadcrumb, Icon, Slider, Typography, Row, Col } from 'antd';
 import RegisterPage from '../Pages/RegisterPage';
-import { Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -41,11 +41,11 @@ class TestLayout2 extends React.Component {
 							mode="inline"
 							defaultSelectedKeys={[ '1' ]}
 							defaultOpenKeys={[ 'sub1' ]}
-							selectedKeys={[this.props.routeLocation.pathname ]}
+							selectedKeys={[ this.props.routeLocation.pathname ]}
 							style={{ height: '100%', borderRight: 0 }}
 						>
-							<Menu.Item key="/about">
-								<Link to="/about">About</Link>
+							<Menu.Item key="/hiring">
+								<Link to="/hiring">Hiring</Link>
 							</Menu.Item>
 							<SubMenu
 								key="sub1"
@@ -107,7 +107,12 @@ class TestLayout2 extends React.Component {
 								minHeight: 280
 							}}
 						>
-							<RegisterPage />
+							<Route
+								exact
+								path="/hiring"
+								component={RegisterPage}
+							/>
+							{/* <RegisterPage /> */}
 						</Content>
 					</Layout>
 				</Layout>

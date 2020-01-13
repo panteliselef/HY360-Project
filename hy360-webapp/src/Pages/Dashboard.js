@@ -13,11 +13,9 @@ const data = [
 ];
 class Dashboard extends Component {
 	render() {
+		console.log(this.props);
 		return (
-			<div className="App">
-				{/* <Button type="primary">Button</Button> */}
 				<TestLayout2 routeLocation={this.props.location}></TestLayout2>
-			</div>
 		);
 	}
 }
