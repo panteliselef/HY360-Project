@@ -25,7 +25,7 @@ import { Row as FlexRow, Col as FlexCol } from 'react-flexbox-grid';
 import DepartmentSelect from '../Components/DepartmentSelect';
 import ajaxRequest from '../utils/ajax';
 const { Step } = Steps;
-const { Title,Text } = Typography;
+const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
@@ -33,7 +33,7 @@ class RegisterPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			current: 2,
+			current: 0,
 			child_num: 0,
 			hasChild: 'no',
 			hiringInfo: {
@@ -137,14 +137,11 @@ class RegisterPage extends React.Component {
 					const info = {
 						...getFieldsValue(),
 						...this.state.hiringInfo,
-						departmentId: this.state.hiringInfo.department.depId,
-						un_children: getFieldsValue().ages
+						departmentId: this.state.hiringInfo?.department?.depId,
+						un_children: getFieldsValue()?.ages
 					};
 					this.setState({ hiringInfo: info });
 					this.next();
-					// ajaxRequest('POST', 'http://localhost:8085/hy360/hiring', JSON.stringify(info), (res) => {
-					// 	console.log(res);
-					// });
 				} else {
 					console.log('error');
 				}
@@ -156,9 +153,27 @@ class RegisterPage extends React.Component {
 
 			validateFields((error, values) => {
 				if (!error) {
+					console.log(values);
 					const rangeValue = values['range-picker'];
-					const ranges = [ rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD') ];
-					console.log(new Date(ranges[0].toISOString()), new Date(ranges[1]).toISOString());
+					let info = {};
+					if(rangeValue){
+						const ranges = [ rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD') ];
+						info = {
+							...this.state.hiringInfo,
+							tempSalary: values.temp_salary,
+							starts_at: new Date(ranges[0]).getTime(),
+							ends_at: new Date(ranges[1]).getTime()
+						};
+					}else{
+						info = {
+							...this.state.hiringInfo}
+					}
+					this.setState({ hiringInfo: info });
+
+					ajaxRequest('POST', 'http://localhost:8085/hy360/hiring', JSON.stringify(info), (res) => {
+						console.log(res);
+					});
+					console.log(info);
 				} else {
 					console.log('error');
 				}
@@ -265,9 +280,9 @@ class RegisterPage extends React.Component {
 									value={this.state.hiringInfo.salaryType}
 								>
 									<Radio value="perm_admin">Permanent Admin</Radio>
-									{/* <Radio value="temp_admin">Temporary Admin</Radio> */}
+									<Radio value="temp_admin">Temporary Admin</Radio>
 									<Radio value="perm_teach">Permanent Teacher</Radio>
-									{/* <Radio value="temp_teach">Temporary Teacher</Radio> */}
+									<Radio value="temp_teach">Temporary Teacher</Radio>
 								</Radio.Group>
 							</Form.Item>
 							<Form.Item label="Family Status">
@@ -364,23 +379,25 @@ class RegisterPage extends React.Component {
 									</Radio.Group>
 								</FlexCol>
 							</FlexRow>
-							{this.state.hasChild === 'yes' ? (
-								<Form onSubmit={stepTwoSubmit}>
-									{formItems}
-									<Form.Item {...formItemLayoutWithOutLabel}>
-										<Button type="dashed" onClick={add} style={{ width: '60%' }}>
-											<Icon type="plus" /> Add field
-										</Button>
-									</Form.Item>
-									<Form.Item {...tailFormItemLayout}>
-										<Button type="primary" htmlType="submit">
-											Continue
-										</Button>
-									</Form.Item>
-								</Form>
-							) : (
-								''
-							)}
+							<Form onSubmit={stepTwoSubmit}>
+								{this.state.hasChild === 'yes' ? (
+									<React.Fragment>
+										{formItems}
+										<Form.Item {...formItemLayoutWithOutLabel}>
+											<Button type="dashed" onClick={add} style={{ width: '60%' }}>
+												<Icon type="plus" /> Add field
+											</Button>
+										</Form.Item>
+									</React.Fragment>
+								) : (
+									''
+								)}
+								<Form.Item {...tailFormItemLayout}>
+									<Button type="primary" htmlType="submit">
+										Continue
+									</Button>
+								</Form.Item>
+							</Form>
 						</div>
 					);
 				}
@@ -392,12 +409,12 @@ class RegisterPage extends React.Component {
 					return (
 						<div>
 							<Form {...formItemLayout} onSubmit={stepThreeSubmit}>
-									<Title level={2}>We're almost done !</Title>
+								<Title level={2}>We're almost done !</Title>
 								{salaryType.startsWith('perm') ? (
 									<Text>Press Submit to complete signup</Text>
 								) : (
 									<React.Fragment>
-									<Text>Fill this info and press Submit</Text>
+										<Text>Fill this info and press Submit</Text>
 										<Form.Item label="Contract Salary" required={true}>
 											{getFieldDecorator('temp_salary', {
 												validateTrigger: [ 'onChange', 'onBlur' ],
@@ -409,20 +426,12 @@ class RegisterPage extends React.Component {
 												]
 											})(
 												<InputNumber
-													min={1}
-													max={50}
+													min={300}
 													placeholder="Salary €"
 													style={{ width: '100%', marginRight: 8 }}
 												/>
 											)}
 										</Form.Item>
-										{/* <Form.Item label="DatePicker">
-											{getFieldDecorator('date-picker', {
-												rules: [
-													{ type: 'object', required: true, message: 'Please select time!' }
-												]
-											})(<DatePicker />)}
-										</Form.Item> */}
 										<Form.Item label="Employment dates">
 											{getFieldDecorator('range-picker', {
 												rules: [
@@ -432,11 +441,11 @@ class RegisterPage extends React.Component {
 										</Form.Item>
 									</React.Fragment>
 								)}
-										<Form.Item>
-											<Button type="primary" htmlType="submit">
-												submit
-											</Button>
-										</Form.Item>
+								<Form.Item>
+									<Button type="primary" htmlType="submit">
+										submit
+									</Button>
+								</Form.Item>
 							</Form>
 						</div>
 					);

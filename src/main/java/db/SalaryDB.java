@@ -11,9 +11,11 @@ public class SalaryDB {
         ANNUAL,
         REASEARCH,
         LIBRARY
-    };
+    }
 
-    private static Double getBonus(Bonus bonusType) throws ClassNotFoundException{
+    ;
+
+    private static Double getBonus(Bonus bonusType) throws ClassNotFoundException {
         Statement stmt = null;
         Connection con = null;
 
@@ -24,7 +26,7 @@ public class SalaryDB {
             StringBuilder insQuery = new StringBuilder();
             String tableAttribute = "";
 
-            switch (bonusType){
+            switch (bonusType) {
                 case ANNUAL:
                     tableAttribute = "annual_bonus";
                     break;
@@ -42,7 +44,7 @@ public class SalaryDB {
                     break;
             }
 
-            insQuery.append("SELECT "+tableAttribute+" FROM basic_salary_info;");
+            insQuery.append("SELECT " + tableAttribute + " FROM basic_salary_info;");
 
 
             stmt.executeQuery(insQuery.toString());
@@ -105,8 +107,14 @@ public class SalaryDB {
 
             StringBuilder insQuery = new StringBuilder();
 
-            Double basicSalary = getBasicSalary(emp);
-            if (basicSalary == null)return;
+            Double basicSalary;
+
+            if (emp.getTempSalary() == null) {
+                basicSalary = getBasicSalary(emp);
+            } else {
+                basicSalary = emp.getTempSalary();
+            }
+//            if (basicSalary == null)return;
             insQuery.append("INSERT INTO ")
                     .append(" salaries (b_salary, family_bonus)")
                     .append(" VALUES (")
@@ -122,9 +130,8 @@ public class SalaryDB {
             if (rs.next()) {
                 int id = rs.getInt(1);
                 sal_id = id;
-                System.out.println("Salary id: "+id);
+                System.out.println("Salary id: " + id);
             }
-
 
             insQuery.setLength(0);
 
@@ -149,21 +156,39 @@ public class SalaryDB {
             stmtIns.executeUpdate();
 
             insQuery.setLength(0);
-            if(emp.getSalaryType().equals("perm_admin")){
+            if (emp.getSalaryType().equals("perm_admin")) {
                 insQuery.append("INSERT INTO ")
                         .append(" perm_admin_salaries (sal_id,annual_bonus)")
                         .append(" VALUES (")
                         .append("'").append(sal_id).append("',")
                         .append("'").append(getBonus(Bonus.ANNUAL)).append("');");
 
-            }else if(emp.getSalaryType().equals("perm_teach")){
+            } else if (emp.getSalaryType().equals("perm_teach")) {
                 insQuery.append("INSERT INTO ")
                         .append(" perm_teach_salaries (sal_id,annual_bonus,research_bonus)")
                         .append(" VALUES (")
                         .append("'").append(sal_id).append("',")
                         .append("'").append(getBonus(Bonus.ANNUAL)).append("',")
                         .append("'").append(getBonus(Bonus.REASEARCH)).append("');");
+            } else if (emp.getSalaryType().equals("temp_admin")) {
+                insQuery.append("INSERT INTO ")
+                        .append(" temp_admin_salaries (sal_id,start_date,end_date)")
+                        .append(" VALUES (")
+                        .append(sal_id).append(", '")
+                        .append(new Date(emp.getStarts_at())).append("' , '")
+                        .append(new Date(emp.getEnds_at())).append("' );");
+
+            } else if (emp.getSalaryType().equals("temp_teach")) {
+                insQuery.append("INSERT INTO ")
+                        .append(" temp_teach_salaries (sal_id,start_date,end_date,library_bonus)")
+                        .append(" VALUES (")
+                        .append(sal_id).append(", '")
+                        .append(new Date(emp.getStarts_at())).append("' , '")
+                        .append(new Date(emp.getEnds_at())).append("',")
+                        .append(getBonus(Bonus.LIBRARY)).append(");");
             }
+
+            System.out.println(insQuery);
 
             stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();

@@ -7,6 +7,7 @@ import db.EmpDB;
 import db.SalaryDB;
 import model.Child;
 import model.Employee;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -55,6 +56,9 @@ public class HiringServlet extends HttpServlet {
 
         PrintWriter out = resp.getWriter();
         String line = null;
+
+        Date start_date;
+        Date end_date;
         try {
             BufferedReader reader = req.getReader();
             while ((line = reader.readLine()) != null)
@@ -69,9 +73,27 @@ public class HiringServlet extends HttpServlet {
 
         JSONObject jsonObject = new JSONObject(jb.toString());
 
-        System.out.println("it is"+jsonObject.get("salaryType"));
+        System.out.println("it is" + jsonObject.get("salaryType"));
 
-        String salaryType = jsonObject.getString("salaryType");
+//        String salaryType = jsonObject.getString("salaryType");
+
+//        try {
+//            Double tempSalary = jsonObject.getDouble("tempSalary");
+//            Long timestamp1 = jsonObject.getJSONArray("dates").getLong(0);
+//            Long timestamp2 = jsonObject.getJSONArray("dates").getLong(1);
+//
+//            start_date = new Date(timestamp1);
+//            end_date = new Date(timestamp2);
+//            System.out.println("Temp salary is " + tempSalary + "");
+//            System.out.println("Starts at " + timestamp1 + " | Ends at " + timestamp2);
+//        }
+//        catch (JSONException e){
+//            start_date = new Date(System.currentTimeMillis());
+//        }
+
+
+
+//        if(timestamp1)
 
 //        if(salaryType.equals("perm")){
 //
@@ -81,16 +103,30 @@ public class HiringServlet extends HttpServlet {
 //
 //        }
 
+//        if(emp.getStarts_at() == null){
+//            emp.setStartedAt(new Date(System.currentTimeMillis()));
+//        }else {
+//            emp.setStartedAt(new Date(emp.getStarts_at()));
+//        }
+
+//        System.out.println(new Date(emp.getStarts_at()));
+//        System.out.println(new Date(System.currentTimeMillis()));
+
         try {
-            Date d = new Date(System.currentTimeMillis());
-            emp.setStartedAt(d);
+
+            if(emp.getStarts_at() == null){
+                emp.setStartedAt(new Date(System.currentTimeMillis()));
+            }else {
+                emp.setStartedAt(new Date(emp.getStarts_at()));
+            }
+
             emp.setChildren(new ArrayList<>());
+            emp.setUn_children(new ArrayList<>());
             EmpDB.addEmployee(emp);
             SalaryDB.addSalary(emp);
-            System.out.println(emp.getUn_children().size());
 
             emp.getUn_children().forEach(age -> {
-                Child ch = new Child(Integer.parseInt(age),emp.getId());
+                Child ch = new Child(Integer.parseInt(age), emp.getId());
                 emp.addChild(ch);
             });
             emp.getChildren().forEach(child -> {

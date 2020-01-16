@@ -19,6 +19,9 @@ public class Employee {
     private ArrayList<String> un_children = new ArrayList<>();
     private String salaryType;
     private String isMarried;
+    private Double tempSalary;
+    private Long starts_at;
+    private Long ends_at;
 
     public Employee(String fname, String lname, String address, String phone, String IBAN, String bankName) {
         this.fname = fname;
@@ -105,6 +108,22 @@ public class Employee {
 
     public String isMarried() {
         return isMarried;
+    }
+
+    public Long getStarts_at() {
+        return starts_at;
+    }
+
+    public Long getEnds_at() {
+        return ends_at;
+    }
+
+    public Double getTempSalary() {
+        return tempSalary;
+    }
+
+    public void setUn_children(ArrayList<String> un_children) {
+        this.un_children = un_children;
     }
 
     @Override
