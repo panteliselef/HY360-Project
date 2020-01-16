@@ -10,11 +10,11 @@ import java.util.logging.Logger;
 
 public class CS360DB {
 
-    private static final String URL = "jdbc:mysql://192.168.64.2";
+    private static final String URL = "jdbc:mysql://localhost";
     private static final String DATABASE = "hy360";
     private static final int PORT = 3306;
-    private static final String UNAME = "csd3942";
-    private static final String PASSWD = "csd3942";
+    private static final String UNAME = "root";
+    private static final String PASSWD = "";
 
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");

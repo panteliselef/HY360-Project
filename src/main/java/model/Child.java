@@ -25,4 +25,13 @@ public class Child {
     public int getEmp_id() {
         return emp_id;
     }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Age:"+this.age;
+    }
 }

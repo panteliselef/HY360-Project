@@ -7,6 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a288b5a-6aad-4025-9d6d-ec97dfc1b4da" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hy360-webapp/src/Pages/RegisterPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/hy360-webapp/src/Pages/RegisterPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/db/SalaryDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/SalaryDB.java" afterDir="false" />
@@ -20,11 +21,164 @@
       <change beforePath="$PROJECT_DIR$/target/hy360-project/WEB-INF/classes/db/SalaryDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/hy360-project/WEB-INF/classes/db/SalaryDB.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/hy360-project/WEB-INF/classes/model/Employee.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/hy360-project/WEB-INF/classes/model/Employee.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/hy360-project/WEB-INF/classes/servlets/HiringServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/hy360-project/WEB-INF/classes/servlets/HiringServlet.class" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/org_json_json_20190722.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ExampleAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ExampleAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/db/CS360DB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/CS360DB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/db/EmpDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/EmpDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/db/SalaryDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/SalaryDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Child.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Child.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ExampleAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ExampleAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/db/SalaryDB$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/db/SalaryDB$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/db/SalaryDB$Bonus.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/db/SalaryDB$Bonus.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/db/SalaryDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/db/SalaryDB.class" afterDir="false" />
+>>>>>>> d98b014c8ce9e299a5a5f5d263f0622b00eae901
     </list>
+    <ignored path="$PROJECT_DIR$/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/db/SalaryDB.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="185">
+              <caret line="92" column="33" selection-start-line="92" selection-start-column="33" selection-end-line="92" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/db/EmpDB.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="507">
+              <caret line="122" column="40" selection-start-line="122" selection-start-column="40" selection-end-line="122" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/model/Child.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="390">
+              <caret line="34" column="31" selection-start-line="34" selection-start-column="31" selection-end-line="34" selection-end-column="31" />
+              <folding>
+                <element signature="e#459#460#0" expanded="true" />
+                <element signature="e#489#490#0" expanded="true" />
+                <element signature="e#535#536#0" expanded="true" />
+                <element signature="e#559#560#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/db/ChildDB.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-992">
+              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/servlets/HiringServlet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-812">
+              <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ExampleAPI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="349">
+              <caret line="50" selection-start-line="50" selection-end-line="50" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/src.zip!/java/sql/Date.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="157">
+              <caret line="142" selection-start-line="142" selection-end-line="142" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/db/CS360DB.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="12" column="61" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/model/Employee.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="393">
+              <caret line="110" column="8" selection-start-line="110" selection-start-column="8" selection-end-line="110" selection-end-column="35" />
+              <folding>
+                <element signature="e#2315#2316#0" expanded="true" />
+                <element signature="e#2357#2358#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/model/Salary.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1035">
+              <caret line="69" column="8" selection-start-line="69" selection-start-column="8" selection-end-line="69" selection-end-column="45" />
+              <folding>
+                <element signature="e#682#683#0" expanded="true" />
+                <element signature="e#717#718#0" expanded="true" />
+                <element signature="e#753#754#0" expanded="true" />
+                <element signature="e#788#789#0" expanded="true" />
+                <element signature="e#825#826#0" expanded="true" />
+                <element signature="e#861#862#0" expanded="true" />
+                <element signature="e#902#903#0" expanded="true" />
+                <element signature="e#942#943#0" expanded="true" />
+                <element signature="e#983#984#0" expanded="true" />
+                <element signature="e#1023#1024#0" expanded="true" />
+                <element signature="e#1061#1062#0" expanded="true" />
+                <element signature="e#1098#1099#0" expanded="true" />
+                <element signature="e#1216#1217#0" expanded="true" />
+                <element signature="e#1264#1265#0" expanded="true" />
+                <element signature="e#1320#1321#0" expanded="true" />
+                <element signature="e#1368#1369#0" expanded="true" />
+                <element signature="e#1426#1427#0" expanded="true" />
+                <element signature="e#1476#1477#0" expanded="true" />
+                <element signature="e#1542#1543#0" expanded="true" />
+                <element signature="e#1600#1601#0" expanded="true" />
+                <element signature="e#1666#1667#0" expanded="true" />
+                <element signature="e#1724#1725#0" expanded="true" />
+                <element signature="e#1784#1785#0" expanded="true" />
+                <element signature="e#1836#1837#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -35,6 +189,19 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/main/java/db/CS360DB.java" />
+        <option value="$PROJECT_DIR$/src/main/java/db/SalaryDB.java" />
+        <option value="$PROJECT_DIR$/src/main/java/model/Salary.java" />
+        <option value="$PROJECT_DIR$/src/main/java/model/Employee.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ExampleAPI.java" />
+        <option value="$PROJECT_DIR$/src/main/java/model/Child.java" />
+        <option value="$PROJECT_DIR$/src/main/java/db/EmpDB.java" />
+      </list>
+    </option>
   </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
@@ -50,7 +217,81 @@
       </MavenImportingSettings>
     </option>
   </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1440" />
+    <option name="height" value="834" />
+  </component>
   <component name="ProjectId" id="1Vn1I268KZFM8oBWc0j6YkRj0z0" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="hy360-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HY360-Project" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hy360-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HY360-Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hy360-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HY360-Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hy360-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HY360-Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hy360-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HY360-Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="db" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hy360-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HY360-Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hy360-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HY360-Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="servlets" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hy360-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HY360-Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -67,6 +308,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1579212837149" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/target/hy360-project/WEB-INF/lib" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -87,7 +329,19 @@
       <recent name="$PROJECT_DIR$/target/hy360-project/WEB-INF/lib" />
     </key>
   </component>
-  <component name="RunManager" selected="Tomcat Server.Tomcat 8.5.47">
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.ExampleAPI">
     <configuration name="ExampleAPI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ExampleAPI" />
       <module name="hy360-project" />
@@ -211,9 +465,58 @@
       <workItem from="1578680969778" duration="3661000" />
       <workItem from="1579087994556" duration="7149000" />
       <workItem from="1579116987544" duration="6277000" />
+<<<<<<< HEAD
       <workItem from="1579191254112" duration="8967000" />
+=======
+      <workItem from="1579191254112" duration="2778000" />
+      <workItem from="1579201087471" duration="9730000" />
+>>>>>>> d98b014c8ce9e299a5a5f5d263f0622b00eae901
     </task>
     <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="9730000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1440" height="834" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Designer" />
+      <window_info id="Image Layers" />
+      <window_info id="UI Designer" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info id="Capture Tool" />
+      <window_info id="Web" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24964234" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Application Servers" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" weight="0.32884097" />
+      <window_info anchor="bottom" id="Java Enterprise" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32884097" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Maven" />
+      <window_info anchor="right" id="Palette" />
+      <window_info anchor="right" id="JSF" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="CDI" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Bean Validation" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -366,6 +669,212 @@
     </state>
     <state x="444" y="282" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1440.900@0.0.1440.900" timestamp="1577874405815" />
     <state x="592" y="338" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/199.1080.1680.1050/0.0.1920.1080@0.0.1920.1080" timestamp="1579119756528" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/java/model/Department.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/model/JSONResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/db/CS360DB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="12" column="61" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/servlets/HiringServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-812">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/model/Employee.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="393">
+          <caret line="110" column="8" selection-start-line="110" selection-start-column="8" selection-end-line="110" selection-end-column="35" />
+          <folding>
+            <element signature="e#2315#2316#0" expanded="true" />
+            <element signature="e#2357#2358#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/db/ChildDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-992">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/src.zip!/java/sql/Date.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="142" selection-start-line="142" selection-end-line="142" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/db/SalaryDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="92" column="33" selection-start-line="92" selection-start-column="33" selection-end-line="92" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ExampleAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="50" selection-start-line="50" selection-end-line="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/model/Salary.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="69" column="8" selection-start-line="69" selection-start-column="8" selection-end-line="69" selection-end-column="45" />
+          <folding>
+            <element signature="e#682#683#0" expanded="true" />
+            <element signature="e#717#718#0" expanded="true" />
+            <element signature="e#753#754#0" expanded="true" />
+            <element signature="e#788#789#0" expanded="true" />
+            <element signature="e#825#826#0" expanded="true" />
+            <element signature="e#861#862#0" expanded="true" />
+            <element signature="e#902#903#0" expanded="true" />
+            <element signature="e#942#943#0" expanded="true" />
+            <element signature="e#983#984#0" expanded="true" />
+            <element signature="e#1023#1024#0" expanded="true" />
+            <element signature="e#1061#1062#0" expanded="true" />
+            <element signature="e#1098#1099#0" expanded="true" />
+            <element signature="e#1216#1217#0" expanded="true" />
+            <element signature="e#1264#1265#0" expanded="true" />
+            <element signature="e#1320#1321#0" expanded="true" />
+            <element signature="e#1368#1369#0" expanded="true" />
+            <element signature="e#1426#1427#0" expanded="true" />
+            <element signature="e#1476#1477#0" expanded="true" />
+            <element signature="e#1542#1543#0" expanded="true" />
+            <element signature="e#1600#1601#0" expanded="true" />
+            <element signature="e#1666#1667#0" expanded="true" />
+            <element signature="e#1724#1725#0" expanded="true" />
+            <element signature="e#1784#1785#0" expanded="true" />
+            <element signature="e#1836#1837#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/model/Child.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="34" column="31" selection-start-line="34" selection-start-column="31" selection-end-line="34" selection-end-column="31" />
+          <folding>
+            <element signature="e#459#460#0" expanded="true" />
+            <element signature="e#489#490#0" expanded="true" />
+            <element signature="e#535#536#0" expanded="true" />
+            <element signature="e#559#560#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/db/EmpDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="507">
+          <caret line="122" column="40" selection-start-line="122" selection-start-column="40" selection-end-line="122" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>hy360-project:war</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Web</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>hy360-project</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>mysql-connector-java-8.0.181</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.41724136" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
   <component name="simpleUML.UMLToolWindowPlugin">
     <General>
