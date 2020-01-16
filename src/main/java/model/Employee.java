@@ -12,17 +12,20 @@ public class Employee {
     private Date startedAt;
     private String address;
     private String phone;
-    private String IBAN;
+    private String iban;
     private String bankName;
     private int departmentId;
     private ArrayList<Child> children = new ArrayList<>();
+    private ArrayList<String> un_children = new ArrayList<>();
+    private String salaryType;
+    private String isMarried;
 
     public Employee(String fname, String lname, String address, String phone, String IBAN, String bankName) {
         this.fname = fname;
         this.lname = lname;
         this.address = address;
         this.phone = phone;
-        this.IBAN = IBAN;
+        this.iban = IBAN;
         this.bankName = bankName;
         Date d = new Date(System.currentTimeMillis());
         startedAt = d;
@@ -53,7 +56,7 @@ public class Employee {
     }
 
     public String getIBAN() {
-        return IBAN;
+        return iban;
     }
 
     public String getLname() {
@@ -68,6 +71,10 @@ public class Employee {
         this.id = id;
     }
 
+    public void setStartedAt(Date startedAt) {
+        this.startedAt = startedAt;
+    }
+
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
     }
@@ -76,7 +83,45 @@ public class Employee {
         children.add(ch);
     }
 
+    public void setChildren(ArrayList<Child> children) {
+        this.children = children;
+    }
+
     public List<Child> getChildren() {
         return children;
+    }
+
+    public ArrayList<String> getUn_children() {
+        return un_children;
+    }
+
+    public String getSalaryType() {
+        return salaryType;
+    }
+
+    public void setSalaryType(String salaryType) {
+        this.salaryType = salaryType;
+    }
+
+    public String isMarried() {
+        return isMarried;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", fname='" + fname + '\'' +
+                ", lname='" + lname + '\'' +
+                ", startedAt=" + startedAt +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", IBAN='" + iban + '\'' +
+                ", bankName='" + bankName + '\'' +
+                ", departmentId=" + departmentId +
+                ", children=" + children +
+                ", un_children=" + un_children +
+                ", salaryType=" + salaryType +
+                '}';
     }
 }

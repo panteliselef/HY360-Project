@@ -57,7 +57,7 @@ public class ChildDB {
 
             insQuery.append("SELECT * FROM emp_children WHERE emp_id = " + em.getId() + ";");
 
-            stmt.executeUpdate(insQuery.toString());
+            stmt.executeQuery(insQuery.toString());
 
             ResultSet res = stmt.getResultSet();
             if (res.next()) {
