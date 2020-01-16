@@ -1,6 +1,7 @@
 package db;
 
 import model.Employee;
+import model.Salary;
 
 import java.sql.*;
 
@@ -10,7 +11,9 @@ public class SalaryDB {
         FAMILY,
         ANNUAL,
         REASEARCH,
-        LIBRARY
+        LIBRARY,
+        PERM_ADMIN,
+        PERM_TEACH
     };
 
     private static Double getBonus(Bonus bonusType) throws ClassNotFoundException{
@@ -42,7 +45,7 @@ public class SalaryDB {
                     break;
             }
 
-            insQuery.append("SELECT "+tableAttribute+" FROM basic_salary_info;");
+            insQuery.append("SELECT "+tableAttribute+" FROM basic_salary_info WHERE id = 1;");
 
 
             stmt.executeQuery(insQuery.toString());
@@ -176,5 +179,86 @@ public class SalaryDB {
         } finally {
             CS360DB.closeDBConnection(stmt, con);
         }
+    }
+
+    public static void updateSalary(Salary upd_salary) throws ClassNotFoundException{
+
+        Statement stmt = null;
+        Connection con = null;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("UPDATE basic_salary_info ")
+                    .append("SET ")
+                    .append("perm_admin_salary = "+upd_salary.getPerm_admin_salary()+", "+
+                            "perm_teach_salary = "+upd_salary.getPerm_teach_salary()+", "+
+                            "annual_bonus = "+upd_salary.getAnnual_bonus()+", "+
+                            "family_bonus = "+upd_salary.getFamily_bonus()+", "+
+                            "research_bonus = "+upd_salary.getResearch_bonus()+", "+
+                            "library_bonus = "+upd_salary.getLibrary_bonus())
+                    .append(" WHERE id = 1;");
+
+
+
+
+            PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeUpdate();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+    }
+
+
+    private static Double getBasicSalary(Bonus salarytype) throws ClassNotFoundException {
+        Statement stmt = null;
+        Connection con = null;
+
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+            String salaryOption = "";
+            if (salarytype == Bonus.PERM_ADMIN) {
+                salaryOption = "perm_admin_salary";
+            } else if (salarytype == Bonus.PERM_TEACH) {
+                salaryOption = "perm_teach_salary";
+            }
+
+            insQuery.append("SELECT " + salaryOption + " FROM ")
+                    .append(" basic_salary_info;");
+
+
+            stmt.executeQuery(insQuery.toString());
+
+            ResultSet res = stmt.getResultSet();
+            if (res.next()) {
+                return res.getDouble(salaryOption);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+        return null;
+    }
+
+    public static Salary getBasicSalary() throws ClassNotFoundException {
+        Salary sal;
+
+        double perm_admin = getBasicSalary(Bonus.PERM_ADMIN);
+        double perm_teach = getBasicSalary(Bonus.PERM_TEACH);
+        double annual_bonus = getBonus(Bonus.ANNUAL);
+        double family_bonus = getBonus(Bonus.FAMILY);
+        double research_bonus = getBonus(Bonus.REASEARCH);
+        double library_bonus = getBonus(Bonus.LIBRARY);
+        sal = new Salary(perm_admin,perm_teach,annual_bonus,family_bonus,research_bonus,library_bonus);
+        return sal;
+
     }
 }

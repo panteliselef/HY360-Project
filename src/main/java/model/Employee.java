@@ -107,6 +107,10 @@ public class Employee {
         return isMarried;
     }
 
+    public void setIsMarried(String isMarried) {
+        this.isMarried = isMarried;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
