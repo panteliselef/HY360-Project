@@ -110,7 +110,6 @@ public class Employee {
         return isMarried;
     }
 
-<<<<<<< HEAD
     public Long getStarts_at() {
         return starts_at;
     }
@@ -125,10 +124,9 @@ public class Employee {
 
     public void setUn_children(ArrayList<String> un_children) {
         this.un_children = un_children;
-=======
+    }
     public void setIsMarried(String isMarried) {
         this.isMarried = isMarried;
->>>>>>> d98b014c8ce9e299a5a5f5d263f0622b00eae901
     }
 
     @Override

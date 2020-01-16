@@ -11,17 +11,11 @@ public class SalaryDB {
         FAMILY,
         ANNUAL,
         REASEARCH,
-<<<<<<< HEAD
-        LIBRARY
-    }
-
-    ;
-=======
         LIBRARY,
         PERM_ADMIN,
         PERM_TEACH
     };
->>>>>>> d98b014c8ce9e299a5a5f5d263f0622b00eae901
+
 
     private static Double getBonus(Bonus bonusType) throws ClassNotFoundException {
         Statement stmt = null;
@@ -51,13 +45,7 @@ public class SalaryDB {
                     tableAttribute = "*";
                     break;
             }
-
-<<<<<<< HEAD
-            insQuery.append("SELECT " + tableAttribute + " FROM basic_salary_info;");
-=======
             insQuery.append("SELECT "+tableAttribute+" FROM basic_salary_info WHERE id = 1;");
->>>>>>> d98b014c8ce9e299a5a5f5d263f0622b00eae901
-
 
             stmt.executeQuery(insQuery.toString());
 
