@@ -23,6 +23,8 @@ public class Employee {
     private Long starts_at;
     private Long ends_at;
 
+    public Employee(){};
+
     public Employee(String fname, String lname, String address, String phone, String IBAN, String bankName) {
         this.fname = fname;
         this.lname = lname;
@@ -37,6 +39,43 @@ public class Employee {
     public int getId() {
         return id;
     }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setEnds_at(Long ends_at) {
+        this.ends_at = ends_at;
+    }
+
+    public void setStarts_at(Long starts_at) {
+        this.starts_at = starts_at;
+    }
+
+    public void setTempSalary(Double tempSalary) {
+        this.tempSalary = tempSalary;
+    }
+
 
     public Date getStartedAt() {
         return startedAt;

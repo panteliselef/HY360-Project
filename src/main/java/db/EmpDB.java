@@ -185,4 +185,47 @@ public class EmpDB {
         return null;
     }
 
+    public static ArrayList<Employee> getEmployees() throws  ClassNotFoundException{
+
+        Statement stmt = null;
+        Connection con = null;
+        ArrayList<Employee> emps =  new ArrayList<>();
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("SELECT * from employees;");
+            stmt.executeQuery(insQuery.toString());
+
+            ResultSet res = stmt.getResultSet();
+            while(res.next()) {
+                Employee emp = new Employee();
+                emp.setFname(res.getString("fname"));
+                emp.setLname(res.getString("lname"));
+                emp.setStartedAt(res.getDate("started_at"));
+                emp.setAddress(res.getString("address"));
+                emp.setPhone(res.getString("phone"));
+                emp.setIban(res.getString("IBAN"));
+                emp.setBankName(res.getString("bank_name"));
+                emp.setDepartmentId(res.getInt("department_id"));
+                emp.setIsMarried(res.getString("is_married"));
+                emp.setId(res.getInt("emp_id"));
+                emps.add(emp);
+            }
+            return emps;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+        return null;
+    }
+
+
+
+
+
+
 }

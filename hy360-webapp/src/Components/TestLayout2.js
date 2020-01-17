@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout, Menu, Breadcrumb, Icon, Slider, Typography, Row, Col } from 'antd';
 import RegisterPage from '../Pages/RegisterPage';
 import { Route, Link } from 'react-router-dom';
+import UpdateEmpPage from '../Pages/UpdateEmpPage';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -48,20 +49,20 @@ class TestLayout2 extends React.Component {
 								<Link to="/hiring">Hiring</Link>
 							</Menu.Item>
 							<SubMenu
-								key="sub1"
+								key="/update"
 								title={
 									<span>
 										<Icon type="user" />
-										subnav 1
+										Update
 									</span>
 								}
 							>
-								<Menu.Item key="/option1">
-									<Link to="/option1">option1</Link>
+								<Menu.Item key="/update-employee">
+									<Link to="/update-employee">Employee</Link>
 								</Menu.Item>
-								<Menu.Item key="2">option2</Menu.Item>
-								<Menu.Item key="3">option3</Menu.Item>
-								<Menu.Item key="4">option4</Menu.Item>
+								{/* <Menu.Item key="2">option2</Menu.Item> */}
+								{/* <Menu.Item key="3">option3</Menu.Item> */}
+								{/* <Menu.Item key="4">option4</Menu.Item> */}
 							</SubMenu>
 							<SubMenu
 								key="sub2"
@@ -107,11 +108,8 @@ class TestLayout2 extends React.Component {
 								minHeight: 280
 							}}
 						>
-							<Route
-								exact
-								path="/hiring"
-								component={RegisterPage}
-							/>
+							<Route exact path="/hiring" component={RegisterPage} />
+							<Route exact path="/update-employee" component={UpdateEmpPage} />
 							{/* <RegisterPage /> */}
 						</Content>
 					</Layout>
