@@ -283,4 +283,150 @@ public class SalaryDB {
         return sal;
 
     }
+
+
+    public static double MMMSalaryForTypeOfEmployee(String type_of_emp,String type_of_sal) throws  ClassNotFoundException {
+        Statement stmt = null;
+        Connection con = null;
+        double ret = 0;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            StringBuilder insQuery = new StringBuilder();
+            if(type_of_emp.equals("temp_admin")){
+                if(type_of_sal.equals("max")){
+                    insQuery.append("SELECT MAX(salaries.after_bonus_sal) AS max_sal FROM salaries INNER JOIN temp_admin_salaries" +
+                            " ON salaries.sal_id = temp_admin_salaries.sal_id;");
+                    PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    ResultSet rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("max_sal");
+                        return ret;
+                    }
+                }else if(type_of_sal.equals("min")){
+                    insQuery.append("SELECT MIN(salaries.after_bonus_sal) AS min_sal FROM salaries INNER JOIN temp_admin_salaries" +
+                            " ON salaries.sal_id = temp_admin_salaries.sal_id;");
+                    PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    ResultSet rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("min_sal");
+                        return ret;
+                    }
+                }else {
+                    insQuery.append("SELECT AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN temp_admin_salaries" +
+                            " ON salaries.sal_id = temp_admin_salaries.sal_id;");
+                    PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    ResultSet rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("avg_sal");
+                        return ret;
+                    }
+                }
+            }else if(type_of_emp.equals("temp_teach")){
+                if(type_of_sal.equals("max")){
+                    insQuery.append("SELECT MAX(salaries.after_bonus_sal) AS max_sal FROM salaries INNER JOIN temp_teach_salaries" +
+                            " ON salaries.sal_id = temp_teach_salaries.sal_id;");
+                    PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    ResultSet rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("max_sal");
+                        return ret;
+                    }
+                }else if(type_of_sal.equals("min")){
+                    insQuery.append("SELECT MIN(salaries.after_bonus_sal) AS min_sal FROM salaries INNER JOIN temp_teach_salaries" +
+                            " ON salaries.sal_id = temp_teach_salaries.sal_id;");
+                    PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    ResultSet rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("min_sal");
+                        return ret;
+                    }
+                }else {
+                    insQuery.append("SELECT AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN temp_teach_salaries" +
+                            " ON salaries.sal_id = temp_teach_salaries.sal_id;");
+                    PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    ResultSet rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("avg_sal");
+                        return ret;
+                    }
+                }
+            }else if(type_of_emp.equals("perm_admin")){
+                if(type_of_sal.equals("max")){
+                    insQuery.append("SELECT MAX(salaries.after_bonus_sal) AS max_sal FROM salaries INNER JOIN perm_admin_salaries" +
+                            " ON salaries.sal_id = perm_admin_salaries.sal_id;");
+                    PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    ResultSet rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("max_sal");
+                        return ret;
+                    }
+                }else if(type_of_sal.equals("min")){
+                    insQuery.append("SELECT MIN(salaries.after_bonus_sal) AS min_sal FROM salaries INNER JOIN perm_admin_salaries" +
+                            " ON salaries.sal_id = perm_admin_salaries.sal_id;");
+                    PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    ResultSet rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("min_sal");
+                        return ret;
+                    }
+                }else {
+                    insQuery.append("SELECT AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN perm_admin_salaries" +
+                            " ON salaries.sal_id = perm_admin_salaries.sal_id;");
+                    PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    ResultSet rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("avg_sal");
+                        return ret;
+                    }
+                }
+            }else {
+                if(type_of_sal.equals("max")){
+                    insQuery.append("SELECT MAX(salaries.after_bonus_sal) AS max_sal FROM salaries INNER JOIN perm_teach_salaries" +
+                            " ON salaries.sal_id = perm_teach_salaries.sal_id;");
+                    PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    ResultSet rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("max_sal");
+                        return ret;
+                    }
+                }else if(type_of_sal.equals("min")){
+                    insQuery.append("SELECT MIN(salaries.after_bonus_sal) AS min_sal FROM salaries INNER JOIN perm_teach_salaries" +
+                            " ON salaries.sal_id = perm_teach_salaries.sal_id;");
+                    PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    ResultSet rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("min_sal");
+                        return ret;
+                    }
+                }else {
+                    insQuery.append("SELECT AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN perm_teach_salaries" +
+                            " ON salaries.sal_id = perm_teach_salaries.sal_id;");
+                    PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    ResultSet rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("avg_sal");
+                        return ret;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+        return ret;
+    }
 }

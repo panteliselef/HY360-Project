@@ -45,12 +45,13 @@ public class ExampleAPI {
 //        sal.setAnnual_bonus(100);
 //        SalaryDB.updateSalary(sal);
 
-        Employee e = EmpDB.getEmployee(13);
-        e.getChildren().get(0).setAge(69);
-        e.setIsMarried("yes");
-
-        EmpDB.updateEmployee(e);
-
+//        Employee e = EmpDB.getEmployee(13);
+//        e.getChildren().get(0).setAge(69);
+//        e.setIsMarried("yes");
+//
+//        EmpDB.updateEmployee(e);
+        double r = SalaryDB.MMMSalaryForTypeOfEmployee("perm_admin","max");
+        System.out.println(r);
 
     }
 }

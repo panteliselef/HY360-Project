@@ -2,6 +2,7 @@ package db;
 
 import model.Child;
 import model.Employee;
+import model.Salary;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -183,6 +184,130 @@ public class EmpDB {
             CS360DB.closeDBConnection(stmt, con);
         }
         return null;
+    }
+
+
+    private static String findEmployeeType(int id) throws ClassNotFoundException {
+        Statement stmt = null;
+        Connection con = null;
+        String type="";
+        int sal_id = -1;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            StringBuilder insQuery = new StringBuilder();
+            insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = "+id+";");
+            PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeQuery();
+            ResultSet rs = stmtIns.getResultSet();
+            if(rs.next()){
+                sal_id = rs.getInt("sal_id");
+            }
+            insQuery.setLength(0);
+            insQuery.append("SELECT * from perm_admin_salaries WHERE sal_id = "+sal_id+";");
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeQuery();
+            rs = stmtIns.getResultSet();
+            if(rs.next()){
+                type = "perm_admin";
+            }
+
+            insQuery.setLength(0);
+            insQuery.append("SELECT * from perm_teach_salaries WHERE sal_id = "+sal_id+";");
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeQuery();
+            rs = stmtIns.getResultSet();
+            if(rs.next()){
+                type = "perm_teach";
+            }
+
+            insQuery.setLength(0);
+            insQuery.append("SELECT * from temp_admin_salaries WHERE sal_id = "+sal_id+";");
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeQuery();
+            rs = stmtIns.getResultSet();
+            if(rs.next()){
+                type = "temp_admin";
+            }
+
+            insQuery.setLength(0);
+            insQuery.append("SELECT * from temp_teach_salaries WHERE sal_id = "+sal_id+";");
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeQuery();
+            rs = stmtIns.getResultSet();
+            if(rs.next()){
+                type = "temp_teach";
+            }
+
+            return type;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+        return type;
+    }
+
+    public static void promoteEmployee(int id) throws ClassNotFoundException {
+        String type =  findEmployeeType(id);
+        StringBuilder insQuery = new StringBuilder();
+        Salary sal = SalaryDB.getBasicSalary();
+        Statement stmt = null;
+        Connection con = null;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            int sal_id=-1;
+//            double annual_bonus,research_bonus;
+            if (type.equals("temp_admin")) {
+                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = "+id+";");
+                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                ResultSet rs = stmtIns.getResultSet();
+                if(rs.next()){
+                    sal_id = rs.getInt("sal_id");
+                }
+                insQuery.setLength(0);
+                insQuery.append("DELETE FROM temp_admin_salaries WHERE sal_id = "+sal_id+";");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeUpdate();
+                insQuery.setLength(0);
+                insQuery.append("UPDATE salaries SET b_salary = "+sal.getPerm_admin_salary()+" WHERE sal_id = "+sal_id+";");
+                con.prepareStatement(insQuery.toString());
+                stmtIns.executeUpdate();
+                insQuery.setLength(0);
+                insQuery.append("INSERT INTO perm_admin_salaries(sal_id,annual_bonus) VALUES("+
+                        sal_id+","+sal.getAnnual_bonus()+");");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeUpdate();
+            }else if(type.equals("temp_teach")){
+                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = "+id+";");
+                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                ResultSet rs = stmtIns.getResultSet();
+                if(rs.next()){
+                    sal_id = rs.getInt("sal_id");
+                }
+                insQuery.setLength(0);
+                insQuery.append("DELETE FROM temp_teach_salaries WHERE sal_id = "+sal_id+";");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeUpdate();
+                insQuery.setLength(0);
+                insQuery.append("UPDATE salaries SET b_salary = "+sal.getPerm_teach_salary()+" WHERE sal_id = "+sal_id+";");
+                con.prepareStatement(insQuery.toString());
+                stmtIns.executeUpdate();
+                insQuery.setLength(0);
+                insQuery.append("INSERT INTO perm_teach_salaries(sal_id,annual_bonus,research_bonus) VALUES("+
+                        sal_id+","+sal.getAnnual_bonus()+","+sal.getResearch_bonus()+");");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeUpdate();
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+
     }
 
 }
