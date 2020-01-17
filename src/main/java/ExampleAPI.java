@@ -36,21 +36,23 @@ public class ExampleAPI {
 //        });
 
 
-//        ChildDB.getChildren(5).forEach(child -> {
-//            System.out.println("Child at age "+ child.getAge());
-//        });
-//
-////        Salary sal = new Salary(800,950,15,5,10,10);
-////        Salary sal = SalaryDB.getBasicSalary();
-////        sal.setAnnual_bonus(100);
-////        SalaryDB.updateSalary(sal);
-//
+        ChildDB.getChildren(5).forEach(child -> {
+            System.out.println("Child at age "+ child.getAge());
+        });
+
+//        Salary sal = new Salary(800,950,15,5,10,10);
+//        Salary sal = SalaryDB.getBasicSalary();
+//        sal.setAnnual_bonus(100);
+//        SalaryDB.updateSalary(sal);
+
 //        Employee e = EmpDB.getEmployee(13);
 //        e.getChildren().get(0).setAge(69);
 //        e.setIsMarried("yes");
 //
 //        EmpDB.updateEmployee(e);
 
+        double r = SalaryDB.MMMSalaryForTypeOfEmployee("perm_admin","max");
+        System.out.println(r);
 
     }
 }
