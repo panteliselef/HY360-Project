@@ -121,7 +121,7 @@ public class SalaryDB {
                     .append(" salaries (b_salary, family_bonus,after_bonus_sal)")
                     .append(" VALUES (")
                     .append("'").append(basicSalary).append("',")
-                    .append("'").append(calculateFamilyBonus(emp.getId())).append("'")
+                    .append("'").append(calculateFamilyBonus(emp.getId())).append("',")
                     .append("'").append(getAfterBonusSal(emp.getId())).append("');");
 
             String generatedColumns[] = {"sal_id"};
