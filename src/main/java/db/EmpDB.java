@@ -356,4 +356,124 @@ public class EmpDB {
 
     }
 
+    public static Employee EmployeeFullInfo(int id) throws ClassNotFoundException {
+        Employee emp = getEmployee(id);
+        String type = findEmployeeType(id);
+        Salary sal = SalaryDB.getBasicSalary();
+        emp.setType(type);
+        Statement stmt = null;
+        Connection con = null;
+        int sal_id = -1;
+        StringBuilder insQuery = new StringBuilder();
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            if (type.equals("perm_admin")) {
+                emp.setAnnual(sal.getAnnual_bonus());
+                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = "+id+";");
+                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                ResultSet rs = stmtIns.getResultSet();
+                if(rs.next()) {
+                    sal_id = rs.getInt("sal_id");
+                }
+                insQuery.setLength(0);
+                insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = "+sal_id+";");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                if(rs.next()) {
+                    emp.setFamily(rs.getDouble("family_bonus"));
+                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
+                    emp.setB_sal(rs.getDouble("b_salary"));
+                }
+                return emp;
+            }else if(type.equals("perm_teach")){
+                emp.setAnnual(sal.getAnnual_bonus());
+                emp.setResearch(sal.getResearch_bonus());
+                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = "+id+";");
+                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                ResultSet rs = stmtIns.getResultSet();
+                if(rs.next()) {
+                    sal_id = rs.getInt("sal_id");
+                }
+                insQuery.setLength(0);
+                insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = "+sal_id+";");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                if(rs.next()) {
+                    emp.setFamily(rs.getDouble("family_bonus"));
+                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
+                    emp.setB_sal(rs.getDouble("b_salary"));
+                }
+                return emp;
+            }else if(type.equals("temp_admin")){
+                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = "+id+";");
+                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                ResultSet rs = stmtIns.getResultSet();
+                if(rs.next()) {
+                    sal_id = rs.getInt("sal_id");
+                }
+                insQuery.setLength(0);
+                insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = "+sal_id+";");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                if(rs.next()) {
+                    emp.setFamily(rs.getDouble("family_bonus"));
+                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
+                    emp.setB_sal(rs.getDouble("b_salary"));
+                }
+                insQuery.setLength(0);
+                insQuery.append("SELECT start_date,end_date FROM temp_admin_salaries WHERE sal_id = "+sal_id+";");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                long start_d,end_d;
+                if(rs.next()) {
+                    emp.setStarts_at(rs.getDate("start_date").getTime());
+                    emp.setEnds_at(rs.getDate("end_date").getTime());
+                }
+                return emp;
+            }else{
+                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = "+id+";");
+                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                ResultSet rs = stmtIns.getResultSet();
+                if(rs.next()) {
+                    sal_id = rs.getInt("sal_id");
+                }
+                insQuery.setLength(0);
+                insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = "+sal_id+";");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                if(rs.next()) {
+                    emp.setFamily(rs.getDouble("family_bonus"));
+                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
+                    emp.setB_sal(rs.getDouble("b_salary"));
+                }
+                insQuery.setLength(0);
+                insQuery.append("SELECT start_date,end_date FROM temp_teach_salaries WHERE sal_id = "+sal_id+";");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                long start_d,end_d;
+                if(rs.next()) {
+                    emp.setStarts_at(rs.getDate("start_date").getTime());
+                    emp.setEnds_at(rs.getDate("end_date").getTime());
+                }
+                emp.setLibrary(sal.getLibrary_bonus());
+                return emp;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+        return emp;
+    }
 }
