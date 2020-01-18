@@ -452,12 +452,18 @@ public class SalaryDB {
             StringBuilder insQuery = new StringBuilder();
             Employee emp = EmpDB.getEmployee(id);
             ArrayList<Child> ch = (ArrayList<Child>) ChildDB.getChildren(id);
+            ArrayList<Child>teen_ch = new ArrayList<>();
+            for(int i = 0;i<ch.size();i++){
+                if(ch.get(i).getAge()<18){
+                    teen_ch.add(ch.get(i));
+                }
+            }
             double basic_fambonus = getBonus(Bonus.FAMILY);
             String ismarried = EmpDB.getEmployee(id).isMarried();
             if (ismarried.equals("yes")) {
-                family_bonus = (ch.size() + 1) * basic_fambonus;
+                family_bonus = (teen_ch.size() + 1) * basic_fambonus;
             } else {
-                family_bonus = ch.size() * basic_fambonus;
+                family_bonus = teen_ch.size() * basic_fambonus;
             }
             System.out.println("FAMILY BONUS IS " + family_bonus);
             return family_bonus;
@@ -528,5 +534,50 @@ public class SalaryDB {
             CS360DB.closeDBConnection(stmt, con);
         }
         return ret;
+    }
+
+    public static void addPayment() throws ClassNotFoundException{
+        Statement stmt = null;
+        Connection con = null;
+        try{
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            StringBuilder insQuery = new StringBuilder();
+            ArrayList<Employee> employees = EmpDB.getEmployees();
+            Employee emp;
+            PreparedStatement stmtIns;
+            ResultSet rs;
+            int sal_id = -1;
+            Date d;
+            for(int i = 0;i<employees.size();i++){
+                d = new Date(System.currentTimeMillis());
+                insQuery.setLength(0);
+                emp = EmpDB.EmployeeFullInfo(employees.get(i).getId());
+                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = "+emp.getId()+";");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                if(rs.next()){
+                    sal_id = rs.getInt("sal_id");
+                }
+                insQuery.setLength(0);
+                insQuery.append("INSERT INTO payments(paid_at,ammount,emp_id) VALUES('"+d+"',"+
+                        SalaryDB.getAfterBonusSal(emp.getId())+", "+emp.getId()+");");
+                String generatedColumns[] = {"bill_id"};
+                stmtIns = con.prepareStatement(insQuery.toString(), generatedColumns);
+                stmtIns.executeUpdate();
+
+                rs = stmtIns.getGeneratedKeys();
+                int bill_id = 0;
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    bill_id = id;
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
     }
 }
