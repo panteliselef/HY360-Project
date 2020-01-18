@@ -4,8 +4,11 @@ package servlets;
 import com.google.gson.Gson;
 import db.SalaryDB;
 import model.Salary;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,18 +44,40 @@ public class TypeOfSalaryAndEmpServlet extends HttpServlet {
         resp.setContentType("application/json");
 
 
-        String mode = req.getParameter("mode");
-        String category = req.getParameter("category");
+//        String mode = req.getParameter("mode");
+//        String category = req.getParameter("category");
+
+        String [] modes = {"max","min","avg"};
+        String [] categories = {"perm_admin","perm_teach","temp_admin","temp_teach"};
         double salary = 0;
+
+        JSONArray jsonArray = new JSONArray();
         try {
-            salary = SalaryDB.MMMSalaryForTypeOfEmployee(category,mode);
+
+            for (String cat: categories
+                 ) {
+                JSONObject jo = new JSONObject();
+                jo.put("categoryName",cat);
+                for(String mode: modes){
+                    salary = SalaryDB.MMMSalaryForTypeOfEmployee(cat,mode);
+                    jo.put(mode,salary);
+
+                }
+                jsonArray.put(jo);
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
+
+
+
+
+
+
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
-        out.println(gson.toJson(salary));
+        out.println(jsonArray);
         out.flush();
 
 

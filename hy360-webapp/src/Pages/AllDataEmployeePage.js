@@ -9,6 +9,7 @@ function AllDataEmployeePage() {
 	const [ selectedEmployee, setSelectedEmployee ] = useState({});
 
 	const [ fullInfoEmp, setFullInfoEmp ] = useState([]);
+	const [children, setChildren] = useState([]);
 
 	const [ allColumns, setAllColumns ] = useState([]);
 
@@ -42,6 +43,9 @@ function AllDataEmployeePage() {
 		}
 	];
 
+		
+
+
 	const rowSelection = {
 		onChange: (selectedRowKeys, selectedRows) => {
 			console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -59,6 +63,8 @@ function AllDataEmployeePage() {
 						un_children: []
 					};
 				});
+
+				setChildren(result.children);
 				setFullInfoEmp(data);
 				console.log(data);
 
@@ -68,7 +74,7 @@ function AllDataEmployeePage() {
           let d = {}
           if(i < 3){
             d = {fixed:'left'}
-          }
+					}
 					cols = [
 						...cols,
 						{
@@ -90,6 +96,15 @@ function AllDataEmployeePage() {
 		type: 'radio'
 	};
 
+
+	const expandedRowRender = () => {
+    const childColumns = [
+      { title: `Child's age`, dataIndex: 'age', key: 'age' },
+    ];
+
+		console.log(fullInfoEmp.children);
+    return <Table columns={childColumns} dataSource={children} pagination={false} />;
+  };
 	return (
 		<div>
 			<Title>Select Employee</Title>
@@ -99,11 +114,11 @@ function AllDataEmployeePage() {
 			{console.log(Array.isArray(employees))}
 			{console.log(Array.isArray(fullInfoEmp))}
 
-			{Object.keys(fullInfoEmp).length > 0 ? (
-				<Table columns={allColumns} scroll={{ x: true }} dataSource={fullInfoEmp} />
+				<Table columns={allColumns} scroll={{ x: true }} expandedRowRender={expandedRowRender} dataSource={fullInfoEmp} />
+			{/* {Object.keys(fullInfoEmp).length > 0 ? (
 			) : (
 				''
-			)}
+			)} */}
 			{/* <Table columns={allColumns} scroll={{x:true}} dataSource={fullInfoEmp} /> */}
 		</div>
 	);

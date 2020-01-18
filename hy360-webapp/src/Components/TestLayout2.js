@@ -5,6 +5,7 @@ import { Route, Link } from 'react-router-dom';
 import UpdateEmpPage from '../Pages/UpdateEmpPage';
 import UpdateBasicSalPage from '../Pages/UpdateBasicSalPage';
 import AllDataEmployeePage from '../Pages/AllDataEmployeePage';
+import StatisticsPage from '../Pages/StatisticsPage';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -81,6 +82,9 @@ class TestLayout2 extends React.Component {
 								<Menu.Item key="/data-employee">
 									<Link to="/data-employee">Employee</Link>
 								</Menu.Item>
+								<Menu.Item key="/data-stats">
+									<Link to="/data-stats">Statistics</Link>
+								</Menu.Item>
 								<Menu.Item key="6">option6</Menu.Item>
 								<Menu.Item key="7">option7</Menu.Item>
 								<Menu.Item key="8">option8</Menu.Item>
@@ -119,6 +123,7 @@ class TestLayout2 extends React.Component {
 							<Route exact path="/update-employee" component={UpdateEmpPage} />
 							<Route exact path="/update-basic-salaries" component={UpdateBasicSalPage} />
 							<Route exact path="/data-employee" component={AllDataEmployeePage} />
+							<Route exact path="/data-stats" component={StatisticsPage} />
 							{/* <RegisterPage /> */}
 						</Content>
 					</Layout>
