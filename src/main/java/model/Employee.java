@@ -22,6 +22,8 @@ public class Employee {
     private Double tempSalary;
     private Long starts_at;
     private Long ends_at;
+    private double annual=0,family=0,research=0,library=0,b_sal=0,after_bonus_sal = 0;
+    private String type;
 
     public Employee(){};
 
@@ -34,6 +36,62 @@ public class Employee {
         this.bankName = bankName;
         Date d = new Date(System.currentTimeMillis());
         startedAt = d;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public double getAfter_bonus_sal() {
+        return after_bonus_sal;
+    }
+
+    public void setAfter_bonus_sal(double after_bonus_sal) {
+        this.after_bonus_sal = after_bonus_sal;
+    }
+
+    public double getB_sal() {
+        return b_sal;
+    }
+
+    public void setB_sal(double b_sal) {
+        this.b_sal = b_sal;
+    }
+
+    public double getAnnual() {
+        return annual;
+    }
+
+    public double getFamily() {
+        return family;
+    }
+
+    public double getLibrary() {
+        return library;
+    }
+
+    public double getResearch() {
+        return research;
+    }
+
+    public void setAnnual(double annual) {
+        this.annual = annual;
+    }
+
+    public void setFamily(double family) {
+        this.family = family;
+    }
+
+    public void setLibrary(double library) {
+        this.library = library;
+    }
+
+    public void setResearch(double research) {
+        this.research = research;
     }
 
     public int getId() {
