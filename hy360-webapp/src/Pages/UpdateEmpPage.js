@@ -22,7 +22,6 @@ import {
 
 import '../Style/register-page.css';
 
-import { Row as FlexRow, Col as FlexCol } from 'react-flexbox-grid';
 
 import DepartmentSelect from '../Components/DepartmentSelect';
 import ajaxRequest from '../utils/ajax';
@@ -32,9 +31,11 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 function UpdateEmpPage(props) {
-	const { getFieldDecorator, validateFields } = props.form;
+	const { form } = props;
+	const { getFieldDecorator, getFieldsValue, validateFields, getFieldValue } = form;
 	const [ employees, setEmployees ] = useState([]);
 	const [ allDataEmployees, setAllDataEmployees ] = useState([]);
+	const [ children, setChildren ] = useState([]);
 
 	const [ selectedEmployee, setSelectedEmployee ] = useState({});
 	const columns = [
@@ -81,6 +82,11 @@ function UpdateEmpPage(props) {
 
 			const d = allDataEmployees.filter((employee) => employee.id === selectedRowKeys[0]);
 			setSelectedEmployee(d[0]);
+
+			ajaxRequest('GET', `http://localhost:8085/hy360/employee?id=${d[0].id}`, null, ({ result }) => {
+				setChildren(result.children);
+				console.log(result);
+			});
 		},
 		getCheckboxProps: (record) => ({
 			disabled: record.name === 'Disabled User', // Column configuration not to be checked
@@ -121,23 +127,94 @@ function UpdateEmpPage(props) {
 		});
 	};
 
+	const formItemLayoutWithOutLabel = {
+		wrapperCol: {
+			xs: { span: 24, offset: 0 },
+			sm: { span: 20, offset: 4 }
+		}
+	};
+
+	// const fetchChildren = () => {
+	// 	const formItems = keys.map((k, index) => (
+	// 		<Form.Item {...formItemLayout} label={`Children (${index + 1})`} required={false} key={k}>
+	// 			{getFieldDecorator(`ages[${k}]`, {
+	// 				validateTrigger: [ 'onChange', 'onBlur' ],
+	// 				rules: [
+	// 					{
+	// 						required: true,
+	// 						message: "Please input child's age or delete this field."
+	// 					}
+	// 				]
+	// 			})(<InputNumber min={1} max={50} placeholder="Child's age" style={{ width: '60%', marginRight: 8 }} />)}
+	// 			{keys.length > 1 ? (
+	// 				<Icon className="dynamic-delete-button" type="minus-circle-o" onClick={() => remove(k)} />
+	// 			) : null}
+	// 		</Form.Item>
+	// 	));
+	// };
+
+	// const add = () => {
+	// 	const { form } = this.props;
+	// 	// can use data-binding to get
+	// 	const keys = form.getFieldValue('keys');
+	// 	let id = this.state.child_num;
+	// 	const nextKeys = keys.concat(id);
+	// 	this.setState({ child_num: id + 1 });
+	// 	// can use data-binding to set
+	// 	// important! notify form to detect changes
+	// 	form.setFieldsValue({
+	// 		keys: nextKeys
+	// 	});
+	// };
+	const handleAddChild = () => {
+		// console.log(keys, getFieldsValue());
+
+		setChildren([
+			...children,
+			{
+				age: 0
+			}
+		]);
+	};
+
+	const remove = (k) => {    
+    setChildren(children.filter((item,i)=>i !==k));
+
+    
+
+	};
+
 	const handleUpdate = (e) => {
 		e.preventDefault();
 
 		validateFields((error, values) => {
 			if (error) return;
+
+			const _children = values.ages.map((age, i) => {
+				console.log(children);
+				return {
+					...children[i],
+					age
+				};
+			});
 			const updatedData = {
 				...selectedEmployee,
 				...values,
-				depId: values.department.depId
+				depId: values.department.depId,
+				children: _children
 			};
 			setSelectedEmployee(updatedData);
+
+			console.log(updatedData);
 
 			ajaxRequest('PUT', `http://localhost:8085/hy360/employee`, JSON.stringify(updatedData), (res) => {
 				console.log(res);
 			});
 		});
 	};
+
+	// getFieldDecorator('keys', { initialValue: [] });
+	// const keys = getFieldValue('keys');
 	return (
 		<React.Fragment>
 			<Title>Select a employee</Title>
@@ -219,6 +296,44 @@ function UpdateEmpPage(props) {
 							<Radio value="no">Single</Radio>
 						</Radio.Group>
 					</Form.Item>
+
+					{Object.keys(children).length > 0 ? (
+						children.map((child, i) => (
+							<Form.Item {...formItemLayout} label={`Child (${i + 1})`} required={false} key={i}>
+								{getFieldDecorator(`ages[${i}]`, {
+									validateTrigger: [ 'onChange', 'onBlur' ],
+									initialValue: child.age,
+									rules: [
+										{
+											required: true,
+											message: "Please input child's age or delete this field."
+										}
+									]
+								})(
+									<InputNumber
+										min={1}
+										max={50}
+										placeholder="Child's age"
+										style={{ width: '60%', marginRight: 8 }}
+									/>
+								)}
+								{/* <Icon
+									className="dynamic-delete-button"
+									type="minus-circle-o"
+									onClick={() => remove(i)}
+								/> */}
+							</Form.Item>
+						))
+					) : (
+						''
+					)}
+
+					<Form.Item {...formItemLayoutWithOutLabel} style={{ textAlign: 'center' }}>
+						<Button type="dashed" onClick={handleAddChild}>
+							<Icon type="plus" /> Add field
+						</Button>
+					</Form.Item>
+
 					<Form.Item>
 						<Button type="primary" htmlType="submit">
 							submit

@@ -2,6 +2,7 @@ package servlets;
 
 import com.google.gson.Gson;
 import db.EmpDB;
+import model.Child;
 import model.Employee;
 import model.JSONResponse;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 @WebServlet("/employee")
 @MultipartConfig
@@ -34,8 +36,20 @@ public class EmployeeServlet  extends HttpServlet {
 
         String id = req.getParameter("id");
         if(id!=null){
-            resp.setStatus(400);
-            out.print(gson.toJson(new JSONResponse("invalid mode", 400,null)));
+            Employee emp = null;
+            try {
+                 emp = EmpDB.getEmployee(Integer.parseInt(id));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            if(emp == null){
+                resp.setStatus(400);
+                out.print(gson.toJson(new JSONResponse("employee not found", 400,null)));
+            }else {
+                resp.setStatus(200);
+
+                out.print(gson.toJson(new JSONResponse("employee found", 200, emp)));
+            }
         }else{
             resp.setStatus(200);
             try {
@@ -84,7 +98,9 @@ public class EmployeeServlet  extends HttpServlet {
             empFromDatabase.setBankName(empFromClient.getBankName());
             empFromDatabase.setDepartmentId(empFromClient.getDepartmentId());
             empFromDatabase.setIsMarried(empFromClient.isMarried());
+            empFromDatabase.setChildren((ArrayList<Child>) empFromClient.getChildren());
 
+            System.out.println(empFromDatabase);
             EmpDB.updateEmployee(empFromDatabase);
 
             resp.setStatus(200);

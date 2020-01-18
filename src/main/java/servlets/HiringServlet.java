@@ -121,9 +121,11 @@ public class HiringServlet extends HttpServlet {
             }
 
             emp.setChildren(new ArrayList<>());
-            emp.setUn_children(new ArrayList<>());
+//            emp.setUn_children(new ArrayList<>());
             EmpDB.addEmployee(emp);
             SalaryDB.addSalary(emp);
+
+            System.out.println(emp.getUn_children().size());
 
             emp.getUn_children().forEach(age -> {
                 Child ch = new Child(Integer.parseInt(age), emp.getId());

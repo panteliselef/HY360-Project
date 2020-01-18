@@ -10,6 +10,11 @@ public class Child {
         this.emp_id = emp_id;
     }
 
+
+    public void setEmp_id(int emp_id) {
+        this.emp_id = emp_id;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -32,6 +37,6 @@ public class Child {
 
     @Override
     public String toString() {
-        return "Age:"+this.age;
+        return "Age:"+this.age + " Child_id: "+this.id;
     }
 }

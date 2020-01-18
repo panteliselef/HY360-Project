@@ -3,6 +3,7 @@ import { Layout, Menu, Breadcrumb, Icon, Slider, Typography, Row, Col } from 'an
 import RegisterPage from '../Pages/RegisterPage';
 import { Route, Link } from 'react-router-dom';
 import UpdateEmpPage from '../Pages/UpdateEmpPage';
+import UpdateBasicSalPage from '../Pages/UpdateBasicSalPage';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -60,6 +61,9 @@ class TestLayout2 extends React.Component {
 								<Menu.Item key="/update-employee">
 									<Link to="/update-employee">Employee</Link>
 								</Menu.Item>
+								<Menu.Item key="/update-basic-salaries">
+									<Link to="/update-basic-salaries">Basic Salaries</Link>
+								</Menu.Item>
 								{/* <Menu.Item key="2">option2</Menu.Item> */}
 								{/* <Menu.Item key="3">option3</Menu.Item> */}
 								{/* <Menu.Item key="4">option4</Menu.Item> */}
@@ -110,6 +114,7 @@ class TestLayout2 extends React.Component {
 						>
 							<Route exact path="/hiring" component={RegisterPage} />
 							<Route exact path="/update-employee" component={UpdateEmpPage} />
+							<Route exact path="/update-basic-salaries" component={UpdateBasicSalPage} />
 							{/* <RegisterPage /> */}
 						</Content>
 					</Layout>

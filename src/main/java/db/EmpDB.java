@@ -114,17 +114,22 @@ public class EmpDB {
 
             ArrayList<Child> children = (ArrayList<Child>) emp.getChildren();
             System.out.println(children);
-            for(int i = 0;i<emp.getChildren().size();i++) {
+
+            for(Child child: emp.getChildren()) {
                 insQuery.setLength(0);
-                insQuery.append("UPDATE emp_children ")
-                        .append("SET ")
-                        .append("age = "+children.get(i).getAge())
-                        .append(" WHERE child_id = "+children.get(i).getId()+" AND emp_id = "+emp.getId()+";");
+                if (child.getId() == 0) {
+                    child.setEmp_id(emp.getId());
+                    ChildDB.addChild(child);
+                } else {
+                    insQuery.append("UPDATE emp_children ")
+                            .append("SET ")
+                            .append("age = " + child.getAge())
+                            .append(" WHERE child_id = " + child.getId() + " AND emp_id = " + emp.getId() + ";");
+
+                }
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
             }
-
-
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -162,9 +167,6 @@ public class EmpDB {
                 bank_name = res.getString("bank_name");
                 dep_id = res.getInt("department_id");
                 ismarried = res.getString("is_married");
-
-
-
             }
             emp = new Employee(fname, lname, address, phone, IBAN, bank_name);
             emp.setStartedAt(started_at);
@@ -172,6 +174,12 @@ public class EmpDB {
             emp.setIsMarried(ismarried);
             insQuery.setLength(0);
             emp.setChildren((ArrayList<Child>) ChildDB.getChildren(id));
+            System.out.println(ChildDB.getChildren(id));
+            ArrayList<String> un = new ArrayList<>();
+            ChildDB.getChildren(id).forEach(child -> {
+                un.add(child.getAge()+"");
+            });
+            emp.setUn_children(un);
             emp.setId(id);
             return emp;
 
