@@ -4,6 +4,7 @@ package servlets;
 import com.google.gson.Gson;
 import db.EmpDB;
 import model.Employee;
+import model.JSONResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -61,7 +62,7 @@ public class FullEmployeeInfoServlet extends HttpServlet {
         }
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
-        out.println(gson.toJson(emp));
+        out.println(gson.toJson(new JSONResponse("full info fetched successfully",200,emp)));
         out.flush();
 
     }

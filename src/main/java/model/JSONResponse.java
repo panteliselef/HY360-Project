@@ -11,4 +11,10 @@ public class JSONResponse {
         this.statusCode = statusCode;
         this.result = result;
     }
+
+    public JSONResponse(String message, int statusCode){
+        this.message = message;
+        this.statusCode = statusCode;
+        this.result = null;
+    }
 }

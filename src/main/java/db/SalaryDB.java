@@ -227,6 +227,8 @@ public class SalaryDB {
 
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();
+
+            EmpDB.updateSalaryAndBonus();
         }catch (SQLException e) {
             e.printStackTrace();
         } finally {
