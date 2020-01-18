@@ -296,7 +296,7 @@ public class EmpDB {
     }
 
 
-    private static String findEmployeeType(int id) throws ClassNotFoundException {
+    public static String findEmployeeType(int id) throws ClassNotFoundException {
         Statement stmt = null;
         Connection con = null;
         String type = "";
@@ -367,7 +367,8 @@ public class EmpDB {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
             int sal_id = -1;
-//            double annual_bonus,research_bonus;
+            Date d = new Date(System.currentTimeMillis());
+
             if (type.equals("temp_admin")) {
                 insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = " + id + ";");
                 PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
@@ -377,7 +378,7 @@ public class EmpDB {
                     sal_id = rs.getInt("sal_id");
                 }
                 insQuery.setLength(0);
-                insQuery.append("DELETE FROM temp_admin_salaries WHERE sal_id = " + sal_id + ";");
+                insQuery.append("UPDATE temp_admin_salaries SET promotion_date = '" + d + "' WHERE sal_id = "+sal_id+";");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
@@ -398,7 +399,7 @@ public class EmpDB {
                     sal_id = rs.getInt("sal_id");
                 }
                 insQuery.setLength(0);
-                insQuery.append("DELETE FROM temp_teach_salaries WHERE sal_id = " + sal_id + ";");
+                insQuery.append("UPDATE temp_teach_salaries SET promotion_date = '" + d +"' WHERE sal_id = "+sal_id + ";");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);

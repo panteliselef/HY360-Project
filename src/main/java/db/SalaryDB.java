@@ -1,9 +1,11 @@
 package db;
 
+import model.Child;
 import model.Employee;
 import model.Salary;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class SalaryDB {
 
@@ -116,10 +118,11 @@ public class SalaryDB {
             }
 //            if (basicSalary == null)return;
             insQuery.append("INSERT INTO ")
-                    .append(" salaries (b_salary, family_bonus)")
+                    .append(" salaries (b_salary, family_bonus,after_bonus_sal)")
                     .append(" VALUES (")
                     .append("'").append(basicSalary).append("',")
-                    .append("'").append(getBonus(Bonus.FAMILY)).append("');");
+                    .append("'").append(calculateFamilyBonus(emp.getId())).append("'")
+                    .append("'").append(getAfterBonusSal(emp.getId())).append("');");
 
             String generatedColumns[] = {"sal_id"};
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString(), generatedColumns);
@@ -430,5 +433,113 @@ public class SalaryDB {
             CS360DB.closeDBConnection(stmt, con);
         }
         return ret;
+    }
+
+    public static double calculateFamilyBonus(int id) throws  ClassNotFoundException {
+        double family_bonus = 0;
+        Statement stmt = null;
+        Connection con = null;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            StringBuilder insQuery = new StringBuilder();
+            Employee emp = EmpDB.getEmployee(id);
+            ArrayList<Child> ch = (ArrayList<Child>) emp.getChildren();
+            double basic_fambonus = 0;
+            insQuery.append("SELECT family_bonus FROM basic_salary_info;");
+            PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeQuery();
+            ResultSet rs = stmtIns.getResultSet();
+            if(rs.next()){
+                basic_fambonus = rs.getDouble("family_bonus");
+            }
+            insQuery.setLength(0);
+            insQuery.append("SELECT is_married FROM employees WHERE emp_id = "+id+";");
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeQuery();
+            rs = stmtIns.getResultSet();
+            String ismarried="";
+            if(rs.next()){
+                ismarried = rs.getString("is_married");
+            }
+            if(ismarried.equals("yes")){
+                family_bonus = (ch.size()+1)*basic_fambonus;
+            }else{
+                family_bonus = ch.size()*basic_fambonus;
+            }
+            return family_bonus;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+        return family_bonus;
+    }
+
+    public static double getAfterBonusSal(int id) throws ClassNotFoundException {
+        Statement stmt = null;
+        Connection con = null;
+        double ret = 0;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            Employee emp = EmpDB.EmployeeFullInfo(id);
+            double fam_bonus = calculateFamilyBonus(id);
+            ret = emp.getB_sal() + emp.getAnnual() * emp.getB_sal() + emp.getB_sal() * fam_bonus + emp.getResearch() + emp.getLibrary();
+            return ret;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+        return ret;
+    }
+
+
+    public static ArrayList<Double> getAfterBonusSal() throws ClassNotFoundException {
+        Statement stmt = null;
+        Connection con = null;
+        ArrayList<Double> ret = new ArrayList<>();
+        double fam_bonus;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            ArrayList<Employee> employees = EmpDB.getEmployees();
+            Employee emp;
+            for(int i = 0;i<employees.size();i++) {
+                emp = EmpDB.EmployeeFullInfo(employees.get(i).getId());
+                fam_bonus = calculateFamilyBonus(emp.getId());
+//                ret = emp.getB_sal() + emp.getAnnual() * emp.getB_sal() + emp.getB_sal() * fam_bonus + emp.getResearch() + emp.getLibrary();
+                ret.add(emp.getB_sal() + emp.getAnnual() * emp.getB_sal() + emp.getB_sal() * fam_bonus + emp.getResearch() + emp.getLibrary());
+            }
+            return ret;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+        return ret;
+    }
+
+    public static double calculateSumOfSal(String type_of_emp) throws ClassNotFoundException {
+        Statement stmt = null;
+        Connection con = null;
+        double ret = 0;
+        ArrayList<Employee> employees = EmpDB.getEmployees();
+        try{
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            for(int i = 0;i<employees.size();i++){
+                if(EmpDB.findEmployeeType(employees.get(i).getId()).equals(type_of_emp)){
+                    ret+= SalaryDB.getAfterBonusSal(employees.get(i).getId());
+                }
+            }
+            return ret;
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+        return  ret;
     }
 }
