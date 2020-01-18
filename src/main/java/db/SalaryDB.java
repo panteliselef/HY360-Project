@@ -16,7 +16,9 @@ public class SalaryDB {
         LIBRARY,
         PERM_ADMIN,
         PERM_TEACH
-    };
+    }
+
+    ;
 
 
     private static Double getBonus(Bonus bonusType) throws ClassNotFoundException {
@@ -47,7 +49,7 @@ public class SalaryDB {
                     tableAttribute = "*";
                     break;
             }
-            insQuery.append("SELECT "+tableAttribute+" FROM basic_salary_info WHERE id = 1;");
+            insQuery.append("SELECT " + tableAttribute + " FROM basic_salary_info WHERE id = 1;");
 
             stmt.executeQuery(insQuery.toString());
 
@@ -118,11 +120,10 @@ public class SalaryDB {
             }
 //            if (basicSalary == null)return;
             insQuery.append("INSERT INTO ")
-                    .append(" salaries (b_salary, family_bonus,after_bonus_sal)")
+                    .append(" salaries (b_salary, family_bonus)")
                     .append(" VALUES (")
                     .append("'").append(basicSalary).append("',")
-                    .append("'").append(calculateFamilyBonus(emp.getId())).append("',")
-                    .append("'").append(getAfterBonusSal(emp.getId())).append("');");
+                    .append("'").append(calculateFamilyBonus(emp.getId())).append("');");
 
             String generatedColumns[] = {"sal_id"};
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString(), generatedColumns);
@@ -164,14 +165,14 @@ public class SalaryDB {
                         .append(" perm_admin_salaries (sal_id,annual_bonus)")
                         .append(" VALUES (")
                         .append("'").append(sal_id).append("',")
-                        .append("'").append(getBonus(Bonus.ANNUAL)).append("');");
+                        .append("'").append(0).append("');");
 
             } else if (emp.getSalaryType().equals("perm_teach")) {
                 insQuery.append("INSERT INTO ")
                         .append(" perm_teach_salaries (sal_id,annual_bonus,research_bonus)")
                         .append(" VALUES (")
                         .append("'").append(sal_id).append("',")
-                        .append("'").append(getBonus(Bonus.ANNUAL)).append("',")
+                        .append("'").append(0).append("',")
                         .append("'").append(getBonus(Bonus.REASEARCH)).append("');");
             } else if (emp.getSalaryType().equals("temp_admin")) {
                 insQuery.append("INSERT INTO ")
@@ -196,6 +197,14 @@ public class SalaryDB {
             stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();
 
+            insQuery.setLength(0);
+            insQuery.append("UPDATE salaries ")
+                    .append( " SET ")
+                    .append(" after_bonus_sal = "+getAfterBonusSal(emp.getId())+" WHERE sal_id = "+sal_id+";");
+
+
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeUpdate();
 
             System.out.println("#DB: The salary for  " + emp.getLname() + "  was successfully added in the database.");
 
@@ -206,7 +215,7 @@ public class SalaryDB {
         }
     }
 
-    public static void updateSalary(Salary upd_salary) throws ClassNotFoundException{
+    public static void updateSalary(Salary upd_salary) throws ClassNotFoundException {
 
         Statement stmt = null;
         Connection con = null;
@@ -217,22 +226,20 @@ public class SalaryDB {
 
             insQuery.append("UPDATE basic_salary_info ")
                     .append("SET ")
-                    .append("perm_admin_salary = "+upd_salary.getPerm_admin_salary()+", "+
-                            "perm_teach_salary = "+upd_salary.getPerm_teach_salary()+", "+
-                            "annual_bonus = "+upd_salary.getAnnual_bonus()+", "+
-                            "family_bonus = "+upd_salary.getFamily_bonus()+", "+
-                            "research_bonus = "+upd_salary.getResearch_bonus()+", "+
-                            "library_bonus = "+upd_salary.getLibrary_bonus())
+                    .append("perm_admin_salary = " + upd_salary.getPerm_admin_salary() + ", " +
+                            "perm_teach_salary = " + upd_salary.getPerm_teach_salary() + ", " +
+                            "annual_bonus = " + upd_salary.getAnnual_bonus() + ", " +
+                            "family_bonus = " + upd_salary.getFamily_bonus() + ", " +
+                            "research_bonus = " + upd_salary.getResearch_bonus() + ", " +
+                            "library_bonus = " + upd_salary.getLibrary_bonus())
                     .append(" WHERE id = 1;");
-
-
 
 
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();
 
             EmpDB.updateSalaryAndBonus();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             CS360DB.closeDBConnection(stmt, con);
@@ -284,13 +291,13 @@ public class SalaryDB {
         double family_bonus = getBonus(Bonus.FAMILY);
         double research_bonus = getBonus(Bonus.REASEARCH);
         double library_bonus = getBonus(Bonus.LIBRARY);
-        sal = new Salary(perm_admin,perm_teach,annual_bonus,family_bonus,research_bonus,library_bonus);
+        sal = new Salary(perm_admin, perm_teach, annual_bonus, family_bonus, research_bonus, library_bonus);
         return sal;
 
     }
 
 
-    public static double MMMSalaryForTypeOfEmployee(String type_of_emp,String type_of_sal) throws  ClassNotFoundException {
+    public static double MMMSalaryForTypeOfEmployee(String type_of_emp, String type_of_sal) throws ClassNotFoundException {
         Statement stmt = null;
         Connection con = null;
         double ret = 0;
@@ -298,130 +305,130 @@ public class SalaryDB {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
             StringBuilder insQuery = new StringBuilder();
-            if(type_of_emp.equals("temp_admin")){
-                if(type_of_sal.equals("max")){
+            if (type_of_emp.equals("temp_admin")) {
+                if (type_of_sal.equals("max")) {
                     insQuery.append("SELECT MAX(salaries.after_bonus_sal) AS max_sal FROM salaries INNER JOIN temp_admin_salaries" +
                             " ON salaries.sal_id = temp_admin_salaries.sal_id;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
-                    if(rs.next()){
+                    if (rs.next()) {
                         ret = rs.getDouble("max_sal");
                         return ret;
                     }
-                }else if(type_of_sal.equals("min")){
+                } else if (type_of_sal.equals("min")) {
                     insQuery.append("SELECT MIN(salaries.after_bonus_sal) AS min_sal FROM salaries INNER JOIN temp_admin_salaries" +
                             " ON salaries.sal_id = temp_admin_salaries.sal_id;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
-                    if(rs.next()){
+                    if (rs.next()) {
                         ret = rs.getDouble("min_sal");
                         return ret;
                     }
-                }else {
+                } else {
                     insQuery.append("SELECT AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN temp_admin_salaries" +
                             " ON salaries.sal_id = temp_admin_salaries.sal_id;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
-                    if(rs.next()){
+                    if (rs.next()) {
                         ret = rs.getDouble("avg_sal");
                         return ret;
                     }
                 }
-            }else if(type_of_emp.equals("temp_teach")){
-                if(type_of_sal.equals("max")){
+            } else if (type_of_emp.equals("temp_teach")) {
+                if (type_of_sal.equals("max")) {
                     insQuery.append("SELECT MAX(salaries.after_bonus_sal) AS max_sal FROM salaries INNER JOIN temp_teach_salaries" +
                             " ON salaries.sal_id = temp_teach_salaries.sal_id;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
-                    if(rs.next()){
+                    if (rs.next()) {
                         ret = rs.getDouble("max_sal");
                         return ret;
                     }
-                }else if(type_of_sal.equals("min")){
+                } else if (type_of_sal.equals("min")) {
                     insQuery.append("SELECT MIN(salaries.after_bonus_sal) AS min_sal FROM salaries INNER JOIN temp_teach_salaries" +
                             " ON salaries.sal_id = temp_teach_salaries.sal_id;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
-                    if(rs.next()){
+                    if (rs.next()) {
                         ret = rs.getDouble("min_sal");
                         return ret;
                     }
-                }else {
+                } else {
                     insQuery.append("SELECT AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN temp_teach_salaries" +
                             " ON salaries.sal_id = temp_teach_salaries.sal_id;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
-                    if(rs.next()){
+                    if (rs.next()) {
                         ret = rs.getDouble("avg_sal");
                         return ret;
                     }
                 }
-            }else if(type_of_emp.equals("perm_admin")){
-                if(type_of_sal.equals("max")){
+            } else if (type_of_emp.equals("perm_admin")) {
+                if (type_of_sal.equals("max")) {
                     insQuery.append("SELECT MAX(salaries.after_bonus_sal) AS max_sal FROM salaries INNER JOIN perm_admin_salaries" +
                             " ON salaries.sal_id = perm_admin_salaries.sal_id;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
-                    if(rs.next()){
+                    if (rs.next()) {
                         ret = rs.getDouble("max_sal");
                         return ret;
                     }
-                }else if(type_of_sal.equals("min")){
+                } else if (type_of_sal.equals("min")) {
                     insQuery.append("SELECT MIN(salaries.after_bonus_sal) AS min_sal FROM salaries INNER JOIN perm_admin_salaries" +
                             " ON salaries.sal_id = perm_admin_salaries.sal_id;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
-                    if(rs.next()){
+                    if (rs.next()) {
                         ret = rs.getDouble("min_sal");
                         return ret;
                     }
-                }else {
+                } else {
                     insQuery.append("SELECT AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN perm_admin_salaries" +
                             " ON salaries.sal_id = perm_admin_salaries.sal_id;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
-                    if(rs.next()){
+                    if (rs.next()) {
                         ret = rs.getDouble("avg_sal");
                         return ret;
                     }
                 }
-            }else {
-                if(type_of_sal.equals("max")){
+            } else {
+                if (type_of_sal.equals("max")) {
                     insQuery.append("SELECT MAX(salaries.after_bonus_sal) AS max_sal FROM salaries INNER JOIN perm_teach_salaries" +
                             " ON salaries.sal_id = perm_teach_salaries.sal_id;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
-                    if(rs.next()){
+                    if (rs.next()) {
                         ret = rs.getDouble("max_sal");
                         return ret;
                     }
-                }else if(type_of_sal.equals("min")){
+                } else if (type_of_sal.equals("min")) {
                     insQuery.append("SELECT MIN(salaries.after_bonus_sal) AS min_sal FROM salaries INNER JOIN perm_teach_salaries" +
                             " ON salaries.sal_id = perm_teach_salaries.sal_id;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
-                    if(rs.next()){
+                    if (rs.next()) {
                         ret = rs.getDouble("min_sal");
                         return ret;
                     }
-                }else {
+                } else {
                     insQuery.append("SELECT AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN perm_teach_salaries" +
                             " ON salaries.sal_id = perm_teach_salaries.sal_id;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
-                    if(rs.next()){
+                    if (rs.next()) {
                         ret = rs.getDouble("avg_sal");
                         return ret;
                     }
@@ -435,7 +442,7 @@ public class SalaryDB {
         return ret;
     }
 
-    public static double calculateFamilyBonus(int id) throws  ClassNotFoundException {
+    public static double calculateFamilyBonus(int id) throws ClassNotFoundException {
         double family_bonus = 0;
         Statement stmt = null;
         Connection con = null;
@@ -444,54 +451,34 @@ public class SalaryDB {
             stmt = con.createStatement();
             StringBuilder insQuery = new StringBuilder();
             Employee emp = EmpDB.getEmployee(id);
-            ArrayList<Child> ch = (ArrayList<Child>) emp.getChildren();
-            double basic_fambonus = 0;
-            insQuery.append("SELECT family_bonus FROM basic_salary_info;");
-            PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
-            stmtIns.executeQuery();
-            ResultSet rs = stmtIns.getResultSet();
-            if(rs.next()){
-                basic_fambonus = rs.getDouble("family_bonus");
+            ArrayList<Child> ch = (ArrayList<Child>) ChildDB.getChildren(id);
+            double basic_fambonus = getBonus(Bonus.FAMILY);
+            String ismarried = EmpDB.getEmployee(id).isMarried();
+            if (ismarried.equals("yes")) {
+                family_bonus = (ch.size() + 1) * basic_fambonus;
+            } else {
+                family_bonus = ch.size() * basic_fambonus;
             }
-            insQuery.setLength(0);
-            insQuery.append("SELECT is_married FROM employees WHERE emp_id = "+id+";");
-            stmtIns = con.prepareStatement(insQuery.toString());
-            stmtIns.executeQuery();
-            rs = stmtIns.getResultSet();
-            String ismarried="";
-            if(rs.next()){
-                ismarried = rs.getString("is_married");
-            }
-            if(ismarried.equals("yes")){
-                family_bonus = (ch.size()+1)*basic_fambonus;
-            }else{
-                family_bonus = ch.size()*basic_fambonus;
-            }
+            System.out.println("FAMILY BONUS IS " + family_bonus);
             return family_bonus;
-        }catch (SQLException e){
-            e.printStackTrace();
-        }finally {
-            CS360DB.closeDBConnection(stmt, con);
-        }
-        return family_bonus;
-    }
-
-    public static double getAfterBonusSal(int id) throws ClassNotFoundException {
-        Statement stmt = null;
-        Connection con = null;
-        double ret = 0;
-        try {
-            con = CS360DB.getConnection();
-            stmt = con.createStatement();
-            Employee emp = EmpDB.EmployeeFullInfo(id);
-            double fam_bonus = calculateFamilyBonus(id);
-            ret = emp.getB_sal() + emp.getAnnual() * emp.getB_sal() + emp.getB_sal() * fam_bonus + emp.getResearch() + emp.getLibrary();
-            return ret;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             CS360DB.closeDBConnection(stmt, con);
         }
+
+        return family_bonus;
+    }
+
+    public static double getAfterBonusSal(int id) throws ClassNotFoundException {
+        double ret = 0;
+        Employee emp = EmpDB.EmployeeFullInfo(id);
+        double fam_bonus = calculateFamilyBonus(id);
+
+
+        System.out.println(emp);
+        ret = emp.getB_sal() + emp.getAnnual() * emp.getB_sal()/ 100 + emp.getB_sal() * fam_bonus /100 + emp.getResearch() + emp.getLibrary();
+        System.out.println("AFTER BONUS IS " + ret);
         return ret;
     }
 
@@ -506,7 +493,7 @@ public class SalaryDB {
             stmt = con.createStatement();
             ArrayList<Employee> employees = EmpDB.getEmployees();
             Employee emp;
-            for(int i = 0;i<employees.size();i++) {
+            for (int i = 0; i < employees.size(); i++) {
                 emp = EmpDB.EmployeeFullInfo(employees.get(i).getId());
                 fam_bonus = calculateFamilyBonus(emp.getId());
 //                ret = emp.getB_sal() + emp.getAnnual() * emp.getB_sal() + emp.getB_sal() * fam_bonus + emp.getResearch() + emp.getLibrary();
@@ -526,20 +513,20 @@ public class SalaryDB {
         Connection con = null;
         double ret = 0;
         ArrayList<Employee> employees = EmpDB.getEmployees();
-        try{
+        try {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
-            for(int i = 0;i<employees.size();i++){
-                if(EmpDB.findEmployeeType(employees.get(i).getId()).equals(type_of_emp)){
-                    ret+= SalaryDB.getAfterBonusSal(employees.get(i).getId());
+            for (int i = 0; i < employees.size(); i++) {
+                if (EmpDB.findEmployeeType(employees.get(i).getId()).equals(type_of_emp)) {
+                    ret += SalaryDB.getAfterBonusSal(employees.get(i).getId());
                 }
             }
             return ret;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             CS360DB.closeDBConnection(stmt, con);
         }
-        return  ret;
+        return ret;
     }
 }

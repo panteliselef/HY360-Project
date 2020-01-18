@@ -235,12 +235,41 @@ public class Employee {
                 ", startedAt=" + startedAt +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
-                ", IBAN='" + iban + '\'' +
+                ", iban='" + iban + '\'' +
                 ", bankName='" + bankName + '\'' +
                 ", departmentId=" + departmentId +
                 ", children=" + children +
                 ", un_children=" + un_children +
-                ", salaryType=" + salaryType +
+                ", salaryType='" + salaryType + '\'' +
+                ", isMarried='" + isMarried + '\'' +
+                ", tempSalary=" + tempSalary +
+                ", starts_at=" + starts_at +
+                ", ends_at=" + ends_at +
+                ", annual=" + annual +
+                ", family=" + family +
+                ", research=" + research +
+                ", library=" + library +
+                ", b_sal=" + b_sal +
+                ", after_bonus_sal=" + after_bonus_sal +
+                ", type='" + type + '\'' +
                 '}';
     }
+
+    //    @Override
+//    public String toString() {
+//        return "Employee{" +
+//                "id=" + id +
+//                ", fname='" + fname + '\'' +
+//                ", lname='" + lname + '\'' +
+//                ", startedAt=" + startedAt +
+//                ", address='" + address + '\'' +
+//                ", phone='" + phone + '\'' +
+//                ", IBAN='" + iban + '\'' +
+//                ", bankName='" + bankName + '\'' +
+//                ", departmentId=" + departmentId +
+//                ", children=" + children +
+//                ", un_children=" + un_children +
+//                ", salaryType=" + salaryType +
+//                '}';
+//    }
 }

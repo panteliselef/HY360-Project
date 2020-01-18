@@ -123,7 +123,7 @@ public class HiringServlet extends HttpServlet {
             emp.setChildren(new ArrayList<>());
 //            emp.setUn_children(new ArrayList<>());
             EmpDB.addEmployee(emp);
-            SalaryDB.addSalary(emp);
+
 
             System.out.println(emp.getUn_children().size());
 
@@ -138,6 +138,8 @@ public class HiringServlet extends HttpServlet {
                     e.printStackTrace();
                 }
             });
+
+            SalaryDB.addSalary(emp);
             resp.setStatus(201);
             out.println(gson.toJson(emp));
         } catch (ClassNotFoundException e) {
