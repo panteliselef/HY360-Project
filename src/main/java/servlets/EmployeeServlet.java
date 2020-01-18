@@ -113,4 +113,29 @@ public class EmployeeServlet  extends HttpServlet {
         }
 
     }
+
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin", req.getHeader("Origin"));
+        resp.addHeader("Access-Control-Allow-Methods", "PUT, OPTIONS, POST , DELETE, HEAD");
+        resp.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
+        resp.addHeader("Access-Control-Max-Age", "1728000");
+        resp.addHeader("Access-Control-Allow-Credentials", "true");
+        resp.setContentType("application/json");
+
+        String empId = req.getParameter("empId");
+
+        try {
+            EmpDB.Fire_Retire_Employee(Integer.parseInt(empId));
+            resp.setStatus(200);
+            resp.getWriter().print(new Gson().toJson( new JSONResponse("Successfull retirement",200)));
+        } catch (ClassNotFoundException e) {
+            resp.setStatus(500);
+            resp.getWriter().print(new Gson().toJson( new JSONResponse("Unsuccessfull retirement",400)));
+            e.printStackTrace();
+        }
+
+
+    }
 }

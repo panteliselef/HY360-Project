@@ -6,6 +6,7 @@ import UpdateEmpPage from '../Pages/UpdateEmpPage';
 import UpdateBasicSalPage from '../Pages/UpdateBasicSalPage';
 import AllDataEmployeePage from '../Pages/AllDataEmployeePage';
 import StatisticsPage from '../Pages/StatisticsPage';
+import RetirePage from '../Pages/RetirePage';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -90,15 +91,17 @@ class TestLayout2 extends React.Component {
 								<Menu.Item key="8">option8</Menu.Item>
 							</SubMenu>
 							<SubMenu
-								key="sub3"
+								key="/action"
 								title={
 									<span>
 										<Icon type="notification" />
-										subnav 3
+										Actions
 									</span>
 								}
 							>
-								<Menu.Item key="9">option9</Menu.Item>
+								<Menu.Item key="/action-retire">
+									<Link to="/action-retire">Retire</Link>
+								</Menu.Item>
 								<Menu.Item key="10">option10</Menu.Item>
 								<Menu.Item key="11">option11</Menu.Item>
 								<Menu.Item key="12">option12</Menu.Item>
@@ -124,6 +127,7 @@ class TestLayout2 extends React.Component {
 							<Route exact path="/update-basic-salaries" component={UpdateBasicSalPage} />
 							<Route exact path="/data-employee" component={AllDataEmployeePage} />
 							<Route exact path="/data-stats" component={StatisticsPage} />
+							<Route exact path="/action-retire" component={RetirePage} />
 							{/* <RegisterPage /> */}
 						</Content>
 					</Layout>
