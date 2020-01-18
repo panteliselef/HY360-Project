@@ -433,13 +433,21 @@ public class EmpDB {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
             if (type.equals("perm_admin")) {
-                emp.setAnnual(sal.getAnnual_bonus());
+
                 insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = " + id + ";");
                 PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeQuery();
                 ResultSet rs = stmtIns.getResultSet();
                 if (rs.next()) {
                     sal_id = rs.getInt("sal_id");
+                }
+                insQuery.setLength(0);
+                insQuery.append("SELECT annual_bonus FROM perm_admin_salaries WHERE sal_id = "+sal_id+";");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                if (rs.next()) {
+                    emp.setAnnual(rs.getDouble("annual_bonus"));
                 }
                 insQuery.setLength(0);
                 insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = " + sal_id + ";");
@@ -453,7 +461,7 @@ public class EmpDB {
                 }
                 return emp;
             } else if (type.equals("perm_teach")) {
-                emp.setAnnual(sal.getAnnual_bonus());
+
                 emp.setResearch(sal.getResearch_bonus());
                 insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = " + id + ";");
                 PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
@@ -461,6 +469,14 @@ public class EmpDB {
                 ResultSet rs = stmtIns.getResultSet();
                 if (rs.next()) {
                     sal_id = rs.getInt("sal_id");
+                }
+                insQuery.setLength(0);
+                insQuery.append("SELECT annual_bonus FROM perm_admin_salaries WHERE sal_id = "+sal_id+";");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                if (rs.next()) {
+                    emp.setAnnual(rs.getDouble("annual_bonus"));
                 }
                 insQuery.setLength(0);
                 insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = " + sal_id + ";");
@@ -539,5 +555,24 @@ public class EmpDB {
             CS360DB.closeDBConnection(stmt, con);
         }
         return emp;
+    }
+
+    public static void Fire_Retire_Employee(int id) throws  ClassNotFoundException {
+        Date d = new Date(System.currentTimeMillis());
+        Statement stmt = null;
+        Connection con = null;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            StringBuilder insQuery = new StringBuilder();
+            insQuery.append("UPDATE employees SET left_at = '"+d+"' WHERE emp_id = "+id+";");
+            PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeUpdate();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+
     }
 }
