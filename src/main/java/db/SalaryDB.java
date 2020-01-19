@@ -635,6 +635,66 @@ public class SalaryDB {
     }
 
 
+    public static void updateAnnualBonus() throws ClassNotFoundException {
+        ArrayList<Employee> employees = EmpDB.getEmployees();
+        Statement stmt = null;
+        Connection con = null;
+        StringBuilder insQuery = new StringBuilder();
+        PreparedStatement stmtIns;
+        ResultSet rs;
+        Employee emp;
+        Date d = new Date(System.currentTimeMillis());
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(d);
+        int curyear = calendar.get(Calendar.YEAR);
+        int curmonth = calendar.get(Calendar.MONTH)+1;
+        int curday = calendar.get(Calendar.DAY_OF_MONTH);
+        int empyear,empmonth,empday;
+        double bonus;
+        int sal_id = -1;
+
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            for(int i = 0;i<employees.size();i++){
+                insQuery.setLength(0);
+                emp = EmpDB.EmployeeFullInfo(employees.get(i).getId());
+                if(EmpDB.findEmployeeType(emp.getId()).equals("perm_admin")||EmpDB.findEmployeeType(emp.getId()).equals("temp_admin")) {
+                    calendar.setTime(emp.getStartedAt());
+                    empyear = calendar.get(Calendar.YEAR);
+                    empmonth = calendar.get(Calendar.MONTH)+1;
+                    empday = calendar.get(Calendar.DAY_OF_MONTH);
+                    if (curyear>empyear && curmonth>=empmonth&&curday>=empday){
+                        bonus = SalaryDB.getBonus(Bonus.ANNUAL) + SalaryDB.getBonus(Bonus.ANNUAL)*(curyear-empyear);
+                    }else if((curyear>empyear && curmonth< empmonth) || (curyear>empyear && curmonth == empmonth && curday<empmonth)){
+                        bonus = SalaryDB.getBonus(Bonus.ANNUAL) + SalaryDB.getBonus(Bonus.ANNUAL)*(curyear-empyear-1);
+                    }else{
+                        bonus = 0;
+                    }
+                    insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = "+emp.getId()+";");
+                    stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        sal_id = rs.getInt("sal_id");
+                    }
+                    insQuery.setLength(0);
+                    if(EmpDB.findEmployeeType(emp.getId()).equals("perm_admin")){
+                        insQuery.append("UPDATE perm_admin_salaries SET annual_bonus = "+bonus+" WHERE sal_id = "+sal_id+";");
+                    }else {
+                        insQuery.append("UPDATE perm_teach_salaries SET annual_bonus = "+bonus+" WHERE sal_id = "+sal_id+";");
+                    }
+                    stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeUpdate();
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+    }
+
 
 
 }
