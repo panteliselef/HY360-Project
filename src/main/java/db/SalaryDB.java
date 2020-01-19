@@ -606,9 +606,10 @@ public class SalaryDB {
 //                }
 //            }
             if(type_of_emp.equals("perm_admin")) {
-                insQuery.append("SELECT YEAR(paid_at) as year, SUM(ammount) as amount FROM  emp_salaries INNER JOIN  perm_admin_salaries ON emp_salaries.sal_id = perm_admin_salaries.sal_id Inner JOIN payments ON payments.emp_id = emp_salaries.emp_id GROUP BY YEAR(paid_at);");
+//                insQuery.append("SELECT YEAR(paid_at) as year, SUM(ammount) as amount FROM  emp_salaries INNER JOIN  perm_admin_salaries ON emp_salaries.sal_id = perm_admin_salaries.sal_id Inner JOIN payments ON payments.emp_id = emp_salaries.emp_id GROUP BY YEAR(paid_at);");
+                insQuery.append("SELECT YEAR(paid_at) as yr,SUM(ammount)as am FROM emp_salaries JOIN perm_admin_salaries ON emp_salaries.sal_id = perm_admin_salaries.sal_id JOIN payments ON payments.emp_id = emp_salaries.emp_id JOIN temp_admin_salaries ON promotion_date <= paid_at GROUP BY YEAR(paid_at);");
             }else if(type_of_emp.equals("perm_teach")){
-                insQuery.append("SELECT YEAR(paid_at) as year, SUM(ammount) as amount FROM  emp_salaries INNER JOIN  perm_teach_salaries ON emp_salaries.sal_id = perm_teach_salaries.sal_id Inner JOIN payments ON payments.emp_id = emp_salaries.emp_id GROUP BY YEAR(paid_at);");
+                insQuery.append("SELECT YEAR(paid_at) as yr,SUM(ammount)as am FROM emp_salaries JOIN perm_teach_salaries ON emp_salaries.sal_id = perm_teach_salaries.sal_id JOIN payments ON payments.emp_id = emp_salaries.emp_id JOIN temp_teach_salaries ON promotion_date <= paid_at GROUP BY YEAR(paid_at);");
             }
             else if(type_of_emp.equals("temp_admin")){
 //                insQuery.append("SELECT YEAR(paid_at) as year, SUM(ammount) as amount FROM  emp_salaries INNER JOIN  temp_admin_salaries ON emp_salaries.sal_id = temp_admin_salaries.sal_id Inner JOIN payments ON payments.emp_id = emp_salaries.emp_id GROUP BY YEAR(paid_at);");
