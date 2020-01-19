@@ -98,6 +98,7 @@ public class PaymentDB {
                     bill_id = id;
                 }
             }
+            SalaryDB.updateAnnualBonus();
         }catch (SQLException e) {
             e.printStackTrace();
         } finally {

@@ -195,19 +195,13 @@ public class EmpDB {
                     stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeUpdate();
 
-                    insQuery.setLength(0);
-                    insQuery.append("UPDATE employees ")
-                            .append("SET ")
-                            .append("age = " + child.getAge())
-                            .append(" WHERE child_id = " + child.getId() + " AND emp_id = " + emp.getId() + ";");
-
-                    stmtIns = con.prepareStatement(insQuery.toString());
-                    stmtIns.executeUpdate();
                 }
             }
 
             System.out.println("PREV Family BONUS " + emp.getFamily());
             System.out.println("New Family BONUS " + SalaryDB.calculateFamilyBonus(emp.getId()));
+            SalaryDB.updateAfterBonusSal(emp.getId(),SalaryDB.getAfterBonusSal(emp.getId()));
+            SalaryDB.updateFamilyBonus(emp.getId(),SalaryDB.calculateFamilyBonus(emp.getId()));
 
 
         } catch (SQLException e) {

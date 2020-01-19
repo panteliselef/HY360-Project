@@ -217,8 +217,62 @@ public class SalaryDB {
         }
     }
 
-    public static void updateFamilyBonus(int emp_id) throws ClassNotFoundException{
+    public static void updateAfterBonusSal(int emp_id,double sal) throws ClassNotFoundException{
+         Employee emp = EmpDB.EmployeeFullInfo(emp_id);
+        Statement stmt = null;
+        Connection con = null;
+        PreparedStatement stmtIns;
+        ResultSet rs;
+        int sal_id = -1;
+        StringBuilder insQuery = new StringBuilder();
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = "+emp_id+";");
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeQuery();
+            rs = stmtIns.getResultSet();
+            if(rs.next()){
+                sal_id = rs.getInt("sal_id");
+            }
+            insQuery.setLength(0);
+            insQuery.append("UPDATE salaries SET b_salary = "+sal+" WHERE sal_id = "+sal_id+";");
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeUpdate();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+    }
 
+    public static void updateFamilyBonus(int id,double bonus) throws ClassNotFoundException{
+        Employee emp = EmpDB.EmployeeFullInfo(id);
+        Statement stmt = null;
+        Connection con = null;
+        PreparedStatement stmtIns;
+        ResultSet rs;
+        int sal_id = -1;
+        StringBuilder insQuery = new StringBuilder();
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+            insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = "+id+";");
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeQuery();
+            rs = stmtIns.getResultSet();
+            if(rs.next()){
+                sal_id = rs.getInt("sal_id");
+            }
+            insQuery.setLength(0);
+            insQuery.append("UPDATE salaries SET family_bonus = "+bonus+" WHERE sal_id = "+sal_id+";");
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeUpdate();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
     }
 
     public static void updateSalary(Salary upd_salary) throws ClassNotFoundException {
