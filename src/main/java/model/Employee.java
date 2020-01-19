@@ -14,7 +14,7 @@ public class Employee {
     private String phone;
     private String iban;
     private String bankName;
-    private int departmentId;
+//    private int departmentId;
     private ArrayList<Child> children = new ArrayList<>();
     private ArrayList<String> un_children = new ArrayList<>();
     private String salaryType;
@@ -26,7 +26,8 @@ public class Employee {
     private String type;
     private Date left_at;
     private Date promo_date;
-    private String department;
+    private Department department;
+//    private String department;
 
     public Employee(){};
 
@@ -41,13 +42,20 @@ public class Employee {
         startedAt = d;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
+    //    public void setDepartment(String department) {
+//        this.department = department;
+//    }
+
+//    public String getDepartment() {
+//        return department;
+//    }
 
     public Date getPromo_date() {
         return promo_date;
@@ -174,9 +182,9 @@ public class Employee {
         return bankName;
     }
 
-    public int getDepartmentId() {
-        return departmentId;
-    }
+//    public int getDepartmentId() {
+//        return departmentId;
+//    }
 
     public String getFname() {
         return fname;
@@ -202,9 +210,9 @@ public class Employee {
         this.startedAt = startedAt;
     }
 
-    public void setDepartmentId(int departmentId) {
-        this.departmentId = departmentId;
-    }
+//    public void setDepartmentId(int departmentId) {
+//        this.departmentId = departmentId;
+//    }
 
     public void addChild(Child ch){
         children.add(ch);
@@ -264,7 +272,6 @@ public class Employee {
                 ", phone='" + phone + '\'' +
                 ", iban='" + iban + '\'' +
                 ", bankName='" + bankName + '\'' +
-                ", departmentId=" + departmentId +
                 ", children=" + children +
                 ", un_children=" + un_children +
                 ", salaryType='" + salaryType + '\'' +
@@ -279,6 +286,9 @@ public class Employee {
                 ", b_sal=" + b_sal +
                 ", after_bonus_sal=" + after_bonus_sal +
                 ", type='" + type + '\'' +
+                ", left_at=" + left_at +
+                ", promo_date=" + promo_date +
+                ", department=" + department +
                 '}';
     }
 

@@ -1,6 +1,7 @@
 package db;
 
 import model.Child;
+import model.Department;
 import model.Employee;
 import model.Salary;
 
@@ -132,7 +133,7 @@ public class EmpDB {
                     .append("'").append(emp.getIBAN()).append("',")
                     .append("'").append(emp.getBankName()).append("',")
                     .append("'").append(emp.isMarried()).append("',")
-                    .append("'").append(emp.getDepartmentId()).append("');");
+                    .append("'").append(emp.getDepartment().getId()).append("');");
 
             String generatedColumns[] = {"emp_id"};
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString(), generatedColumns);
@@ -169,7 +170,7 @@ public class EmpDB {
                             "phone = '" + emp.getPhone() + "', " +
                             "IBAN = '" + emp.getIBAN() + "', " +
                             "bank_name = '" + emp.getBankName() + "', " +
-                            "department_id = " + emp.getDepartmentId() + ", " +
+                            "department_id = " + emp.getDepartment().getId() + ", " +
                             "is_married = '" + emp.isMarried())
                     .append("' WHERE emp_id = " + emp.getId() + ";");
 
@@ -178,7 +179,7 @@ public class EmpDB {
             stmtIns.executeUpdate();
 
             ArrayList<Child> children = (ArrayList<Child>) emp.getChildren();
-//            System.out.println(children);
+            System.out.println(children);
 
             for (Child child : emp.getChildren()) {
                 insQuery.setLength(0);
@@ -191,10 +192,23 @@ public class EmpDB {
                             .append("age = " + child.getAge())
                             .append(" WHERE child_id = " + child.getId() + " AND emp_id = " + emp.getId() + ";");
 
+                    stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeUpdate();
+
+                    insQuery.setLength(0);
+                    insQuery.append("UPDATE employees ")
+                            .append("SET ")
+                            .append("age = " + child.getAge())
+                            .append(" WHERE child_id = " + child.getId() + " AND emp_id = " + emp.getId() + ";");
+
+                    stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeUpdate();
                 }
-                stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeUpdate();
             }
+
+            System.out.println("PREV Family BONUS " + emp.getFamily());
+            System.out.println("New Family BONUS " + SalaryDB.calculateFamilyBonus(emp.getId()));
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -237,7 +251,7 @@ public class EmpDB {
             }
             emp = new Employee(fname, lname, address, phone, IBAN, bank_name);
             emp.setStartedAt(started_at);
-            emp.setDepartmentId(dep_id);
+            emp.setDepartment(DeptDB.getDepartment(dep_id));
             emp.setLeft_at(left_at);
             emp.setIsMarried(ismarried);
             insQuery.setLength(0);
@@ -346,7 +360,7 @@ public class EmpDB {
                 emp.setPhone(res.getString("phone"));
                 emp.setIban(res.getString("IBAN"));
                 emp.setBankName(res.getString("bank_name"));
-                emp.setDepartmentId(res.getInt("department_id"));
+                emp.setDepartment(DeptDB.getDepartment(res.getInt("department_id")));
                 emp.setIsMarried(res.getString("is_married"));
                 emp.setId(res.getInt("emp_id"));
                 emps.add(emp);
@@ -426,9 +440,11 @@ public class EmpDB {
         return type;
     }
 
+
+
     public static void promoteEmployee(int id) throws ClassNotFoundException {
         String type = findEmployeeType(id);
-        System.out.println("Type:"+type);
+        System.out.println("Type:" + type);
         StringBuilder insQuery = new StringBuilder();
         Salary sal = SalaryDB.getBasicSalary();
         Employee emp = EmpDB.EmployeeFullInfo(id);
@@ -464,7 +480,7 @@ public class EmpDB {
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
-                insQuery.append("UPDATE salaries SET after_bonus_sal = "+SalaryDB.getAfterBonusSal(id)+" WHERE sal_id = "+sal_id+";");
+                insQuery.append("UPDATE salaries SET after_bonus_sal = " + SalaryDB.getAfterBonusSal(id) + " WHERE sal_id = " + sal_id + ";");
                 System.out.println(insQuery);
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
@@ -490,7 +506,7 @@ public class EmpDB {
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
-                insQuery.append("UPDATE salaries SET after_bonus_sal = "+SalaryDB.getAfterBonusSal(id)+" WHERE sal_id = "+sal_id+";");
+                insQuery.append("UPDATE salaries SET after_bonus_sal = " + SalaryDB.getAfterBonusSal(id) + " WHERE sal_id = " + sal_id + ";");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
             }
@@ -522,16 +538,16 @@ public class EmpDB {
             if (result.next()) {
                 dep_id = result.getInt("department_id");
             }
-            String department = "";
-            insQuery.setLength(0);
-            insQuery.append("SELECT name FROM departments WHERE dep_id = " + dep_id + ";");
-            statement = con.prepareStatement(insQuery.toString());
-            statement.executeQuery();
-            result = statement.getResultSet();
-            if (result.next()) {
-                department = result.getString("name");
-            }
-            emp.setDepartment(department);
+//            String department = "";
+//            insQuery.setLength(0);
+//            insQuery.append("SELECT name FROM departments WHERE dep_id = " + dep_id + ";");
+//            statement = con.prepareStatement(insQuery.toString());
+//            statement.executeQuery();
+//            result = statement.getResultSet();
+//            if (result.next()) {
+//                department = result.getString("name");
+//            }
+            emp.setDepartment(DeptDB.getDepartment(dep_id));
             insQuery.setLength(0);
             if (type.equals("perm_admin")) {
 
@@ -560,7 +576,7 @@ public class EmpDB {
 //                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
 //                    emp.setB_sal(rs.getDouble("b_salary"));
 //                }
-                insQuery.append("SELECT employees.*,salaries.*,perm_admin_salaries.annual_bonus FROM employees,emp_salaries,salaries,perm_admin_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = perm_admin_salaries.sal_id AND employees.emp_id = "+id+";");
+                insQuery.append("SELECT employees.*,salaries.*,perm_admin_salaries.annual_bonus FROM employees,emp_salaries,salaries,perm_admin_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = perm_admin_salaries.sal_id AND employees.emp_id = " + id + ";");
                 statement = con.prepareStatement(insQuery.toString());
                 statement.executeQuery();
                 result = statement.getResultSet();
@@ -573,7 +589,7 @@ public class EmpDB {
                     emp.setPhone(result.getString("phone"));
                     emp.setIban(result.getString("IBAN"));
                     emp.setBankName(result.getString("bank_name"));
-                    emp.setDepartmentId(result.getInt("department_id"));
+                    emp.setDepartment(DeptDB.getDepartment(result.getInt("department_id")));
                     emp.setIsMarried(result.getString("is_married"));
                     emp.setB_sal(result.getDouble("b_salary"));
                     emp.setFamily(result.getDouble("family_bonus"));
@@ -610,7 +626,7 @@ public class EmpDB {
 //                    emp.setB_sal(rs.getDouble("b_salary"));
 //                }
 //                return emp;
-                insQuery.append("SELECT employees.*,salaries.*,perm_teach_salaries.annual_bonus,perm_teach_salaries.research_bonus FROM employees,emp_salaries,salaries,perm_teach_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = perm_teach_salaries.sal_id AND employees.emp_id = "+id+";");
+                insQuery.append("SELECT employees.*,salaries.*,perm_teach_salaries.annual_bonus,perm_teach_salaries.research_bonus FROM employees,emp_salaries,salaries,perm_teach_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = perm_teach_salaries.sal_id AND employees.emp_id = " + id + ";");
                 statement = con.prepareStatement(insQuery.toString());
                 statement.executeQuery();
                 result = statement.getResultSet();
@@ -623,7 +639,7 @@ public class EmpDB {
                     emp.setPhone(result.getString("phone"));
                     emp.setIban(result.getString("IBAN"));
                     emp.setBankName(result.getString("bank_name"));
-                    emp.setDepartmentId(result.getInt("department_id"));
+                    emp.setDepartment(DeptDB.getDepartment(result.getInt("department_id")));
                     emp.setIsMarried(result.getString("is_married"));
                     emp.setB_sal(result.getDouble("b_salary"));
                     emp.setFamily(result.getDouble("family_bonus"));
@@ -661,7 +677,7 @@ public class EmpDB {
 //                    emp.setPromo_date(rs.getDate("promotion_date"));
 //                }
 //                return emp;
-                insQuery.append("SELECT employees.*,salaries.*,temp_admin_salaries.start_date,temp_admin_salaries.end_date,temp_admin_salaries.promotion_date FROM employees,emp_salaries,salaries,temp_admin_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = temp_admin_salaries.sal_id AND employees.emp_id = "+id+";");
+                insQuery.append("SELECT employees.*,salaries.*,temp_admin_salaries.start_date,temp_admin_salaries.end_date,temp_admin_salaries.promotion_date FROM employees,emp_salaries,salaries,temp_admin_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = temp_admin_salaries.sal_id AND employees.emp_id = " + id + ";");
                 statement = con.prepareStatement(insQuery.toString());
                 statement.executeQuery();
                 result = statement.getResultSet();
@@ -674,7 +690,7 @@ public class EmpDB {
                     emp.setPhone(result.getString("phone"));
                     emp.setIban(result.getString("IBAN"));
                     emp.setBankName(result.getString("bank_name"));
-                    emp.setDepartmentId(result.getInt("department_id"));
+                    emp.setDepartment(DeptDB.getDepartment(result.getInt("department_id")));
                     emp.setIsMarried(result.getString("is_married"));
                     emp.setB_sal(result.getDouble("b_salary"));
                     emp.setFamily(result.getDouble("family_bonus"));
@@ -715,7 +731,7 @@ public class EmpDB {
 //                }
 //                emp.setLibrary(sal.getLibrary_bonus());
 //                return emp;
-                insQuery.append("SELECT employees.*,salaries.*,temp_teach_salaries.start_date,temp_teach_salaries.end_date,temp_teach_salaries.promotion_date,temp_teach_salaries.library_bonus FROM employees,emp_salaries,salaries,temp_teach_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = temp_teach_salaries.sal_id AND employees.emp_id = "+id+";");
+                insQuery.append("SELECT employees.*,salaries.*,temp_teach_salaries.start_date,temp_teach_salaries.end_date,temp_teach_salaries.promotion_date,temp_teach_salaries.library_bonus FROM employees,emp_salaries,salaries,temp_teach_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = temp_teach_salaries.sal_id AND employees.emp_id = " + id + ";");
                 statement = con.prepareStatement(insQuery.toString());
                 statement.executeQuery();
                 result = statement.getResultSet();
@@ -728,7 +744,7 @@ public class EmpDB {
                     emp.setPhone(result.getString("phone"));
                     emp.setIban(result.getString("IBAN"));
                     emp.setBankName(result.getString("bank_name"));
-                    emp.setDepartmentId(result.getInt("department_id"));
+                    emp.setDepartment(DeptDB.getDepartment(result.getInt("department_id")));
                     emp.setIsMarried(result.getString("is_married"));
                     emp.setB_sal(result.getDouble("b_salary"));
                     emp.setFamily(result.getDouble("family_bonus"));

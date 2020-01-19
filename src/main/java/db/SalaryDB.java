@@ -217,6 +217,10 @@ public class SalaryDB {
         }
     }
 
+    public static void updateFamilyBonus(int emp_id) throws ClassNotFoundException{
+
+    }
+
     public static void updateSalary(Salary upd_salary) throws ClassNotFoundException {
 
         Statement stmt = null;

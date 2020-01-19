@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class DeptDB {
 
-    public static List<Department> getDepartments() throws ClassNotFoundException{
+    public static List<Department> getDepartments() throws ClassNotFoundException {
         List<Department> departments = new ArrayList<>();
 
         Statement stmt = null;
@@ -35,7 +35,7 @@ public class DeptDB {
                 dept.setName(res.getString("name"));
                 departments.add(dept);
             }
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             // Log exception
             Logger.getLogger(DeptDB.class.getName()).log(Level.SEVERE, "");
         } finally {
@@ -46,7 +46,44 @@ public class DeptDB {
         return departments;
     }
 
-    public static void addDepartment(String name) throws ClassNotFoundException{
+    public static Department getDepartment(int depId) throws ClassNotFoundException {
+
+        Statement stmt = null;
+        Connection con = null;
+
+        System.out.println("DEP: "+depId);
+        Department dept = new Department();
+        try {
+
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("SELECT * FROM departments WHERE dep_id = "+depId+";");
+
+            stmt.execute(insQuery.toString());
+
+            ResultSet res = stmt.getResultSet();
+
+            if (res.next()) {
+                dept.setId(res.getInt("dep_id"));
+                dept.setName(res.getString("name"));
+            }
+
+            System.out.println(dept);
+
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(DeptDB.class.getName()).log(Level.SEVERE, "");
+        } finally {
+            // close connection
+            CS360DB.closeDBConnection(stmt, con);
+        }
+        return dept;
+    }
+
+    public static void addDepartment(String name) throws ClassNotFoundException {
         Statement stmt = null;
         Connection con = null;
 
@@ -69,13 +106,13 @@ public class DeptDB {
             if (rs.next()) {
                 // Update value of setID based on database
                 int id = rs.getInt(1);
-                System.out.println("#DB: Department added, name :"+name+" id: "+id);
+                System.out.println("#DB: Department added, name :" + name + " id: " + id);
 //                user.setUserID(id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            CS360DB.closeDBConnection(stmt,con);
+            CS360DB.closeDBConnection(stmt, con);
         }
     }
 }

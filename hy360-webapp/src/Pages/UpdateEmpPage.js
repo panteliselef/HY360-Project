@@ -22,7 +22,6 @@ import {
 
 import '../Style/register-page.css';
 
-
 import DepartmentSelect from '../Components/DepartmentSelect';
 import ajaxRequest from '../utils/ajax';
 const { Step } = Steps;
@@ -82,6 +81,7 @@ function UpdateEmpPage(props) {
 
 			const d = allDataEmployees.filter((employee) => employee.id === selectedRowKeys[0]);
 			setSelectedEmployee(d[0]);
+			console.log('SELECTED', d[0]);
 
 			ajaxRequest('GET', `http://localhost:8085/hy360/employee?id=${d[0].id}`, null, ({ result }) => {
 				setChildren(result.children);
@@ -177,11 +177,8 @@ function UpdateEmpPage(props) {
 		]);
 	};
 
-	const remove = (k) => {    
-    setChildren(children.filter((item,i)=>i !==k));
-
-    
-
+	const remove = (k) => {
+		setChildren(children.filter((item, i) => i !== k));
 	};
 
 	const handleUpdate = (e) => {
@@ -190,22 +187,27 @@ function UpdateEmpPage(props) {
 		validateFields((error, values) => {
 			if (error) return;
 
-			const _children = values.ages.map((age, i) => {
-				console.log(children);
-				return {
-					...children[i],
-					age
-				};
-			});
+			console.log();
+
+			let _children = [];
+			if ('ages' in values) {
+				_children = values.ages.map((age, i) => {
+					console.log(children);
+					return {
+						...children[i],
+						age
+					};
+				});
+			}
 			const updatedData = {
 				...selectedEmployee,
 				...values,
-				depId: values.department.depId,
+				department: values.univDepartment,
 				children: _children
 			};
 			setSelectedEmployee(updatedData);
 
-			console.log(updatedData);
+			console.log("DDD", updatedData );
 
 			ajaxRequest('PUT', `http://localhost:8085/hy360/employee`, JSON.stringify(updatedData), (res) => {
 				console.log(res);
@@ -284,10 +286,12 @@ function UpdateEmpPage(props) {
 						})(<Input />)}
 					</Form.Item>
 					<Form.Item label="Univ. Department" hasFeedback>
-						{getFieldDecorator('department', {
+						{getFieldDecorator('univDepartment', {
 							initialValue: selectedEmployee.department,
-							initialValue: { depId: '5' },
-							rules: [ { required: true, message: 'Please select your habitual residence!' } ]
+							validateTrigger: [ 'onChange' ],
+							rules: [
+								{ required: true, message: 'Please select your habitual residence!' }
+							]
 						})(<DepartmentSelect />)}
 					</Form.Item>
 					<Form.Item label="Family Status">

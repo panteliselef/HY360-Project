@@ -7,6 +7,13 @@ public class Department {
     public Department(String name){
         this.name = name;
     }
+    public Department(int id){
+        this.id = id;
+    }
+    public Department(String name, int id){
+        this.id = id;
+        this.name = name;
+    }
     public Department(){}
 
 
@@ -25,5 +32,13 @@ public class Department {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Department{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

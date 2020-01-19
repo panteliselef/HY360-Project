@@ -110,11 +110,12 @@ public class EmployeeServlet  extends HttpServlet {
             empFromDatabase.setPhone(empFromClient.getPhone());
             empFromDatabase.setIban(empFromClient.getIBAN());
             empFromDatabase.setBankName(empFromClient.getBankName());
-            empFromDatabase.setDepartmentId(empFromClient.getDepartmentId());
+            empFromDatabase.setDepartment (empFromClient.getDepartment());
             empFromDatabase.setIsMarried(empFromClient.isMarried());
             empFromDatabase.setChildren((ArrayList<Child>) empFromClient.getChildren());
 
-            System.out.println(empFromDatabase);
+            System.out.println("Client " +empFromClient);
+            System.out.println("Database "+empFromDatabase);
             EmpDB.updateEmployee(empFromDatabase);
 
             resp.setStatus(200);

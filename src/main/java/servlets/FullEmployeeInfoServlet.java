@@ -46,20 +46,20 @@ public class FullEmployeeInfoServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        StringBuilder info = new StringBuilder();
-        info.append("Fname:"+emp.getFname()+", Lname:"+emp.getLname()+", Started_at:"+emp.getStartedAt()+", Address:"+
-                emp.getAddress()+", Phone:"+emp.getPhone()+", IBAN:"+emp.getIBAN()+", Bank Name:"+emp.getBankName()+
-                ", Department ID:"+emp.getDepartmentId()+", Married:"+emp.isMarried()+", Position:"+emp.getType()+
-                ", Basic Salary:"+emp.getB_sal()+", Family Bonus:"+emp.getFamily()+", After bonus salary:"+emp.getAfter_bonus_sal());
-        if(emp.getType().equals("perm_admin")){
-            info.append(", Annual Bonus:"+emp.getAnnual());
-        }else if(emp.getType().equals("perm_teach")){
-            info.append(", Annual Bonus:"+emp.getAnnual()+", Research Bonus:"+emp.getResearch());
-        }else if(emp.getType().equals("temp_admin")){
-            info.append(", Start date:"+emp.getStarts_at()+", End date:"+emp.getEnds_at());
-        }else {
-            info.append(", Start date:"+emp.getStarts_at()+", End date:"+emp.getEnds_at()+", Library Bonus:"+emp.getLibrary());
-        }
+//        StringBuilder info = new StringBuilder();
+//        info.append("Fname:"+emp.getFname()+", Lname:"+emp.getLname()+", Started_at:"+emp.getStartedAt()+", Address:"+
+//                emp.getAddress()+", Phone:"+emp.getPhone()+", IBAN:"+emp.getIBAN()+", Bank Name:"+emp.getBankName()+
+//                ", Department ID:"+emp.getDepartmentId()+", Married:"+emp.isMarried()+", Position:"+emp.getType()+
+//                ", Basic Salary:"+emp.getB_sal()+", Family Bonus:"+emp.getFamily()+", After bonus salary:"+emp.getAfter_bonus_sal());
+//        if(emp.getType().equals("perm_admin")){
+//            info.append(", Annual Bonus:"+emp.getAnnual());
+//        }else if(emp.getType().equals("perm_teach")){
+//            info.append(", Annual Bonus:"+emp.getAnnual()+", Research Bonus:"+emp.getResearch());
+//        }else if(emp.getType().equals("temp_admin")){
+//            info.append(", Start date:"+emp.getStarts_at()+", End date:"+emp.getEnds_at());
+//        }else {
+//            info.append(", Start date:"+emp.getStarts_at()+", End date:"+emp.getEnds_at()+", Library Bonus:"+emp.getLibrary());
+//        }
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
         out.println(gson.toJson(new JSONResponse("full info fetched successfully",200,emp)));
