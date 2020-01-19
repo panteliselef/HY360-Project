@@ -521,12 +521,53 @@ public class SalaryDB {
         Connection con = null;
         double ret = 0;
         ArrayList<Employee> employees = EmpDB.getEmployees();
+        StringBuilder insQuery = new StringBuilder();
+        PreparedStatement stmtIns;
+        ResultSet rs;
+
         try {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
-            for (int i = 0; i < employees.size(); i++) {
-                if (EmpDB.findEmployeeType(employees.get(i).getId()).equals(type_of_emp)) {
-                    ret += SalaryDB.getAfterBonusSal(employees.get(i).getId());
+//            for (int i = 0; i < employees.size(); i++) {
+//                if (EmpDB.findEmployeeType(employees.get(i).getId()).equals(type_of_emp)) {
+//                    ret += SalaryDB.getAfterBonusSal(employees.get(i).getId());
+//                }
+//            }
+            if(type_of_emp.equals("perm_admin")) {
+                insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN perm_admin_salaries "+
+                        "WHERE salaries.sal_id = perm_admin_salaries.sal_id;");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                if(rs.next()){
+                    ret = rs.getDouble("SumQuantity");
+                }
+            }else if(type_of_emp.equals("perm_teach")){
+                insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN perm_teach_salaries "+
+                        "WHERE salaries.sal_id = perm_teach_salaries.sal_id;");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                if(rs.next()){
+                    ret = rs.getDouble("SumQuantity");
+                }else if(type_of_emp.equals("temp_admin")){
+                    insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN temp_admin_salaries "+
+                            "WHERE salaries.sal_id = temp_admin_salaries.sal_id;");
+                    stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("SumQuantity");
+                    }
+                }else {
+                    insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN temp_teach_salaries "+
+                            "WHERE salaries.sal_id = temp_teach_salaries.sal_id;");
+                    stmtIns = con.prepareStatement(insQuery.toString());
+                    stmtIns.executeQuery();
+                    rs = stmtIns.getResultSet();
+                    if(rs.next()){
+                        ret = rs.getDouble("SumQuantity");
+                    }
                 }
             }
             return ret;

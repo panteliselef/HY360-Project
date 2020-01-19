@@ -426,6 +426,7 @@ public class EmpDB {
         String type = findEmployeeType(id);
         StringBuilder insQuery = new StringBuilder();
         Salary sal = SalaryDB.getBasicSalary();
+        Employee emp = EmpDB.EmployeeFullInfo(id);
         Statement stmt = null;
         Connection con = null;
         try {
@@ -452,7 +453,7 @@ public class EmpDB {
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
                 insQuery.append("INSERT INTO perm_admin_salaries(sal_id,annual_bonus) VALUES(" +
-                        sal_id + "," + sal.getAnnual_bonus() + ");");
+                        sal_id + "," + emp.getAnnual() + ");");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
             } else if (type.equals("temp_teach")) {
@@ -473,7 +474,7 @@ public class EmpDB {
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
                 insQuery.append("INSERT INTO perm_teach_salaries(sal_id,annual_bonus,research_bonus) VALUES(" +
-                        sal_id + "," + sal.getAnnual_bonus() + "," + sal.getResearch_bonus() + ");");
+                        sal_id + "," + emp.getAnnual() + "," + sal.getResearch_bonus() + ");");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
             }
