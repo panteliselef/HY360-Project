@@ -3,14 +3,14 @@ package model;
 import java.util.ArrayList;
 
 public class Payment {
-    private ArrayList<String> emp_names;
-    private ArrayList<Double> salary;
-    private ArrayList<Double> annual;
-    private ArrayList<Double> research;
-    private ArrayList<Double> library;
-    private ArrayList<Double> family;
+    private String emp_names="";
+    private double salary=0;
+    private double annual=0;
+    private double research=0;
+    private double library=0;
+    private double family=0;
 
-    public Payment(ArrayList<String> emp, ArrayList<Double> sal, ArrayList<Double> ann, ArrayList<Double> res, ArrayList<Double> lib, ArrayList<Double> fam){
+    public Payment(String emp, double sal, double ann, double res, double lib, double fam){
         emp_names = emp;
         salary = sal;
         annual = ann;
@@ -19,51 +19,51 @@ public class Payment {
         family = fam;
     }
 
-    public ArrayList<Double> getAnnual() {
+    public double getAnnual() {
         return annual;
     }
 
-    public ArrayList<Double> getFamily() {
+    public double getFamily() {
         return family;
     }
 
-    public ArrayList<Double> getLibrary() {
+    public double getLibrary() {
         return library;
     }
 
-    public ArrayList<Double> getResearch() {
+    public double getResearch() {
         return research;
     }
 
-    public ArrayList<Double> getSalary() {
+    public double getSalary() {
         return salary;
     }
 
-    public ArrayList<String> getEmp_names() {
+    public String getEmp_names() {
         return emp_names;
     }
 
-    public void setResearch(ArrayList<Double> research) {
+    public void setResearch(double research) {
         this.research = research;
     }
 
-    public void setLibrary(ArrayList<Double> library) {
+    public void setLibrary(double library) {
         this.library = library;
     }
 
-    public void setFamily(ArrayList<Double> family) {
+    public void setFamily(double family) {
         this.family = family;
     }
 
-    public void setAnnual(ArrayList<Double> annual) {
+    public void setAnnual(double annual) {
         this.annual = annual;
     }
 
-    public void setEmp_names(ArrayList<String> emp_names) {
+    public void setEmp_names(String emp_names) {
         this.emp_names = emp_names;
     }
 
-    public void setSalary(ArrayList<Double> salary) {
+    public void setSalary(double salary) {
         this.salary = salary;
     }
 }

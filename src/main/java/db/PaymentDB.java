@@ -92,17 +92,12 @@ public class PaymentDB {
         }
     }
 
-    public static Payment getPaymentInfo(String type,Date from,Date to) throws ClassNotFoundException{
-        Payment info = null;
+    public static ArrayList<Payment> getPaymentInfo(String type, Date from, Date to) throws ClassNotFoundException{
+        ArrayList<Payment>info = new ArrayList<>();
+        Payment singleinfo;
         ArrayList<Employee> employees = EmpDB.getEmployees();
         Employee emp;
         Date paid = null;
-        ArrayList<String> names = new ArrayList<>();
-        ArrayList<Double> sal = new ArrayList<>();
-        ArrayList<Double> annual = new ArrayList<>();
-        ArrayList<Double> family= new ArrayList<>();
-        ArrayList<Double> research= new ArrayList<>();
-        ArrayList<Double> library= new ArrayList<>();
         Statement stmt = null;
         PreparedStatement stmtIns;
         ResultSet rs;
@@ -111,28 +106,68 @@ public class PaymentDB {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
             StringBuilder insQuery = new StringBuilder();
-            for (int i = 0; i < employees.size(); i++) {
-                insQuery.setLength(0);
-                if (EmpDB.findEmployeeType(employees.get(i).getId()).equals(type)) {
-                    emp = EmpDB.EmployeeFullInfo(employees.get(i).getId());
-                    insQuery.append("SELECT paid_at FROM payments WHERE emp_id = "+emp.getId()+";");
-                    stmtIns = con.prepareStatement(insQuery.toString());
-                    stmtIns.executeQuery();
-                    rs = stmtIns.getResultSet();
-                    if(rs.next()){
-                        paid = rs.getDate("paid_at");
-                    }
-                    if (from.getTime() <= paid.getTime() && to.getTime()>= paid.getTime()) {
-                        names.add(emp.getFname() + " " + emp.getFname());
-                        sal.add(SalaryDB.getAfterBonusSal(emp.getId()));
-                        annual.add(emp.getAnnual());
-                        family.add(emp.getFamily());
-                        research.add(emp.getResearch());
-                        library.add(emp.getLibrary());
-                    }
+//            for (int i = 0; i < employees.size(); i++) {
+//                insQuery.setLength(0);
+//                if (EmpDB.findEmployeeType(employees.get(i).getId()).equals(type)) {
+//                    emp = EmpDB.EmployeeFullInfo(employees.get(i).getId());
+//                    insQuery.append("SELECT paid_at FROM payments WHERE emp_id = "+emp.getId()+";");
+//                    stmtIns = con.prepareStatement(insQuery.toString());
+//                    stmtIns.executeQuery();
+//                    rs = stmtIns.getResultSet();
+//                    if(rs.next()){
+//                        paid = rs.getDate("paid_at");
+//                    }
+//                    if (from.getTime() <= paid.getTime() && to.getTime()>= paid.getTime()) {
+//                        names.add(emp.getFname() + " " + emp.getFname());
+//                        sal.add(SalaryDB.getAfterBonusSal(emp.getId()));
+//                        annual.add(emp.getAnnual());
+//                        family.add(emp.getFamily());
+//                        research.add(emp.getResearch());
+//                        library.add(emp.getLibrary());
+//                    }
+//                }
+//            }
+            if(type.equals("perm_admin")) {
+                insQuery.append("SELECT employees.fname,employees.lname,payments.paid_at,payments.ammount,perm_admin_salaries.annual_bonus,salaries.family_bonus FROM salaries,employees,payments,perm_admin_salaries,emp_salaries WHERE employees.emp_id = payments.emp_id AND employees.emp_id = emp_salaries.emp_id AND " +
+                       "perm_admin_salaries.sal_id = salaries.sal_id AND "+ "emp_salaries.sal_id = perm_admin_salaries.sal_id"+" AND payments.paid_at <= '"+to+"' AND payments.paid_at >= '"+from+"';");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                while (rs.next()){
+                    singleinfo=new Payment(rs.getString("fname")+" "+rs.getString("lname"),rs.getDouble("ammount"),rs.getDouble("annual_bonus"),0,0,rs.getDouble("family_bonus"));
+                    info.add(singleinfo);
+                }
+            }else if(type.equals("perm_teach")){
+                insQuery.append("SELECT salaries.family_bonus,employees.fname,employees.lname,payments.paid_at,payments.ammount,perm_teach_salaries.annual_bonus,perm_teach_salaries.research_bonus FROM salaries,employees,payments,perm_teach_salaries,emp_salaries WHERE employees.emp_id = payments.emp_id AND " +
+                        "perm_teach_salaries.sal_id = salaries.sal_id AND "+  "employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = perm_teach_salaries.sal_id"+" AND payments.paid_at >= '"+from+"' AND payments.paid_at <= '"+to+"';");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                while (rs.next()){
+                    singleinfo=new Payment(rs.getString("fname")+" "+rs.getString("lname"),rs.getDouble("ammount"),rs.getDouble("annual_bonus"),rs.getDouble("research_bonus"),0,rs.getDouble("family_bonus"));
+                    info.add(singleinfo);
+                }
+            }else if(type.equals("temp_admin")){
+                insQuery.append("SELECT salaries.family_bonus,employees.fname,employees.lname,payments.paid_at,payments.ammount FROM salaries,temp_admin_salaries ,employees,payments,emp_salaries WHERE employees.emp_id = payments.emp_id AND employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = temp_admin_salaries.sal_id AND " +
+                        "emp_salaries.sal_id = salaries.sal_id"+" AND payments.paid_at >= '"+from+"' AND payments.paid_at <= '"+to+"';");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                while (rs.next()){
+                    singleinfo=new Payment(rs.getString("fname")+" "+rs.getString("lname"),rs.getDouble("ammount"),0,0,0,rs.getDouble("family_bonus"));
+                    info.add(singleinfo);
+                }
+            }else {
+                insQuery.append("SELECT temp_teach_salaries.library_bonus,salaries.family_bonus,employees.fname,employees.lname,payments.paid_at,payments.ammount,temp_teach_salaries.library_bonus FROM salaries,temp_admin_salaries ,employees,payments,emp_salaries WHERE employees.emp_id = payments.emp_id AND employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = temp_teach_salaries.sal_id AND " +
+                        "emp_salaries.sal_id = salaries.sal_id"+" AND payments.paid_at >= '"+from+"' AND payments.paid_at <= '"+to+"';");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeQuery();
+                rs = stmtIns.getResultSet();
+                while (rs.next()){
+                    singleinfo=new Payment(rs.getString("fname")+" "+rs.getString("lname"),rs.getDouble("ammount"),0,0,rs.getDouble("library_bonus"),rs.getDouble("family_bonus"));
+                    info.add(singleinfo);
                 }
             }
-            info = new Payment(names,sal,annual,research,library,family);
             return info;
         }catch (SQLException e) {
             e.printStackTrace();

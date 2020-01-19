@@ -519,120 +519,209 @@ public class EmpDB {
             insQuery.setLength(0);
             if (type.equals("perm_admin")) {
 
-                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = " + id + ";");
-                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                ResultSet rs = stmtIns.getResultSet();
-                if (rs.next()) {
-                    sal_id = rs.getInt("sal_id");
-                }
-                insQuery.setLength(0);
-                insQuery.append("SELECT annual_bonus FROM perm_admin_salaries WHERE sal_id = " + sal_id + ";");
-                stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                rs = stmtIns.getResultSet();
-                if (rs.next()) {
-                    emp.setAnnual(rs.getDouble("annual_bonus"));
-                }
-                insQuery.setLength(0);
-                insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = " + sal_id + ";");
-                stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                rs = stmtIns.getResultSet();
-                if (rs.next()) {
-                    emp.setFamily(rs.getDouble("family_bonus"));
-                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
-                    emp.setB_sal(rs.getDouble("b_salary"));
+//                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = " + id + ";");
+//                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                ResultSet rs = stmtIns.getResultSet();
+//                if (rs.next()) {
+//                    sal_id = rs.getInt("sal_id");
+//                }
+//                insQuery.setLength(0);
+//                insQuery.append("SELECT annual_bonus FROM perm_admin_salaries WHERE sal_id = " + sal_id + ";");
+//                stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                rs = stmtIns.getResultSet();
+//                if (rs.next()) {
+//                    emp.setAnnual(rs.getDouble("annual_bonus"));
+//                }
+//                insQuery.setLength(0);
+//                insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = " + sal_id + ";");
+//                stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                rs = stmtIns.getResultSet();
+//                if (rs.next()) {
+//                    emp.setFamily(rs.getDouble("family_bonus"));
+//                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
+//                    emp.setB_sal(rs.getDouble("b_salary"));
+//                }
+                insQuery.append("SELECT employees.*,salaries.*,perm_admin_salaries.annual_bonus FROM employees,emp_salaries,salaries,perm_admin_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = perm_admin_salaries.sal_id");
+                statement = con.prepareStatement(insQuery.toString());
+                statement.executeQuery();
+                result = statement.getResultSet();
+                if(result.next()){
+                    emp.setFname(result.getString("fname"));
+                    emp.setLname(result.getString("lname"));
+                    emp.setStartedAt(result.getDate("started_at"));
+                    emp.setLeft_at(result.getDate("left_at"));
+                    emp.setAddress(result.getString("address"));
+                    emp.setPhone(result.getString("phone"));
+                    emp.setIban(result.getString("IBAN"));
+                    emp.setBankName(result.getString("bank_name"));
+                    emp.setDepartmentId(result.getInt("department_id"));
+                    emp.setIsMarried(result.getString("is_married"));
+                    emp.setB_sal(result.getDouble("b_salary"));
+                    emp.setFamily(result.getDouble("family_bonus"));
+                    emp.setAfter_bonus_sal(result.getDouble("after_bonus_sal"));
+                    emp.setAnnual(result.getDouble("annual_bonus"));
                 }
                 return emp;
             } else if (type.equals("perm_teach")) {
 
-                emp.setResearch(sal.getResearch_bonus());
-                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = " + id + ";");
-                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                ResultSet rs = stmtIns.getResultSet();
-                if (rs.next()) {
-                    sal_id = rs.getInt("sal_id");
-                }
-                insQuery.setLength(0);
-                insQuery.append("SELECT annual_bonus FROM perm_admin_salaries WHERE sal_id = " + sal_id + ";");
-                stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                rs = stmtIns.getResultSet();
-                if (rs.next()) {
-                    emp.setAnnual(rs.getDouble("annual_bonus"));
-                }
-                insQuery.setLength(0);
-                insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = " + sal_id + ";");
-                stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                rs = stmtIns.getResultSet();
-                if (rs.next()) {
-                    emp.setFamily(rs.getDouble("family_bonus"));
-                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
-                    emp.setB_sal(rs.getDouble("b_salary"));
+//                emp.setResearch(sal.getResearch_bonus());
+//                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = " + id + ";");
+//                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                ResultSet rs = stmtIns.getResultSet();
+//                if (rs.next()) {
+//                    sal_id = rs.getInt("sal_id");
+//                }
+//                insQuery.setLength(0);
+//                insQuery.append("SELECT annual_bonus FROM perm_admin_salaries WHERE sal_id = " + sal_id + ";");
+//                stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                rs = stmtIns.getResultSet();
+//                if (rs.next()) {
+//                    emp.setAnnual(rs.getDouble("annual_bonus"));
+//                }
+//                insQuery.setLength(0);
+//                insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = " + sal_id + ";");
+//                stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                rs = stmtIns.getResultSet();
+//                if (rs.next()) {
+//                    emp.setFamily(rs.getDouble("family_bonus"));
+//                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
+//                    emp.setB_sal(rs.getDouble("b_salary"));
+//                }
+//                return emp;
+                insQuery.append("SELECT employees.*,salaries.*,perm_teach_salaries.annual_bonus,perm_teach_salaries.research_bonus FROM employees,emp_salaries,salaries,perm_teach_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = perm_teach_salaries.sal_id");
+                statement = con.prepareStatement(insQuery.toString());
+                statement.executeQuery();
+                result = statement.getResultSet();
+                if(result.next()){
+                    emp.setFname(result.getString("fname"));
+                    emp.setLname(result.getString("lname"));
+                    emp.setStartedAt(result.getDate("started_at"));
+                    emp.setLeft_at(result.getDate("left_at"));
+                    emp.setAddress(result.getString("address"));
+                    emp.setPhone(result.getString("phone"));
+                    emp.setIban(result.getString("IBAN"));
+                    emp.setBankName(result.getString("bank_name"));
+                    emp.setDepartmentId(result.getInt("department_id"));
+                    emp.setIsMarried(result.getString("is_married"));
+                    emp.setB_sal(result.getDouble("b_salary"));
+                    emp.setFamily(result.getDouble("family_bonus"));
+                    emp.setAfter_bonus_sal(result.getDouble("after_bonus_sal"));
+                    emp.setAnnual(result.getDouble("annual_bonus"));
+                    emp.setResearch(result.getDouble("research_bonus"));
                 }
                 return emp;
             } else if (type.equals("temp_admin")) {
-                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = " + id + ";");
-                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                ResultSet rs = stmtIns.getResultSet();
-                if (rs.next()) {
-                    sal_id = rs.getInt("sal_id");
-                }
-                insQuery.setLength(0);
-                insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = " + sal_id + ";");
-                stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                rs = stmtIns.getResultSet();
-                if (rs.next()) {
-                    emp.setFamily(rs.getDouble("family_bonus"));
-                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
-                    emp.setB_sal(rs.getDouble("b_salary"));
-                }
-                insQuery.setLength(0);
-                insQuery.append("SELECT promotion_date,start_date,end_date FROM temp_admin_salaries WHERE sal_id = " + sal_id + ";");
-                stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                rs = stmtIns.getResultSet();
-                if (rs.next()) {
-                    emp.setStarts_at(rs.getDate("start_date").getTime());
-                    emp.setEnds_at(rs.getDate("end_date").getTime());
-                    emp.setPromo_date(rs.getDate("promotion_date"));
+//                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = " + id + ";");
+//                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                ResultSet rs = stmtIns.getResultSet();
+//                if (rs.next()) {
+//                    sal_id = rs.getInt("sal_id");
+//                }
+//                insQuery.setLength(0);
+//                insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = " + sal_id + ";");
+//                stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                rs = stmtIns.getResultSet();
+//                if (rs.next()) {
+//                    emp.setFamily(rs.getDouble("family_bonus"));
+//                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
+//                    emp.setB_sal(rs.getDouble("b_salary"));
+//                }
+//                insQuery.setLength(0);
+//                insQuery.append("SELECT promotion_date,start_date,end_date FROM temp_admin_salaries WHERE sal_id = " + sal_id + ";");
+//                stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                rs = stmtIns.getResultSet();
+//                if (rs.next()) {
+//                    emp.setStarts_at(rs.getDate("start_date").getTime());
+//                    emp.setEnds_at(rs.getDate("end_date").getTime());
+//                    emp.setPromo_date(rs.getDate("promotion_date"));
+//                }
+//                return emp;
+                insQuery.append("SELECT employees.*,salaries.*,temp_admin_salaries.start_date,temp_admin_salaries.end_date,temp_admin_salaries.promotion_date FROM employees,emp_salaries,salaries,temp_admin_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = temp_admin_salaries.sal_id");
+                statement = con.prepareStatement(insQuery.toString());
+                statement.executeQuery();
+                result = statement.getResultSet();
+                if(result.next()){
+                    emp.setFname(result.getString("fname"));
+                    emp.setLname(result.getString("lname"));
+                    emp.setStartedAt(result.getDate("started_at"));
+                    emp.setLeft_at(result.getDate("left_at"));
+                    emp.setAddress(result.getString("address"));
+                    emp.setPhone(result.getString("phone"));
+                    emp.setIban(result.getString("IBAN"));
+                    emp.setBankName(result.getString("bank_name"));
+                    emp.setDepartmentId(result.getInt("department_id"));
+                    emp.setIsMarried(result.getString("is_married"));
+                    emp.setB_sal(result.getDouble("b_salary"));
+                    emp.setFamily(result.getDouble("family_bonus"));
+                    emp.setAfter_bonus_sal(result.getDouble("after_bonus_sal"));
+                    emp.setStarts_at(result.getLong("start_date"));
+                    emp.setEnds_at(result.getLong("end_date"));
+                    emp.setPromo_date(result.getDate("promotion_date"));
                 }
                 return emp;
             } else {
-                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = " + id + ";");
-                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                ResultSet rs = stmtIns.getResultSet();
-                if (rs.next()) {
-                    sal_id = rs.getInt("sal_id");
+//                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = " + id + ";");
+//                PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                ResultSet rs = stmtIns.getResultSet();
+//                if (rs.next()) {
+//                    sal_id = rs.getInt("sal_id");
+//                }
+//                insQuery.setLength(0);
+//                insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = " + sal_id + ";");
+//                stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                rs = stmtIns.getResultSet();
+//                if (rs.next()) {
+//                    emp.setFamily(rs.getDouble("family_bonus"));
+//                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
+//                    emp.setB_sal(rs.getDouble("b_salary"));
+//                }
+//                insQuery.setLength(0);
+//                insQuery.append("SELECT promotion_date,start_date,end_date FROM temp_teach_salaries WHERE sal_id = " + sal_id + ";");
+//                stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                rs = stmtIns.getResultSet();
+//                long start_d, end_d;
+//                if (rs.next()) {
+//                    emp.setStarts_at(rs.getDate("start_date").getTime());
+//                    emp.setEnds_at(rs.getDate("end_date").getTime());
+//                    emp.setPromo_date(rs.getDate("promotion_date"));
+//                }
+//                emp.setLibrary(sal.getLibrary_bonus());
+//                return emp;
+                insQuery.append("SELECT employees.*,salaries.*,temp_teach_salaries.start_date,temp_teach_salaries.end_date,temp_teach_salaries.promotion_date,temp_teach_salaries.library_bonus FROM employees,emp_salaries,salaries,temp_teach_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = term_teach_salaries.sal_id");
+                statement = con.prepareStatement(insQuery.toString());
+                statement.executeQuery();
+                result = statement.getResultSet();
+                if(result.next()){
+                    emp.setFname(result.getString("fname"));
+                    emp.setLname(result.getString("lname"));
+                    emp.setStartedAt(result.getDate("started_at"));
+                    emp.setLeft_at(result.getDate("left_at"));
+                    emp.setAddress(result.getString("address"));
+                    emp.setPhone(result.getString("phone"));
+                    emp.setIban(result.getString("IBAN"));
+                    emp.setBankName(result.getString("bank_name"));
+                    emp.setDepartmentId(result.getInt("department_id"));
+                    emp.setIsMarried(result.getString("is_married"));
+                    emp.setB_sal(result.getDouble("b_salary"));
+                    emp.setFamily(result.getDouble("family_bonus"));
+                    emp.setAfter_bonus_sal(result.getDouble("after_bonus_sal"));
+                    emp.setStarts_at(result.getLong("start_date"));
+                    emp.setEnds_at(result.getLong("end_date"));
+                    emp.setPromo_date(result.getDate("promotion_date"));
+                    emp.setLibrary(result.getDouble("library_bonus"));
                 }
-                insQuery.setLength(0);
-                insQuery.append("SELECT b_salary,after_bonus_sal,family_bonus FROM salaries WHERE sal_id = " + sal_id + ";");
-                stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                rs = stmtIns.getResultSet();
-                if (rs.next()) {
-                    emp.setFamily(rs.getDouble("family_bonus"));
-                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
-                    emp.setB_sal(rs.getDouble("b_salary"));
-                }
-                insQuery.setLength(0);
-                insQuery.append("SELECT promotion_date,start_date,end_date FROM temp_teach_salaries WHERE sal_id = " + sal_id + ";");
-                stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                rs = stmtIns.getResultSet();
-                long start_d, end_d;
-                if (rs.next()) {
-                    emp.setStarts_at(rs.getDate("start_date").getTime());
-                    emp.setEnds_at(rs.getDate("end_date").getTime());
-                    emp.setPromo_date(rs.getDate("promotion_date"));
-                }
-                emp.setLibrary(sal.getLibrary_bonus());
                 return emp;
             }
         } catch (SQLException e) {
