@@ -6,6 +6,8 @@ import model.Salary;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class SalaryDB {
 
@@ -536,48 +538,7 @@ public class SalaryDB {
         return ret;
     }
 
-    public static void addPayment() throws ClassNotFoundException{
-        Statement stmt = null;
-        Connection con = null;
-        try{
-            con = CS360DB.getConnection();
-            stmt = con.createStatement();
-            StringBuilder insQuery = new StringBuilder();
-            ArrayList<Employee> employees = EmpDB.getEmployees();
-            Employee emp;
-            PreparedStatement stmtIns;
-            ResultSet rs;
-            int sal_id = -1;
-            Date d;
-            for(int i = 0;i<employees.size();i++){
-                d = new Date(System.currentTimeMillis());
-                insQuery.setLength(0);
-                emp = EmpDB.EmployeeFullInfo(employees.get(i).getId());
-                insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = "+emp.getId()+";");
-                stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                rs = stmtIns.getResultSet();
-                if(rs.next()){
-                    sal_id = rs.getInt("sal_id");
-                }
-                insQuery.setLength(0);
-                insQuery.append("INSERT INTO payments(paid_at,ammount,emp_id) VALUES('"+d+"',"+
-                        SalaryDB.getAfterBonusSal(emp.getId())+", "+emp.getId()+");");
-                String generatedColumns[] = {"bill_id"};
-                stmtIns = con.prepareStatement(insQuery.toString(), generatedColumns);
-                stmtIns.executeUpdate();
 
-                rs = stmtIns.getGeneratedKeys();
-                int bill_id = 0;
-                if (rs.next()) {
-                    int id = rs.getInt(1);
-                    bill_id = id;
-                }
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            CS360DB.closeDBConnection(stmt, con);
-        }
-    }
+
+
 }

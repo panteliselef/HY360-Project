@@ -215,6 +215,7 @@ public class EmpDB {
             StringBuilder insQuery = new StringBuilder();
             String fname = "", lname = "", address = "", phone = "", IBAN = "", bank_name = "", ismarried = "";
             Date started_at = null;
+            Date left_at = null;
             int dep_id = -1;
             insQuery.append("SELECT * from employees WHERE emp_id = " + id + ";");
 
@@ -232,10 +233,12 @@ public class EmpDB {
                 bank_name = res.getString("bank_name");
                 dep_id = res.getInt("department_id");
                 ismarried = res.getString("is_married");
+                left_at = res.getDate("left_at");
             }
             emp = new Employee(fname, lname, address, phone, IBAN, bank_name);
             emp.setStartedAt(started_at);
             emp.setDepartmentId(dep_id);
+            emp.setLeft_at(left_at);
             emp.setIsMarried(ismarried);
             insQuery.setLength(0);
             emp.setChildren((ArrayList<Child>) ChildDB.getChildren(id));
@@ -432,6 +435,25 @@ public class EmpDB {
         try {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
+            insQuery.append("SELECT department_id FROM employees WHERE emp_id = "+id+";");
+            int dep_id = 0;
+            PreparedStatement statement = con.prepareStatement(insQuery.toString());
+            statement.executeQuery();
+            ResultSet result = statement.getResultSet();
+            if(result.next()){
+                dep_id = result.getInt("department_id");
+            }
+            String department = "";
+            insQuery.setLength(0);
+            insQuery.append("SELECT name FROM departments WHERE dep_id = "+dep_id+";");
+            statement = con.prepareStatement(insQuery.toString());
+            statement.executeQuery();
+            result = statement.getResultSet();
+            if(result.next()){
+                department = result.getString("name");
+            }
+            emp.setDepartment(department);
+            insQuery.setLength(0);
             if (type.equals("perm_admin")) {
 
                 insQuery.append("SELECT sal_id FROM emp_salaries WHERE emp_id = " + id + ";");
@@ -508,14 +530,14 @@ public class EmpDB {
                     emp.setB_sal(rs.getDouble("b_salary"));
                 }
                 insQuery.setLength(0);
-                insQuery.append("SELECT start_date,end_date FROM temp_admin_salaries WHERE sal_id = " + sal_id + ";");
+                insQuery.append("SELECT promotion_date,start_date,end_date FROM temp_admin_salaries WHERE sal_id = " + sal_id + ";");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeQuery();
                 rs = stmtIns.getResultSet();
-                long start_d, end_d;
                 if (rs.next()) {
                     emp.setStarts_at(rs.getDate("start_date").getTime());
                     emp.setEnds_at(rs.getDate("end_date").getTime());
+                    emp.setPromo_date(rs.getDate("promotion_date"));
                 }
                 return emp;
             } else {
@@ -537,7 +559,7 @@ public class EmpDB {
                     emp.setB_sal(rs.getDouble("b_salary"));
                 }
                 insQuery.setLength(0);
-                insQuery.append("SELECT start_date,end_date FROM temp_teach_salaries WHERE sal_id = " + sal_id + ";");
+                insQuery.append("SELECT promotion_date,start_date,end_date FROM temp_teach_salaries WHERE sal_id = " + sal_id + ";");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeQuery();
                 rs = stmtIns.getResultSet();
@@ -545,6 +567,7 @@ public class EmpDB {
                 if (rs.next()) {
                     emp.setStarts_at(rs.getDate("start_date").getTime());
                     emp.setEnds_at(rs.getDate("end_date").getTime());
+                    emp.setPromo_date(rs.getDate("promotion_date"));
                 }
                 emp.setLibrary(sal.getLibrary_bonus());
                 return emp;
