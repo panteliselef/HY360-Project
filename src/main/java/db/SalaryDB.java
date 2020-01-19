@@ -3,6 +3,7 @@ package db;
 import model.Child;
 import model.Employee;
 import model.Salary;
+import model.SumOfSal;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -515,11 +516,81 @@ public class SalaryDB {
         return ret;
     }
 
-    public static double calculateSumOfSal(String type_of_emp) throws ClassNotFoundException {
+//    public static double calculateSumOfSal(String type_of_emp) throws ClassNotFoundException {
+//        Statement stmt = null;
+//        Connection con = null;
+//        double ret = 0;
+//        ArrayList<Employee> employees = EmpDB.getEmployees();
+//        StringBuilder insQuery = new StringBuilder();
+//        PreparedStatement stmtIns;
+//        ResultSet rs;
+//
+//        try {
+//            con = CS360DB.getConnection();
+//            stmt = con.createStatement();
+////            for (int i = 0; i < employees.size(); i++) {
+////                if (EmpDB.findEmployeeType(employees.get(i).getId()).equals(type_of_emp)) {
+////                    ret += SalaryDB.getAfterBonusSal(employees.get(i).getId());
+////                }
+////            }
+//            if(type_of_emp.equals("perm_admin")) {
+//                insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN perm_admin_salaries "+
+//                        "WHERE salaries.sal_id = perm_admin_salaries.sal_id;");
+//                stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                System.out.println(insQuery);
+//                rs = stmtIns.getResultSet();
+//                if(rs.next()){
+//                    ret = rs.getDouble("SumQuantity");
+//                }
+//            }else if(type_of_emp.equals("perm_teach")){
+//                insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN perm_teach_salaries "+
+//                        "WHERE salaries.sal_id = perm_teach_salaries.sal_id;");
+//                stmtIns = con.prepareStatement(insQuery.toString());
+//                stmtIns.executeQuery();
+//                System.out.println(insQuery);
+//                rs = stmtIns.getResultSet();
+//                if(rs.next()){
+//                    ret = rs.getDouble("SumQuantity");
+//                }
+//            }
+//            else if(type_of_emp.equals("temp_admin")){
+//                    insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN temp_admin_salaries "+
+//                            "WHERE salaries.sal_id = temp_admin_salaries.sal_id;");
+//                    stmtIns = con.prepareStatement(insQuery.toString());
+//                    stmtIns.executeQuery();
+//                    System.out.println(insQuery);
+//                    rs = stmtIns.getResultSet();
+//                    if(rs.next()){
+//                        ret = rs.getDouble("SumQuantity");
+//                    }
+//                }else {
+//                    insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN temp_teach_salaries "+
+//                            "ON salaries.sal_id = temp_teach_salaries.sal_id;");
+//                    System.out.println(insQuery);
+//                    stmtIns = con.prepareStatement(insQuery.toString());
+//                    stmtIns.executeQuery();
+//                    rs = stmtIns.getResultSet();
+//                    if(rs.next()){
+//                        ret = rs.getDouble("SumQuantity");
+//                    }
+//
+//            }
+//            return ret;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } finally {
+//            CS360DB.closeDBConnection(stmt, con);
+//        }
+//        return ret;
+//    }
+
+    public static ArrayList<SumOfSal> calculateSumOfSal(String type_of_emp) throws ClassNotFoundException {
         Statement stmt = null;
         Connection con = null;
         double ret = 0;
-        ArrayList<Employee> employees = EmpDB.getEmployees();
+
+        ArrayList<SumOfSal> arr = new ArrayList<>();
         StringBuilder insQuery = new StringBuilder();
         PreparedStatement stmtIns;
         ResultSet rs;
@@ -533,55 +604,30 @@ public class SalaryDB {
 //                }
 //            }
             if(type_of_emp.equals("perm_admin")) {
-                insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN perm_admin_salaries "+
-                        "WHERE salaries.sal_id = perm_admin_salaries.sal_id;");
-                stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                System.out.println(insQuery);
-                rs = stmtIns.getResultSet();
-                if(rs.next()){
-                    ret = rs.getDouble("SumQuantity");
-                }
+                insQuery.append("SELECT YEAR(paid_at) as year, SUM(ammount) as amount FROM  emp_salaries INNER JOIN  perm_admin_salaries ON emp_salaries.sal_id = perm_admin_salaries.sal_id Inner JOIN payments ON payments.emp_id = emp_salaries.emp_id GROUP BY YEAR(paid_at);");
             }else if(type_of_emp.equals("perm_teach")){
-                insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN perm_teach_salaries "+
-                        "WHERE salaries.sal_id = perm_teach_salaries.sal_id;");
-                stmtIns = con.prepareStatement(insQuery.toString());
-                stmtIns.executeQuery();
-                System.out.println(insQuery);
-                rs = stmtIns.getResultSet();
-                if(rs.next()){
-                    ret = rs.getDouble("SumQuantity");
-                }
+                insQuery.append("SELECT YEAR(paid_at) as year, SUM(ammount) as amount FROM  emp_salaries INNER JOIN  perm_teach_salaries ON emp_salaries.sal_id = perm_teach_salaries.sal_id Inner JOIN payments ON payments.emp_id = emp_salaries.emp_id GROUP BY YEAR(paid_at);");
             }
             else if(type_of_emp.equals("temp_admin")){
-                    insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN temp_admin_salaries "+
-                            "WHERE salaries.sal_id = temp_admin_salaries.sal_id;");
-                    stmtIns = con.prepareStatement(insQuery.toString());
-                    stmtIns.executeQuery();
-                    System.out.println(insQuery);
-                    rs = stmtIns.getResultSet();
-                    if(rs.next()){
-                        ret = rs.getDouble("SumQuantity");
-                    }
-                }else {
-                    insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN temp_teach_salaries "+
-                            "ON salaries.sal_id = temp_teach_salaries.sal_id;");
-                    System.out.println(insQuery);
-                    stmtIns = con.prepareStatement(insQuery.toString());
-                    stmtIns.executeQuery();
-                    rs = stmtIns.getResultSet();
-                    if(rs.next()){
-                        ret = rs.getDouble("SumQuantity");
-                    }
-
+//                insQuery.append("SELECT YEAR(paid_at) as year, SUM(ammount) as amount FROM  emp_salaries INNER JOIN  temp_admin_salaries ON emp_salaries.sal_id = temp_admin_salaries.sal_id Inner JOIN payments ON payments.emp_id = emp_salaries.emp_id GROUP BY YEAR(paid_at);");
+                insQuery.append("SELECT YEAR(paid_at) as year, SUM(ammount) as amount  FROM  emp_salaries INNER JOIN  temp_admin_salaries ON emp_salaries.sal_id = temp_admin_salaries.sal_id Inner JOIN payments ON payments.emp_id = emp_salaries.emp_id WHERE promotion_date < paid_at or promotion_date IS NULL GROUP BY YEAR(paid_at);");
+            }else {
+//                insQuery.append("SELECT YEAR(paid_at) as year, SUM(ammount) as amount FROM  emp_salaries INNER JOIN  temp_teach_salaries ON emp_salaries.sal_id = temp_teach_salaries.sal_id Inner JOIN payments ON payments.emp_id = emp_salaries.emp_id GROUP BY YEAR(paid_at);");
+                insQuery.append("SELECT YEAR(paid_at) as year, SUM(ammount) as amount  FROM  emp_salaries INNER JOIN  temp_teach_salaries ON emp_salaries.sal_id = temp_teach_salaries.sal_id Inner JOIN payments ON payments.emp_id = emp_salaries.emp_id WHERE promotion_date < paid_at or promotion_date IS NULL GROUP BY YEAR(paid_at);");
             }
-            return ret;
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeQuery();
+            rs = stmtIns.getResultSet();
+            while (rs.next()){
+                arr.add(new SumOfSal(rs.getString("year"),rs.getDouble("amount")));
+            }
+            return arr;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             CS360DB.closeDBConnection(stmt, con);
         }
-        return ret;
+        return arr;
     }
 
 

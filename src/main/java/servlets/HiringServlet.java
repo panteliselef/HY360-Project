@@ -63,7 +63,7 @@ public class HiringServlet extends HttpServlet {
             BufferedReader reader = req.getReader();
             while ((line = reader.readLine()) != null)
                 jb.append(line);
-        } catch (Exception e) { /*report an error*/ }
+        } catch (Exception e) { e.printStackTrace(); return;}
 
 //        System.out.println(jb.toString());
 
@@ -141,6 +141,7 @@ public class HiringServlet extends HttpServlet {
 
             SalaryDB.addSalary(emp);
             resp.setStatus(201);
+            System.out.println(emp);
             out.println(gson.toJson(emp));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

@@ -137,7 +137,7 @@ class RegisterPage extends React.Component {
 					const info = {
 						...getFieldsValue(),
 						...this.state.hiringInfo,
-						departmentId: this.state.hiringInfo?.department?.depId,
+						departmentId: this.state.hiringInfo?.univDepartment?.depId,
 						un_children: getFieldsValue()?.ages
 					};
 					this.setState({ hiringInfo: info });
@@ -269,7 +269,7 @@ class RegisterPage extends React.Component {
 								})(<Input />)}
 							</Form.Item>
 							<Form.Item label="Univ. Department" hasFeedback>
-								{getFieldDecorator('department', {
+								{getFieldDecorator('univDepartment', {
 									initialValue: { depId: '5' },
 									rules: [ { required: true, message: 'Please select your habitual residence!' } ]
 								})(<DepartmentSelect />)}

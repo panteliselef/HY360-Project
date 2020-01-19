@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Icon, Typography, Row, Col, Button, Radio, Table } from 'antd';
+import { Form, Input, Icon, Typography, Row, Col, Button, Radio, Table, Select, DatePicker } from 'antd';
 import ajaxRequest from '../utils/ajax';
 
 const { Title } = Typography;
-
+const { Option } = Select;
 function StatisticsPage(props) {
 	const [ categoriesStats, setCategoriesStats ] = useState([]);
 	const [ sumSalaries, setSumSalaries ] = useState([]);
+
+	const [data,setDate] = useState([]);
+
+	const [ category, setCategory ] = useState('perm_admin');
 
 	const columns = [
 		{
@@ -29,12 +33,12 @@ function StatisticsPage(props) {
 
 	const sumCols = [
 		{
-			title: 'Category',
-			dataIndex: 'categoryName'
+			title: 'Year',
+			dataIndex: 'year'
 		},
 		{
 			title: 'Total Salaries',
-			dataIndex: 'total_salaries'
+			dataIndex: 'amount'
 		}
 	];
 
@@ -59,6 +63,21 @@ function StatisticsPage(props) {
 
 	useEffect(
 		() => {
+			// console.log("E",sumSalaries.filter((item) => item.categoryName === category));
+
+			const d = sumSalaries.filter(item => item.categoryName === category);
+			const d1 = d[0]?.total_salaries.map((item,i)=>{
+				return {
+					...item,key:i
+				}
+			})
+			setDate(d1);
+		},
+		[ category ]
+	);
+
+	useEffect(
+		() => {
 			console.log(categoriesStats);
 		},
 		[ categoriesStats ]
@@ -78,16 +97,22 @@ function StatisticsPage(props) {
 		});
 
 		ajaxRequest('GET', `http://localhost:8085/hy360/stats`, null, (res) => {
-			setSumSalaries(
-				res.map((r, i) => {
-					return {
-						...r,
-						key: i
-					};
-				})
-			);
+			console.log(res);
+			setSumSalaries(res);
+			// setSumSalaries(
+			// 	res.map((r, i) => {
+			// 		return {
+			// 			...r,
+			// 			key: i
+			// 		};
+			// 	})
+			// );
 		});
 	}, []);
+
+	const handleCategoryChange = (value) => {
+		setCategory(value);
+	};
 
 	return (
 		<div>
@@ -95,7 +120,13 @@ function StatisticsPage(props) {
 
 			<Title level={2}>Sum of Salaries by Category</Title>
 
-			<Table columns={sumCols} dataSource={sumSalaries} />
+			<Select defaultValue={category} style={{ width: 300, display: 'block' }} onChange={handleCategoryChange}>
+				<Option value="perm_admin">Permanent Admin</Option>
+				<Option value="temp_admin">Temporary Admin</Option>
+				<Option value="perm_teach">Permanent Teach</Option>
+				<Option value="temp_teach">Temporary Teach</Option>
+			</Select>
+			<Table columns={sumCols} dataSource={data} />
 		</div>
 	);
 }
