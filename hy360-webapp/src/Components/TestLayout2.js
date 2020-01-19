@@ -9,6 +9,7 @@ import StatisticsPage from '../Pages/StatisticsPage';
 import RetirePage from '../Pages/RetirePage';
 import PromotePage from '../Pages/PromotePage';
 import PaymentPage from '../Pages/PaymentPage';
+import PaymentsPage from '../Pages/PaymentsPage';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -88,7 +89,9 @@ class TestLayout2 extends React.Component {
 								<Menu.Item key="/data-stats">
 									<Link to="/data-stats">Statistics</Link>
 								</Menu.Item>
-								<Menu.Item key="6">option6</Menu.Item>
+								<Menu.Item key="/data-payments">
+									<Link to="/data-payments">Payments</Link>
+								</Menu.Item>
 								<Menu.Item key="7">option7</Menu.Item>
 								<Menu.Item key="8">option8</Menu.Item>
 							</SubMenu>
@@ -132,6 +135,7 @@ class TestLayout2 extends React.Component {
 							<Route exact path="/update-basic-salaries" component={UpdateBasicSalPage} />
 							<Route exact path="/data-employee" component={AllDataEmployeePage} />
 							<Route exact path="/data-stats" component={StatisticsPage} />
+							<Route exact path="/data-payments" component={PaymentsPage} />
 							<Route exact path="/action-retire" component={RetirePage} />
 							<Route exact path="/action-promote" component={PromotePage} />
 							<Route exact path="/action-payment" component={PaymentPage} />

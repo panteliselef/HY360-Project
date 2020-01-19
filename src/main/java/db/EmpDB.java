@@ -30,7 +30,7 @@ public class EmpDB {
 
             ResultSet res = stmt.getResultSet();
             if (res.next()) {
-                System.out.println(res.getString("fname") + "  " + res.getString("lname"));
+//                System.out.println(res.getString("fname") + "  " + res.getString("lname"));
                 return true;
             } else return false;
 
@@ -60,7 +60,7 @@ public class EmpDB {
                     .append("SET ")
                     .append("annual_bonus = " + basicSals.getAnnual_bonus())
                     .append(" WHERE annual_bonus < " + basicSals.getAnnual_bonus() + " ;");
-            System.out.println(insQuery);
+//            System.out.println(insQuery);
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();
 
@@ -178,7 +178,7 @@ public class EmpDB {
             stmtIns.executeUpdate();
 
             ArrayList<Child> children = (ArrayList<Child>) emp.getChildren();
-            System.out.println(children);
+//            System.out.println(children);
 
             for (Child child : emp.getChildren()) {
                 insQuery.setLength(0);
@@ -242,7 +242,7 @@ public class EmpDB {
             emp.setIsMarried(ismarried);
             insQuery.setLength(0);
             emp.setChildren((ArrayList<Child>) ChildDB.getChildren(id));
-            System.out.println(ChildDB.getChildren(id));
+//            System.out.println(ChildDB.getChildren(id));
             ArrayList<String> un = new ArrayList<>();
             ChildDB.getChildren(id).forEach(child -> {
                 un.add(child.getAge() + "");

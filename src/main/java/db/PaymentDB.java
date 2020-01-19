@@ -25,11 +25,22 @@ public class PaymentDB {
             int sal_id = -1;
             Date d,left;
             d = new Date(System.currentTimeMillis());
-            insQuery.append("SELECT * FROM payments WHERE paid_at = '"+d+"';");
+
+
+            insQuery.setLength(0);
+            insQuery.append("SELECT * FROM payments;");
             stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeQuery();
             rs = stmtIns.getResultSet();
-            if(!rs.next())return;
+            boolean hasPayments =  rs.next();
+
+            insQuery.setLength(0);
+            insQuery.append("SELECT * FROM payments WHERE paid_at = '"+d.toString()+"';");
+            System.out.println(insQuery);
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeQuery();
+            rs = stmtIns.getResultSet();
+            if(rs.next() && hasPayments)return;
             insQuery.setLength(0);
             for(int i = 0;i<employees.size();i++){
                 d = new Date(System.currentTimeMillis());
@@ -48,7 +59,9 @@ public class PaymentDB {
 //                    int leftmonth = calendar1.get(Calendar.MONTH) + 1;
 //                    int leftday = calendar1.get(Calendar.DAY_OF_MONTH);
                     if(left.getTime()<d.getTime()){
-                        emp.setAfter_bonus_sal(0);
+                        continue;
+//                        emp.setAfter_bonus_sal(0);
+//                        System.out.println("UYASSSS");
                     }
                 }else {
                     if(EmpDB.findEmployeeType(emp.getId()).equals("temp_admin") || (EmpDB.findEmployeeType(emp.getId()).equals("temp_teach"))){

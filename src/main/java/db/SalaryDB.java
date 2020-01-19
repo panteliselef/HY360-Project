@@ -136,7 +136,6 @@ public class SalaryDB {
             if (rs.next()) {
                 int id = rs.getInt(1);
                 sal_id = id;
-                System.out.println("Salary id: " + id);
             }
 
             insQuery.setLength(0);
@@ -194,7 +193,7 @@ public class SalaryDB {
                         .append(getBonus(Bonus.LIBRARY)).append(");");
             }
 
-            System.out.println(insQuery);
+
 
             stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();
@@ -467,7 +466,7 @@ public class SalaryDB {
             } else {
                 family_bonus = teen_ch.size() * basic_fambonus;
             }
-            System.out.println("FAMILY BONUS IS " + family_bonus);
+//            System.out.println("FAMILY BONUS IS " + family_bonus);
             return family_bonus;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -484,9 +483,9 @@ public class SalaryDB {
         double fam_bonus = calculateFamilyBonus(id);
 
 
-        System.out.println(emp);
+//        System.out.println(emp);
         ret = emp.getB_sal() + emp.getAnnual() * emp.getB_sal()/ 100 + emp.getB_sal() * fam_bonus /100 + emp.getResearch() + emp.getLibrary();
-        System.out.println("AFTER BONUS IS " + ret);
+//        System.out.println("AFTER BONUS IS " + ret);
         return ret;
     }
 
