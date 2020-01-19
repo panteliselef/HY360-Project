@@ -504,6 +504,80 @@ public class SalaryDB {
         return ret;
     }
 
+    public static void getAvgIncrease(String category) throws ClassNotFoundException {
+
+        Statement stmt = null;
+        Connection con = null;
+        Employee emp;
+        ArrayList<Integer> years = new ArrayList<>();
+
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("SELECT DISTINCT YEAR(paid_at) as year from payments GROUP BY paid_at;");
+            stmt.executeQuery(insQuery.toString());
+            ResultSet res = stmt.getResultSet();
+
+            while (res.next()){
+                years.add(res.getInt("year"));
+            }
+
+            String query = "";
+
+
+
+            for (int year: years
+                 ) {
+
+                if(category == "family_bonus"){
+                    query = "SELECT ((m.fam-s.fam) / s.fam *100) as percent FROM\n" +
+                            "(SELECT (Sum(family_bonus)) as fam from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join salaries on salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) < "+year+") s,\n" +
+                            "(SELECT (Sum(family_bonus)) as fam from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join salaries on salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) = "+year+") m;";
+
+                }else if(category == "payments"){
+                    query = "SELECT ((m.sum - s.sum)/s.sum*100) as percent from \n" +
+                            "(SELECT (Sum(ammount)) as sum from payments  WHERE YEAR(paid_at) < "+year+") s,\n" +
+                            "(SELECT (Sum(ammount)) as sum from payments WHERE YEAR(paid_at) = "+year+") m;";
+
+                }else if(category == "annual_bonus"){
+                    query = "SELECT ((m.fam-s.fam) / s.fam *100) as percent FROM\n" +
+                            "(SELECT (Sum(family_bonus)) as fam from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join salaries on salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) < "+year+") s,\n" +
+                            "(SELECT (Sum(family_bonus)) as fam from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join salaries on salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) = "+year+") m;";
+                }else {
+
+                }
+
+                insQuery.setLength(0);
+                insQuery.append(query);
+                stmt.executeQuery(insQuery.toString());
+                res = stmt.getResultSet();
+
+                if(res.next()){
+                    System.out.println(category+" "+res.getDouble("percent"));
+//                    years.add(res.getInt("year"));
+                }else {
+
+                }
+
+            }
+
+            System.out.println(years);
+
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+
+
+    }
+
     public static double calculateFamilyBonus(int id) throws ClassNotFoundException {
         double family_bonus = 0;
         Statement stmt = null;

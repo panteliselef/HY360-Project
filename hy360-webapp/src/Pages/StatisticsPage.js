@@ -4,6 +4,7 @@ import ajaxRequest from '../utils/ajax';
 
 const { Title } = Typography;
 const { Option } = Select;
+const {RangePicker} = DatePicker;
 function StatisticsPage(props) {
 	const [ categoriesStats, setCategoriesStats ] = useState([]);
 	const [ sumSalaries, setSumSalaries ] = useState([]);
@@ -96,7 +97,7 @@ function StatisticsPage(props) {
 			);
 		});
 
-		ajaxRequest('GET', `http://localhost:8085/hy360/stats`, null, (res) => {
+		ajaxRequest('GET', `http://localhost:8085/hy360/stats?mode=sum`, null, (res) => {
 			console.log(res);
 			setSumSalaries(res);
 			// setSumSalaries(
@@ -114,6 +115,22 @@ function StatisticsPage(props) {
 		setCategory(value);
 	};
 
+	const handleRangeChange = (date,dateString) => {
+		console.log(date,dateString);
+
+
+		ajaxRequest('GET', `http://localhost:8085/hy360/stats?mode=avg_increase&from=${dateString[0]}&until=${dateString[1]}`, null, (res) => {
+			console.log(res);
+			// setSumSalaries(
+			// 	res.map((r, i) => {
+			// 		return {
+			// 			...r,
+			// 			key: i
+			// 		};
+			// 	})
+			// );
+		});
+	}
 	return (
 		<div>
 			<Table columns={columns} dataSource={categoriesStats} />
@@ -127,6 +144,17 @@ function StatisticsPage(props) {
 				<Option value="temp_teach">Temporary Teach</Option>
 			</Select>
 			<Table columns={sumCols} dataSource={data} />
+
+			<br/>
+			<br/>
+			<Title level={2}>AVG increase of salaries and bonuses</Title>
+			
+			<RangePicker onChange={handleRangeChange}></RangePicker>
+			<br/>
+			<br/>
+
+			<Table columns={sumCols} />
+			<br/>
 		</div>
 	);
 }
