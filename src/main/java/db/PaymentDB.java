@@ -24,35 +24,42 @@ public class PaymentDB {
             ResultSet rs;
             int sal_id = -1;
             Date d,left;
+            d = new Date(System.currentTimeMillis());
+            insQuery.append("SELECT * FROM payments WHERE paid_at = '"+d+"';");
+            stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeQuery();
+            rs = stmtIns.getResultSet();
+            if(!rs.next())return;
+            insQuery.setLength(0);
             for(int i = 0;i<employees.size();i++){
                 d = new Date(System.currentTimeMillis());
-                Calendar calendar = new GregorianCalendar();
-                calendar.setTime(d);
-                int curyear = calendar.get(Calendar.YEAR);
-                int curmonth = calendar.get(Calendar.MONTH) + 1;
-                int curday = calendar.get(Calendar.DAY_OF_MONTH);
+//                Calendar calendar = new GregorianCalendar();
+//                calendar.setTime(d);
+//                int curyear = calendar.get(Calendar.YEAR);
+//                int curmonth = calendar.get(Calendar.MONTH) + 1;
+//                int curday = calendar.get(Calendar.DAY_OF_MONTH);
                 insQuery.setLength(0);
                 emp = EmpDB.EmployeeFullInfo(employees.get(i).getId());
                 left = emp.getLeft_at();
                 if(left!=null){
-                    Calendar calendar1 = new GregorianCalendar();
-                    calendar1.setTime(left);
-                    int leftyear = calendar1.get(Calendar.YEAR);
-                    int leftmonth = calendar1.get(Calendar.MONTH) + 1;
-                    int leftday = calendar1.get(Calendar.DAY_OF_MONTH);
-                    if(leftyear < curyear || (leftmonth<curmonth && leftyear==curyear)){
+//                    Calendar calendar1 = new GregorianCalendar();
+//                    calendar1.setTime(left);
+//                    int leftyear = calendar1.get(Calendar.YEAR);
+//                    int leftmonth = calendar1.get(Calendar.MONTH) + 1;
+//                    int leftday = calendar1.get(Calendar.DAY_OF_MONTH);
+                    if(left.getTime()<d.getTime()){
                         emp.setAfter_bonus_sal(0);
                     }
                 }else {
                     if(EmpDB.findEmployeeType(emp.getId()).equals("temp_admin") || (EmpDB.findEmployeeType(emp.getId()).equals("temp_teach"))){
                         Date end = new Date(emp.getEnds_at());
-                        Calendar calendar1 = new GregorianCalendar();
-                        calendar1.setTime(end);
-                        int leftyear = calendar1.get(Calendar.YEAR);
-                        int leftmonth = calendar1.get(Calendar.MONTH) + 1;
-                        int leftday = calendar1.get(Calendar.DAY_OF_MONTH);
+//                        Calendar calendar1 = new GregorianCalendar();
+//                        calendar1.setTime(end);
+//                        int leftyear = calendar1.get(Calendar.YEAR);
+//                        int leftmonth = calendar1.get(Calendar.MONTH) + 1;
+//                        int leftday = calendar1.get(Calendar.DAY_OF_MONTH);
                         Date promo = emp.getPromo_date();
-                        if((leftyear<curyear ||(leftmonth< curmonth && leftyear==curyear))&&promo == null){
+                        if(end.getTime()<d.getTime() && promo == null){
                             emp.setAfter_bonus_sal(0);
                         }
                     }
