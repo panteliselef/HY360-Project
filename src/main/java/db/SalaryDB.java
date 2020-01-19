@@ -537,6 +537,7 @@ public class SalaryDB {
                         "WHERE salaries.sal_id = perm_admin_salaries.sal_id;");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeQuery();
+                System.out.println(insQuery);
                 rs = stmtIns.getResultSet();
                 if(rs.next()){
                     ret = rs.getDouble("SumQuantity");
@@ -546,28 +547,33 @@ public class SalaryDB {
                         "WHERE salaries.sal_id = perm_teach_salaries.sal_id;");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeQuery();
+                System.out.println(insQuery);
                 rs = stmtIns.getResultSet();
                 if(rs.next()){
                     ret = rs.getDouble("SumQuantity");
-                }else if(type_of_emp.equals("temp_admin")){
+                }
+            }
+            else if(type_of_emp.equals("temp_admin")){
                     insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN temp_admin_salaries "+
                             "WHERE salaries.sal_id = temp_admin_salaries.sal_id;");
                     stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
+                    System.out.println(insQuery);
                     rs = stmtIns.getResultSet();
                     if(rs.next()){
                         ret = rs.getDouble("SumQuantity");
                     }
                 }else {
                     insQuery.append("SELECT SUM(after_bonus_sal) SumQuantity FROM salaries INNER JOIN temp_teach_salaries "+
-                            "WHERE salaries.sal_id = temp_teach_salaries.sal_id;");
+                            "ON salaries.sal_id = temp_teach_salaries.sal_id;");
+                    System.out.println(insQuery);
                     stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     rs = stmtIns.getResultSet();
                     if(rs.next()){
                         ret = rs.getDouble("SumQuantity");
                     }
-                }
+
             }
             return ret;
         } catch (SQLException e) {

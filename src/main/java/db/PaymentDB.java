@@ -162,7 +162,7 @@ public class PaymentDB {
                 }
             }else if(type.equals("temp_admin")){
                 insQuery.append("SELECT salaries.family_bonus,employees.fname,employees.lname,payments.paid_at,payments.ammount FROM salaries,temp_admin_salaries ,employees,payments,emp_salaries WHERE employees.emp_id = payments.emp_id AND employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = temp_admin_salaries.sal_id AND " +
-                        "emp_salaries.sal_id = salaries.sal_id"+" AND payments.paid_at >= '"+from+"' AND payments.paid_at <= '"+to+"';");
+                        "emp_salaries.sal_id = salaries.sal_id"+" AND payments.paid_at >= '"+from+"' AND payments.paid_at <= '"+to+"' AND temp_admin_salaries.promotion_date IS NULL ;");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeQuery();
                 rs = stmtIns.getResultSet();
@@ -171,8 +171,8 @@ public class PaymentDB {
                     info.add(singleinfo);
                 }
             }else {
-                insQuery.append("SELECT temp_teach_salaries.library_bonus,salaries.family_bonus,employees.fname,employees.lname,payments.paid_at,payments.ammount,temp_teach_salaries.library_bonus FROM salaries,temp_admin_salaries ,employees,payments,emp_salaries WHERE employees.emp_id = payments.emp_id AND employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = temp_teach_salaries.sal_id AND " +
-                        "emp_salaries.sal_id = salaries.sal_id"+" AND payments.paid_at >= '"+from+"' AND payments.paid_at <= '"+to+"';");
+                insQuery.append("SELECT temp_teach_salaries.library_bonus,salaries.family_bonus,employees.fname,employees.lname,payments.paid_at,payments.ammount,temp_teach_salaries.library_bonus FROM salaries,temp_teach_salaries ,employees,payments,emp_salaries WHERE employees.emp_id = payments.emp_id AND employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = temp_teach_salaries.sal_id AND " +
+                        "emp_salaries.sal_id = salaries.sal_id"+" AND payments.paid_at >= '"+from+"' AND payments.paid_at <= '"+to+"' AND temp_teach_salaries.promotion_date IS NULL ;");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeQuery();
                 rs = stmtIns.getResultSet();

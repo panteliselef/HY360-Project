@@ -3,7 +3,6 @@ package servlets;
 import com.google.gson.Gson;
 import db.PaymentDB;
 import db.SalaryDB;
-import jdk.nashorn.internal.runtime.regexp.joni.ast.StringNode;
 import model.JSONResponse;
 import model.Payment;
 
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.util.ArrayList;
 
 @WebServlet("/payments")
 public class PaymentsServlet extends HttpServlet {
@@ -36,9 +36,9 @@ public class PaymentsServlet extends HttpServlet {
         String dateUntil = req.getParameter("until");
 
         try {
-            PaymentDB.getPaymentInfo(category,new Date(Integer.parseInt(dateFrom)),new Date(Integer.parseInt(dateUntil)));
+            ArrayList<Payment> p =  PaymentDB.getPaymentInfo(category,new Date(Long.parseLong(dateFrom)),new Date(Long.parseLong((dateUntil))));
             resp.setStatus(200);
-            out.print(new Gson().toJson(new JSONResponse("Payment has been completed",200)));
+            out.print(new Gson().toJson(new JSONResponse("Payment has been completed",200,p)));
         } catch (ClassNotFoundException e) {
             resp.setStatus(500);
             out.print(new Gson().toJson(new JSONResponse("Payment has NOT been completed",500)));

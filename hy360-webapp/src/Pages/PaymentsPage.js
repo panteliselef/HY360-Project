@@ -1,23 +1,68 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Icon, Typography, Row, Col, Button, Radio, Table, Select } from 'antd';
+import { Form, Input, Icon, Typography, Row, Col, Button, Radio, Table, Select, DatePicker } from 'antd';
 import ajaxRequest from '../utils/ajax';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 function PaymentsPage() {
 	const [ category, setCategory ] = useState('perm_admin');
+	const [ dateFrom, setDateFrom ] = useState('');
+	const [ dateUntil, setDateUntil ] = useState('');
+
+	const [ payments, setPayments ] = useState([]);
 
 	const columns = [
 		{
-			title: 'First Name',
-			dataIndex: 'fname'
+			title: 'Name',
+			dataIndex: 'emp_names'
 			// render: (text) => <a>{text}</a>
 		},
 		{
-			title: 'Last Name',
-			dataIndex: 'lname'
+			title: 'Amount',
+			dataIndex: 'salary'
+		},
+		{
+			title: 'Reseach Bonus',
+			dataIndex: 'research'
+		},
+		{
+			title: 'Annual Bonus',
+			dataIndex: 'annual'
+		},
+		{
+			title: 'Library Bonus',
+			dataIndex: 'library'
+		},
+		{
+			title: 'Family Bonus',
+			dataIndex: 'family'
 		}
 	];
+
+	useEffect(
+		() => {
+			if (category === '' || dateFrom === '' || dateUntil === '') return;
+			ajaxRequest(
+				'GET',
+				`http://localhost:8085/hy360/payments?category=${category}&from=${dateFrom}&until=${dateUntil}`,
+				null,
+				({ statusCode, result }) => {
+					if (statusCode !== 200) return;
+
+					const data = result.map((element, i) => {
+						return {
+							...element,
+							key: i
+						};
+					});
+					// setEmployees(data);
+					setPayments(data);
+				}
+			);
+		},
+		[ category, dateFrom, dateUntil ]
+	);
 
 	// useEffect(() => {
 	// 	ajaxRequest('GET', `http://localhost:8085/hy360/employee?categories=perm`, null, ({ result }) => {
@@ -58,8 +103,16 @@ function PaymentsPage() {
 	// 	);
 	// };
 
-	const handleCategoryChange = (e) => {
-		setCategory(e.target.value);
+	const handleCategoryChange = (value) => {
+		setCategory(value);
+	};
+
+	const onChange = (date, dateString) => {
+    console.log(date, dateString);
+    if(dateString[0]===''||dateString[1]==='')return;
+		setDateFrom(new Date(dateString[0]).getTime());
+		setDateUntil(new Date(dateString[1]).getTime());
+		console.log(new Date(dateString[1]).getTime());
 	};
 
 	return (
@@ -67,14 +120,19 @@ function PaymentsPage() {
 			<Title level={2}>Select a category</Title>
 			<Text>View payment info</Text>
 
+			<br />
 			<Select defaultValue={category} style={{ width: 300, display: 'block' }} onChange={handleCategoryChange}>
 				<Option value="perm_admin">Permanent Admin</Option>
 				<Option value="temp_admin">Temporary Admin</Option>
 				<Option value="perm_teach">Permanent Teach</Option>
 				<Option value="temp_teach">Temporary Teach</Option>
 			</Select>
+			<br />
+			<RangePicker onChange={onChange} />
+			<br />
+			<br />
 
-			<Table rowSelection={{}} columns={columns} />
+			<Table columns={columns} dataSource={payments} />
 		</div>
 	);
 }
