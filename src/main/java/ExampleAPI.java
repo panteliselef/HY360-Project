@@ -53,9 +53,6 @@ public class ExampleAPI {
 //        double r = SalaryDB.MMMSalaryForTypeOfEmployee("perm_admin","max");
 //        System.out.println(r);
 //        PaymentDB.getPaymentInfo("perm_admin",)
-            EmpDB.promoteEmployee(2);
-            Employee e = EmpDB.EmployeeFullInfo(2);
-            System.out.println("LOL:"+e.getB_sal()+" "+e.getAfter_bonus_sal()+" "+e.getType());
 
     }
 }
