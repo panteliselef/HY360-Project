@@ -454,6 +454,8 @@ public class EmpDB {
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
                 insQuery.append("UPDATE salaries SET b_salary = " + sal.getPerm_admin_salary() + " WHERE sal_id = " + sal_id + ";");
+
+                System.out.println(insQuery);
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
@@ -463,6 +465,7 @@ public class EmpDB {
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
                 insQuery.append("UPDATE salaries SET after_bonus_sal = "+SalaryDB.getAfterBonusSal(id)+" WHERE sal_id = "+sal_id+";");
+                System.out.println(insQuery);
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
             } else if (type.equals("temp_teach")) {
