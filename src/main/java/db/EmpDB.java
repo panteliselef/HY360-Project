@@ -384,6 +384,7 @@ public class EmpDB {
             rs = stmtIns.getResultSet();
             if (rs.next()) {
                 type = "perm_admin";
+                return type;
             }
 
             insQuery.setLength(0);
@@ -393,6 +394,7 @@ public class EmpDB {
             rs = stmtIns.getResultSet();
             if (rs.next()) {
                 type = "perm_teach";
+                return type;
             }
 
             insQuery.setLength(0);
@@ -402,6 +404,7 @@ public class EmpDB {
             rs = stmtIns.getResultSet();
             if (rs.next()) {
                 type = "temp_admin";
+                return type;
             }
 
             insQuery.setLength(0);
@@ -411,6 +414,7 @@ public class EmpDB {
             rs = stmtIns.getResultSet();
             if (rs.next()) {
                 type = "temp_teach";
+                return type;
             }
 
             return type;
@@ -424,6 +428,7 @@ public class EmpDB {
 
     public static void promoteEmployee(int id) throws ClassNotFoundException {
         String type = findEmployeeType(id);
+        System.out.println("Type:"+type);
         StringBuilder insQuery = new StringBuilder();
         Salary sal = SalaryDB.getBasicSalary();
         Employee emp = EmpDB.EmployeeFullInfo(id);
@@ -449,11 +454,15 @@ public class EmpDB {
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
                 insQuery.append("UPDATE salaries SET b_salary = " + sal.getPerm_admin_salary() + " WHERE sal_id = " + sal_id + ";");
-                con.prepareStatement(insQuery.toString());
+                stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
                 insQuery.append("INSERT INTO perm_admin_salaries(sal_id,annual_bonus) VALUES(" +
                         sal_id + "," + emp.getAnnual() + ");");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeUpdate();
+                insQuery.setLength(0);
+                insQuery.append("UPDATE salaries SET after_bonus_sal = "+SalaryDB.getAfterBonusSal(id)+" WHERE sal_id = "+sal_id+";");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
             } else if (type.equals("temp_teach")) {
@@ -470,11 +479,15 @@ public class EmpDB {
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
                 insQuery.append("UPDATE salaries SET b_salary = " + sal.getPerm_teach_salary() + " WHERE sal_id = " + sal_id + ";");
-                con.prepareStatement(insQuery.toString());
+                stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
                 insQuery.append("INSERT INTO perm_teach_salaries(sal_id,annual_bonus,research_bonus) VALUES(" +
                         sal_id + "," + emp.getAnnual() + "," + sal.getResearch_bonus() + ");");
+                stmtIns = con.prepareStatement(insQuery.toString());
+                stmtIns.executeUpdate();
+                insQuery.setLength(0);
+                insQuery.append("UPDATE salaries SET after_bonus_sal = "+SalaryDB.getAfterBonusSal(id)+" WHERE sal_id = "+sal_id+";");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
             }
