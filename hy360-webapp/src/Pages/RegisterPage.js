@@ -33,7 +33,7 @@ class RegisterPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			current: 0,
+			current: 2,
 			child_num: 0,
 			hasChild: 'no',
 			hiringInfo: {
@@ -156,23 +156,26 @@ class RegisterPage extends React.Component {
 					console.log(values);
 					const rangeValue = values['range-picker'];
 					let info = {};
-					if(rangeValue){
+					if (rangeValue) {
 						const ranges = [ rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD') ];
+
+						console.log(ranges);
 						info = {
 							...this.state.hiringInfo,
 							tempSalary: values.temp_salary,
 							starts_at: new Date(ranges[0]).getTime(),
 							ends_at: new Date(ranges[1]).getTime()
 						};
-					}else{
+					} else {
 						info = {
-							...this.state.hiringInfo}
+							...this.state.hiringInfo
+						};
 					}
 					this.setState({ hiringInfo: info });
 
-					ajaxRequest('POST', 'http://localhost:8085/hy360/hiring', JSON.stringify(info), (res) => {
-						console.log(res);
-					});
+					// ajaxRequest('POST', 'http://localhost:8085/hy360/hiring', JSON.stringify(info), (res) => {
+					// 	console.log(res);
+					// });
 					console.log(info);
 				} else {
 					console.log('error');
@@ -437,7 +440,11 @@ class RegisterPage extends React.Component {
 												rules: [
 													{ type: 'array', required: true, message: 'Please select time!' }
 												]
-											})(<RangePicker />)}
+											})(
+												<RangePicker
+													
+												/>
+											)}
 										</Form.Item>
 									</React.Fragment>
 								)}
