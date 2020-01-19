@@ -24,6 +24,9 @@ public class Employee {
     private Long ends_at;
     private double annual=0,family=0,research=0,library=0,b_sal=0,after_bonus_sal = 0;
     private String type;
+    private Date left_at;
+    private Date promo_date;
+    private String department;
 
     public Employee(){};
 
@@ -36,6 +39,30 @@ public class Employee {
         this.bankName = bankName;
         Date d = new Date(System.currentTimeMillis());
         startedAt = d;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public Date getPromo_date() {
+        return promo_date;
+    }
+
+    public void setPromo_date(Date promo_date) {
+        this.promo_date = promo_date;
+    }
+
+    public Date getLeft_at() {
+        return left_at;
+    }
+
+    public void setLeft_at(Date left_at) {
+        this.left_at = left_at;
     }
 
     public String getType() {

@@ -1,10 +1,9 @@
-import db.ChildDB;
-import db.DeptDB;
-import db.EmpDB;
-import db.SalaryDB;
+import db.*;
 import model.Child;
 import model.Employee;
 import model.Salary;
+
+import java.sql.Date;
 
 public class ExampleAPI {
 
@@ -51,8 +50,10 @@ public class ExampleAPI {
 //
 //        EmpDB.updateEmployee(e);
 
-        double r = SalaryDB.MMMSalaryForTypeOfEmployee("perm_admin","max");
-        System.out.println(r);
+//        double r = SalaryDB.MMMSalaryForTypeOfEmployee("perm_admin","max");
+//        System.out.println(r);
+//        PaymentDB.getPaymentInfo("perm_admin",)
+
 
     }
 }
