@@ -56,7 +56,7 @@ public class EmpDB {
 
 //            "UPDATE  employees INNER JOIN emp_salaries ON employees.emp_id = emp_salaries.emp_id INNER JOIN perm_admin_salaries ON emp_salaries.sal_id = perm_admin_salaries.sal_id SET phone = '82' WHERE employees.emp_id = 44;"
             String joinedTables = " employees INNER JOIN emp_salaries ON employees.emp_id = emp_salaries.emp_id INNER JOIN salaries ON emp_salaries.sal_id = salaries.sal_id ";
-            insQuery.append("UPDATE  "+joinedTables+" INNER JOIN perm_admin_salaries ON emp_salaries.sal_id = perm_admin_salaries.sal_id ")
+            insQuery.append("UPDATE  " + joinedTables + " INNER JOIN perm_admin_salaries ON emp_salaries.sal_id = perm_admin_salaries.sal_id ")
                     .append("SET ")
                     .append("annual_bonus = " + basicSals.getAnnual_bonus())
                     .append(" WHERE annual_bonus < " + basicSals.getAnnual_bonus() + " ;");
@@ -66,9 +66,9 @@ public class EmpDB {
 
 
             insQuery.setLength(0);
-            insQuery.append("UPDATE  "+joinedTables+" INNER JOIN perm_teach_salaries ON emp_salaries.sal_id = perm_teach_salaries.sal_id ")
+            insQuery.append("UPDATE  " + joinedTables + " INNER JOIN perm_teach_salaries ON emp_salaries.sal_id = perm_teach_salaries.sal_id ")
                     .append(" SET ")
-                    .append(" annual_bonus = " + basicSals.getAnnual_bonus() +", "+
+                    .append(" annual_bonus = " + basicSals.getAnnual_bonus() + ", " +
                             "research_bonus = " + basicSals.getResearch_bonus())
                     .append(" WHERE annual_bonus < " + basicSals.getAnnual_bonus() + " or ")
                     .append(" research_bonus < " + basicSals.getResearch_bonus() + " ;");
@@ -79,17 +79,17 @@ public class EmpDB {
 
             insQuery.setLength(0);
 
-            insQuery.append("UPDATE  "+joinedTables+" INNER JOIN temp_teach_salaries ON emp_salaries.sal_id = temp_teach_salaries.sal_id ")
+            insQuery.append("UPDATE  " + joinedTables + " INNER JOIN temp_teach_salaries ON emp_salaries.sal_id = temp_teach_salaries.sal_id ")
                     .append(" SET ")
                     .append(" library_bonus = " + basicSals.getLibrary_bonus())
-                    .append(" WHERE library_bonus < " + basicSals.getLibrary_bonus()+ ";");
+                    .append(" WHERE library_bonus < " + basicSals.getLibrary_bonus() + ";");
 
             stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();
 
 
             insQuery.setLength(0);
-            insQuery.append("UPDATE  "+joinedTables)
+            insQuery.append("UPDATE  " + joinedTables)
                     .append("SET ")
                     .append("b_salary = " + basicSals.getPerm_admin_salary() + ", " +
                             "family_bonus = " + basicSals.getFamily_bonus())
@@ -257,6 +257,68 @@ public class EmpDB {
         return null;
     }
 
+
+    public static ArrayList<Employee> getPermEmployees() throws ClassNotFoundException {
+        Statement stmt = null;
+        Connection con = null;
+        ArrayList<Employee> emps = new ArrayList<>();
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("SELECT employees.emp_id,fname,lname FROM  employees INNER JOIN emp_salaries ON employees.emp_id= emp_salaries.emp_id INNER JOIN (SELECT sal_id from perm_teach_salaries UNION SELECT sal_id from perm_admin_salaries) as b ON emp_salaries.sal_id = b.sal_id WHERE left_at IS NULL;");
+            stmt.executeQuery(insQuery.toString());
+
+            ResultSet res = stmt.getResultSet();
+            while (res.next()) {
+                Employee emp = new Employee();
+                emp.setFname(res.getString("fname"));
+                emp.setLname(res.getString("lname"));
+                emp.setId(res.getInt("emp_id"));
+                emps.add(emp);
+            }
+            return emps;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+        return null;
+    }
+
+    public static ArrayList<Employee> getTempEmloyees() throws ClassNotFoundException {
+        Statement stmt = null;
+        Connection con = null;
+        ArrayList<Employee> emps = new ArrayList<>();
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+
+            insQuery.append("SELECT employees.emp_id,fname,lname, emp_salaries.sal_id FROM  employees INNER JOIN emp_salaries ON employees.emp_id= emp_salaries.emp_id INNER JOIN (SELECT sal_id,promotion_date from temp_teach_salaries UNION SELECT sal_id ,promotion_date from temp_admin_salaries) as b ON emp_salaries.sal_id = b.sal_id WHERE promotion_date IS NULL;");
+            stmt.executeQuery(insQuery.toString());
+
+            ResultSet res = stmt.getResultSet();
+            while (res.next()) {
+                Employee emp = new Employee();
+                emp.setFname(res.getString("fname"));
+                emp.setLname(res.getString("lname"));
+                emp.setId(res.getInt("emp_id"));
+                emps.add(emp);
+            }
+            return emps;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            CS360DB.closeDBConnection(stmt, con);
+        }
+        return null;
+    }
+
     public static ArrayList<Employee> getEmployees() throws ClassNotFoundException {
 
         Statement stmt = null;
@@ -378,7 +440,7 @@ public class EmpDB {
                     sal_id = rs.getInt("sal_id");
                 }
                 insQuery.setLength(0);
-                insQuery.append("UPDATE temp_admin_salaries SET promotion_date = '" + d + "' WHERE sal_id = "+sal_id+";");
+                insQuery.append("UPDATE temp_admin_salaries SET promotion_date = '" + d + "' WHERE sal_id = " + sal_id + ";");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
@@ -399,7 +461,7 @@ public class EmpDB {
                     sal_id = rs.getInt("sal_id");
                 }
                 insQuery.setLength(0);
-                insQuery.append("UPDATE temp_teach_salaries SET promotion_date = '" + d +"' WHERE sal_id = "+sal_id + ";");
+                insQuery.append("UPDATE temp_teach_salaries SET promotion_date = '" + d + "' WHERE sal_id = " + sal_id + ";");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeUpdate();
                 insQuery.setLength(0);
@@ -442,7 +504,7 @@ public class EmpDB {
                     sal_id = rs.getInt("sal_id");
                 }
                 insQuery.setLength(0);
-                insQuery.append("SELECT annual_bonus FROM perm_admin_salaries WHERE sal_id = "+sal_id+";");
+                insQuery.append("SELECT annual_bonus FROM perm_admin_salaries WHERE sal_id = " + sal_id + ";");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeQuery();
                 rs = stmtIns.getResultSet();
@@ -471,7 +533,7 @@ public class EmpDB {
                     sal_id = rs.getInt("sal_id");
                 }
                 insQuery.setLength(0);
-                insQuery.append("SELECT annual_bonus FROM perm_admin_salaries WHERE sal_id = "+sal_id+";");
+                insQuery.append("SELECT annual_bonus FROM perm_admin_salaries WHERE sal_id = " + sal_id + ";");
                 stmtIns = con.prepareStatement(insQuery.toString());
                 stmtIns.executeQuery();
                 rs = stmtIns.getResultSet();
@@ -557,7 +619,7 @@ public class EmpDB {
         return emp;
     }
 
-    public static void Fire_Retire_Employee(int id) throws  ClassNotFoundException {
+    public static void Fire_Retire_Employee(int id) throws ClassNotFoundException {
         Date d = new Date(System.currentTimeMillis());
         Statement stmt = null;
         Connection con = null;
@@ -565,10 +627,10 @@ public class EmpDB {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
             StringBuilder insQuery = new StringBuilder();
-            insQuery.append("UPDATE employees SET left_at = '"+d+"' WHERE emp_id = "+id+";");
+            insQuery.append("UPDATE employees SET left_at = '" + d + "' WHERE emp_id = " + id + ";");
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             CS360DB.closeDBConnection(stmt, con);

@@ -35,7 +35,21 @@ public class EmployeeServlet  extends HttpServlet {
         PrintWriter out = resp.getWriter();
 
         String id = req.getParameter("id");
-        if(id!=null){
+        String cat = req.getParameter("categories");
+        if(cat != null && cat.equals("perm")){
+            try {
+                out.print(gson.toJson(new JSONResponse("employee found", 200, EmpDB.getPermEmployees())));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }else if(cat != null && cat.equals("temp")){
+            try {
+                out.print(gson.toJson(new JSONResponse("employee found", 200, EmpDB.getTempEmloyees())));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(id!=null){
             Employee emp = null;
             try {
                  emp = EmpDB.getEmployee(Integer.parseInt(id));

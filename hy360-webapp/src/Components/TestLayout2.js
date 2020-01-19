@@ -7,6 +7,7 @@ import UpdateBasicSalPage from '../Pages/UpdateBasicSalPage';
 import AllDataEmployeePage from '../Pages/AllDataEmployeePage';
 import StatisticsPage from '../Pages/StatisticsPage';
 import RetirePage from '../Pages/RetirePage';
+import PromotePage from '../Pages/PromotePage';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -102,9 +103,9 @@ class TestLayout2 extends React.Component {
 								<Menu.Item key="/action-retire">
 									<Link to="/action-retire">Retire</Link>
 								</Menu.Item>
-								<Menu.Item key="10">option10</Menu.Item>
-								<Menu.Item key="11">option11</Menu.Item>
-								<Menu.Item key="12">option12</Menu.Item>
+								<Menu.Item key="/action-promote">
+									<Link to="/action-promote">Promote</Link>
+								</Menu.Item>
 							</SubMenu>
 						</Menu>
 					</Sider>
@@ -128,6 +129,7 @@ class TestLayout2 extends React.Component {
 							<Route exact path="/data-employee" component={AllDataEmployeePage} />
 							<Route exact path="/data-stats" component={StatisticsPage} />
 							<Route exact path="/action-retire" component={RetirePage} />
+							<Route exact path="/action-promote" component={PromotePage} />
 							{/* <RegisterPage /> */}
 						</Content>
 					</Layout>

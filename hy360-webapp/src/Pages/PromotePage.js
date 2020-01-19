@@ -3,7 +3,7 @@ import { Form, Input, Icon, Typography, Row, Col, Button, Radio, Table } from 'a
 import ajaxRequest from '../utils/ajax';
 
 const { Title } = Typography;
-function RetirePage() {
+function PromotePage() {
 	const [ employees, setEmployees ] = useState([]);
 	const [ selectedEmployee, setSelectedEmployee ] = useState({});
 	const [ response, setResponse ] = useState('');
@@ -12,7 +12,6 @@ function RetirePage() {
 		{
 			title: 'First Name',
 			dataIndex: 'fname'
-			// render: (text) => <a>{text}</a>
 		},
 		{
 			title: 'Last Name',
@@ -21,7 +20,7 @@ function RetirePage() {
 	];
 
 	useEffect(() => {
-		ajaxRequest('GET', `http://localhost:8085/hy360/employee?categories=perm`, null, ({ result }) => {
+		ajaxRequest('GET', `http://localhost:8085/hy360/employee?categories=temp`, null, ({ result }) => {
 			const data = result.map((element) => {
 				return {
 					key: element.id,
@@ -48,26 +47,26 @@ function RetirePage() {
 		type: 'radio'
 	};
 
-	const handleRetirement = () => {
-		ajaxRequest('DELETE', `http://localhost:8085/hy360/employee?empId=${selectedEmployee.key}`, null, ({ statusCode }) => {
+	const handlePromotion = () => {
+		ajaxRequest('POST', `http://localhost:8085/hy360/promote?emp_id=${selectedEmployee.key}`, null, ({ statusCode }) => {
 			statusCode === 200 ? setResponse('Success') : setResponse('Failed');
 		});
 	};
 
 	return (
 		<div>
-			<Title level={2}>Select an employee to retire/fire permanent employee</Title>
+			<Title level={2}>Select an temporary employee to promote</Title>
 			<Table rowSelection={rowSelection} columns={columns} dataSource={employees} />
 			<Title level={4}>{response}</Title>
 			<Button
 				disabled={Object.keys(selectedEmployee).length <= 0 ? true : false}
-				onClick={handleRetirement}
+				onClick={handlePromotion}
 				type="primary"
 			>
-				Perform Retirement
+				Perform Promotion
 			</Button>
 		</div>
 	);
 }
 
-export default RetirePage;
+export default PromotePage;
