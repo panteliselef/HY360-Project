@@ -59,6 +59,7 @@ function AllDataEmployeePage() {
 					return {
 						...element,
 						key: element.id,
+						department: element.department.name,
 						children: [],
 						un_children: []
 					};

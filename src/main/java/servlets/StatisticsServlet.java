@@ -1,7 +1,9 @@
 package servlets;
 
 
+import com.google.gson.Gson;
 import db.SalaryDB;
+import model.JSONResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -45,13 +47,13 @@ public class StatisticsServlet extends HttpServlet {
                     jsonArray.put(jo);
                 }
             }else if(Objects.equals(mode, "avg_increase")){
-                Date from = Date.valueOf(req.getParameter("from"));
-                Date until = Date.valueOf(req.getParameter("until"));
-
-
-
-                SalaryDB.getAvgIncrease("family_bonus");
-                SalaryDB.getAvgIncrease("payments");
+                String cat = req.getParameter("category");
+                SalaryDB.getAvgIncrease(cat).forEach((key,value)-> {
+                    JSONObject jo = new JSONObject();
+                    jo.put("year",key);
+                    jo.put("value",value);
+                    jsonArray.put(jo);
+                });
 //                System.out.println(from);
 //                System.out.println(until);
 

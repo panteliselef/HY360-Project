@@ -6,9 +6,8 @@ import model.Salary;
 import model.SumOfSal;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.sql.Date;
+import java.util.*;
 
 public class SalaryDB {
 
@@ -370,7 +369,7 @@ public class SalaryDB {
             if (type_of_emp.equals("temp_admin")) {
                 if (type_of_sal.equals("max")) {
                     insQuery.append("SELECT MAX(salaries.after_bonus_sal) AS max_sal FROM salaries INNER JOIN temp_admin_salaries" +
-                            " ON salaries.sal_id = temp_admin_salaries.sal_id;");
+                            " ON salaries.sal_id = temp_admin_salaries.sal_id WHERE promotion_date IS NULL;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
@@ -380,7 +379,7 @@ public class SalaryDB {
                     }
                 } else if (type_of_sal.equals("min")) {
                     insQuery.append("SELECT MIN(salaries.after_bonus_sal) AS min_sal FROM salaries INNER JOIN temp_admin_salaries" +
-                            " ON salaries.sal_id = temp_admin_salaries.sal_id;");
+                            " ON salaries.sal_id = temp_admin_salaries.sal_id WHERE promotion_date IS NULL;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
@@ -390,7 +389,7 @@ public class SalaryDB {
                     }
                 } else {
                     insQuery.append("SELECT AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN temp_admin_salaries" +
-                            " ON salaries.sal_id = temp_admin_salaries.sal_id;");
+                            " ON salaries.sal_id = temp_admin_salaries.sal_id WHERE promotion_date IS NULL;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
@@ -402,7 +401,7 @@ public class SalaryDB {
             } else if (type_of_emp.equals("temp_teach")) {
                 if (type_of_sal.equals("max")) {
                     insQuery.append("SELECT MAX(salaries.after_bonus_sal) AS max_sal FROM salaries INNER JOIN temp_teach_salaries" +
-                            " ON salaries.sal_id = temp_teach_salaries.sal_id;");
+                            " ON salaries.sal_id = temp_teach_salaries.sal_id WHERE promotion_date IS NULL;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
@@ -412,7 +411,7 @@ public class SalaryDB {
                     }
                 } else if (type_of_sal.equals("min")) {
                     insQuery.append("SELECT MIN(salaries.after_bonus_sal) AS min_sal FROM salaries INNER JOIN temp_teach_salaries" +
-                            " ON salaries.sal_id = temp_teach_salaries.sal_id;");
+                            " ON salaries.sal_id = temp_teach_salaries.sal_id WHERE promotion_date IS NULL;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
@@ -422,7 +421,7 @@ public class SalaryDB {
                     }
                 } else {
                     insQuery.append("SELECT AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN temp_teach_salaries" +
-                            " ON salaries.sal_id = temp_teach_salaries.sal_id;");
+                            " ON salaries.sal_id = temp_teach_salaries.sal_id WHERE promotion_date IS NULL;");
                     PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
                     stmtIns.executeQuery();
                     ResultSet rs = stmtIns.getResultSet();
@@ -504,12 +503,14 @@ public class SalaryDB {
         return ret;
     }
 
-    public static void getAvgIncrease(String category) throws ClassNotFoundException {
+    public static HashMap<Integer,Double> getAvgIncrease(String category) throws ClassNotFoundException {
 
         Statement stmt = null;
         Connection con = null;
         Employee emp;
         ArrayList<Integer> years = new ArrayList<>();
+
+        HashMap<Integer,Double> infoPerYear = new HashMap<>();
 
         try {
             con = CS360DB.getConnection();
@@ -532,22 +533,29 @@ public class SalaryDB {
             for (int year: years
                  ) {
 
-                if(category == "family_bonus"){
+
+                if(category.equals("family_bonus")){
                     query = "SELECT ((m.fam-s.fam) / s.fam *100) as percent FROM\n" +
                             "(SELECT (Sum(family_bonus)) as fam from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join salaries on salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) < "+year+") s,\n" +
                             "(SELECT (Sum(family_bonus)) as fam from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join salaries on salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) = "+year+") m;";
 
-                }else if(category == "payments"){
+                }else if(category.equals("payments")){
                     query = "SELECT ((m.sum - s.sum)/s.sum*100) as percent from \n" +
                             "(SELECT (Sum(ammount)) as sum from payments  WHERE YEAR(paid_at) < "+year+") s,\n" +
                             "(SELECT (Sum(ammount)) as sum from payments WHERE YEAR(paid_at) = "+year+") m;";
 
-                }else if(category == "annual_bonus"){
-                    query = "SELECT ((m.fam-s.fam) / s.fam *100) as percent FROM\n" +
-                            "(SELECT (Sum(family_bonus)) as fam from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join salaries on salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) < "+year+") s,\n" +
-                            "(SELECT (Sum(family_bonus)) as fam from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join salaries on salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) = "+year+") m;";
-                }else {
-
+                }else if(category.equals("annual_bonus")){
+                    query = "SELECT ((m.annual-s.annual) / s.annual *100) as percent FROM\n" +
+                            "(SELECT (Sum(annual_bonus)) as annual from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join (SELECT annual_bonus,sal_id from perm_admin_salaries UNION SELECT annual_bonus,sal_id from  perm_teach_salaries ) as m on m.sal_id = emp_salaries.sal_id WHERE YEAR (paid_at) < "+year+") s,\n" +
+                            "(SELECT (Sum(annual_bonus)) as annual from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join (SELECT annual_bonus,sal_id from perm_admin_salaries UNION SELECT annual_bonus,sal_id from  perm_teach_salaries ) as m on m.sal_id = emp_salaries.sal_id WHERE YEAR (paid_at) = "+year+") m;";
+                }else if(category.equals("research_bonus")){
+                    query = "SELECT ((m.research-s.research) / s.research *100) as percent FROM\n" +
+                            "(SELECT (Sum(research_bonus)) as research from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join perm_teach_salaries on perm_teach_salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) < "+year+") s,\n" +
+                            "(SELECT (Sum(research_bonus)) as research from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join perm_teach_salaries on perm_teach_salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) = "+year+") m;";
+                }else if(category.equals("library_bonus")){
+                    query = "SELECT ((m.library-s.library) / s.library *100) as percent FROM\n" +
+                            "(SELECT (Sum(library_bonus)) as library from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join temp_teach_salaries on temp_teach_salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) < "+year+") s,\n" +
+                            "(SELECT (Sum(library_bonus)) as library from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join temp_teach_salaries on temp_teach_salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) = "+year+") m;";
                 }
 
                 insQuery.setLength(0);
@@ -556,17 +564,13 @@ public class SalaryDB {
                 res = stmt.getResultSet();
 
                 if(res.next()){
-                    System.out.println(category+" "+res.getDouble("percent"));
+//                    System.out.println(category+" "+res.getDouble("percent"));
+                    infoPerYear.put(year,res.getDouble("percent"));
 //                    years.add(res.getInt("year"));
                 }else {
-
+                    infoPerYear.put(year, (double) 0);
                 }
-
             }
-
-            System.out.println(years);
-
-
 
 
         } catch (SQLException e) {
@@ -574,6 +578,8 @@ public class SalaryDB {
         } finally {
             CS360DB.closeDBConnection(stmt, con);
         }
+
+        return infoPerYear;
 
 
     }

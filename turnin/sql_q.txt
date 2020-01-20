@@ -1,0 +1,62 @@
+Για Μέγιστος, ελάχιστος και μέσος μισθός ανά κατηγορία προσωπικού:
+
+SELECT MAX(salaries.after_bonus_sal)AS max_sal, MIN(salaries.after_bonus_sal) AS min_sal, AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN temp_admin_salaries ON salaries.sal_id = temp_admin_salaries.sal_id WHERE promotion_date IS NULL;
+
+SELECT MAX(salaries.after_bonus_sal)AS max_sal, MIN(salaries.after_bonus_sal) AS min_sal, AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN temp_teach_salaries ON salaries.sal_id = temp_teach_salaries.sal_id WHERE promotion_date IS NULL;
+
+SELECT MAX(salaries.after_bonus_sal)AS max_sal, MIN(salaries.after_bonus_sal) AS min_sal, AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN perm_admin_salaries ON salaries.sal_id = perm_admin_salaries.sal_id;
+
+SELECT MAX(salaries.after_bonus_sal)AS max_sal, MIN(salaries.after_bonus_sal) AS min_sal, AVG(salaries.after_bonus_sal) AS avg_sal FROM salaries INNER JOIN perm_teach_salaries ON salaries.sal_id = perm_teach_salaries.sal_id;
+
+Για Στοιχεία και μισθοδοσία συγκεκριμένου υπαλλήλου:
+
+SELECT employees.*,salaries.*,perm_admin_salaries.annual_bonus FROM employees,emp_salaries,salaries,perm_admin_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = perm_admin_salaries.sal_id AND employees.emp_id = 1;
+
+SELECT employees.*,salaries.*,perm_teach_salaries.annual_bonus,perm_teach_salaries.research_bonus FROM employees,emp_salaries,salaries,perm_teach_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = perm_teach_salaries.sal_id AND employees.emp_id = 1;
+
+SELECT employees.*,salaries.*,temp_admin_salaries.start_date,temp_admin_salaries.end_date,temp_admin_salaries.promotion_date FROM employees,emp_salaries,salaries,temp_admin_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = temp_admin_salaries.sal_id AND employees.emp_id = 1;
+
+SELECT employees.*,salaries.*,temp_teach_salaries.start_date,temp_teach_salaries.end_date,temp_teach_salaries.promotion_date,temp_teach_salaries.library_bonus FROM employees,emp_salaries,salaries,temp_teach_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = temp_teach_salaries.sal_id AND employees.emp_id = 1;
+
+Για Συνολικό ύψος μισθοδοσίας ανά κατηγορία προσωπικού:
+
+SELECT YEAR(paid_at) as year,SUM(ammount) as amount FROM emp_salaries JOIN perm_admin_salaries ON emp_salaries.sal_id = perm_admin_salaries.sal_id JOIN payments ON payments.emp_id = emp_salaries.emp_id LEFT JOIN temp_admin_salaries on temp_admin_salaries.sal_id = emp_salaries.sal_id WHERE promotion_date<=paid_at OR promotion_date is NULL GROUP BY YEAR(paid_at);
+
+SELECT YEAR(paid_at) as year,SUM(ammount) as amount FROM emp_salaries JOIN perm_teach_salaries ON emp_salaries.sal_id = perm_teach_salaries.sal_id JOIN payments ON payments.emp_id = emp_salaries.emp_id LEFT JOIN temp_teach_salaries on temp_teach_salaries.sal_id = emp_salaries.sal_id WHERE promotion_date<=paid_at OR promotion_date is NULL GROUP BY YEAR(paid_at);
+
+SELECT YEAR(paid_at) as year, SUM(ammount) as amount  FROM  emp_salaries INNER JOIN  temp_admin_salaries ON emp_salaries.sal_id = temp_admin_salaries.sal_id Inner JOIN payments ON payments.emp_id = emp_salaries.emp_id WHERE promotion_date < paid_at or promotion_date IS NULL GROUP BY YEAR(paid_at);
+
+SELECT YEAR(paid_at) as year, SUM(ammount) as amount  FROM  emp_salaries INNER JOIN  temp_teach_salaries ON emp_salaries.sal_id = temp_teach_salaries.sal_id Inner JOIN payments ON payments.emp_id = emp_salaries.emp_id WHERE promotion_date < paid_at or promotion_date IS NULL GROUP BY YEAR(paid_at);
+
+Για Κατάσταση μισθοδοσίας ανά κατηγορία προσωπικού και για ανά συγκεκριμένο χρονικό διάστημα :
+
+SELECT employees.fname,employees.lname,payments.paid_at,payments.ammount,perm_admin_salaries.annual_bonus,salaries.family_bonus FROM salaries,employees,payments,perm_admin_salaries,emp_salaries WHERE employees.emp_id = payments.emp_id AND employees.emp_id = emp_salaries.emp_id AND perm_admin_salaries.sal_id = salaries.sal_id AND  emp_salaries.sal_id = perm_admin_salaries.sal_id  AND payments.paid_at <= '2020-02-19' AND payments.paid_at >= '2020-01-19';
+
+SELECT salaries.family_bonus,employees.fname,employees.lname,payments.paid_at,payments.ammount,perm_teach_salaries.annual_bonus,perm_teach_salaries.research_bonus FROM salaries,employees,payments,perm_teach_salaries,emp_salaries WHERE employees.emp_id = payments.emp_id AND perm_teach_salaries.sal_id = salaries.sal_id AND employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = perm_teach_salaries.sal_id AND payments.paid_at >= '2020-01-19' AND payments.paid_at <= '2020-02-19';
+
+SELECT salaries.family_bonus,employees.fname,employees.lname,payments.paid_at,payments.ammount FROM salaries,temp_admin_salaries ,employees,payments,emp_salaries WHERE employees.emp_id = payments.emp_id AND employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = temp_admin_salaries.sal_id AND emp_salaries.sal_id = salaries.sal_id AND payments.paid_at >= '2020-01-19' AND payments.paid_at <= '2020-02-19' AND temp_admin_salaries.promotion_date IS NULL ;
+
+SELECT temp_teach_salaries.library_bonus,salaries.family_bonus,employees.fname,employees.lname,payments.paid_at,payments.ammount,temp_teach_salaries.library_bonus FROM salaries,temp_teach_salaries ,employees,payments,emp_salaries WHERE employees.emp_id = payments.emp_id AND employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = temp_teach_salaries.sal_id AND emp_salaries.sal_id = salaries.sal_id AND payments.paid_at >= '2020-01-19' AND payments.paid_at <= '2020-02-19' AND temp_teach_salaries.promotion_date IS NULL ;
+
+
+Για Μέση αύξηση μισθών και επιδομάτων ανά χρονική περίοδο:
+
+
+SELECT ((m.fam-s.fam) / s.fam *100) as percent FROM
+(SELECT (Sum(family_bonus)) as fam from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join salaries on salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) < 2021) s, (SELECT (Sum(family_bonus)) as fam from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join salaries on salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) = 2021) m;
+
+SELECT ((m.sum - s.sum)/s.sum*100) as percent from
+(SELECT (Sum(ammount)) as sum from payments  WHERE YEAR(paid_at) < 2021) s,
+(SELECT (Sum(ammount)) as sum from payments WHERE YEAR(paid_at) = 2021) m;
+
+SELECT ((m.annual-s.annual) / s.annual *100) as percent FROM
+(SELECT (Sum(annual_bonus)) as annual from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join (SELECT annual_bonus,sal_id from perm_admin_salaries UNION SELECT annual_bonus,sal_id from  perm_teach_salaries ) as m on m.sal_id = emp_salaries.sal_id WHERE YEAR (paid_at) < 2021) s,
+(SELECT (Sum(annual_bonus)) as annual from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join (SELECT annual_bonus,sal_id from perm_admin_salaries UNION SELECT annual_bonus,sal_id from  perm_teach_salaries ) as m on m.sal_id = emp_salaries.sal_id WHERE YEAR (paid_at) = 2021) m;
+
+SELECT ((m.research-s.research) / s.research *100) as percent FROM
+(SELECT (Sum(research_bonus)) as research from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join perm_teach_salaries on perm_teach_salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) < 2021) s,
+(SELECT (Sum(research_bonus)) as research from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join perm_teach_salaries on perm_teach_salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) = 2021) m;
+
+SELECT ((m.library-s.library) / s.library *100) as percent FROM
+(SELECT (Sum(library_bonus)) as library from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join temp_teach_salaries on temp_teach_salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) < 2021) s,
+(SELECT (Sum(library_bonus)) as library from payments Inner JOIN emp_salaries on emp_salaries.emp_id = payments.emp_id INNER join temp_teach_salaries on temp_teach_salaries.sal_id = emp_salaries.sal_id WHERE YEAR(paid_at) = 2021) m;

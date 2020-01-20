@@ -33,7 +33,7 @@ class RegisterPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			current: 2,
+			current: 0,
 			child_num: 0,
 			hasChild: 'no',
 			hiringInfo: {
@@ -120,8 +120,9 @@ class RegisterPage extends React.Component {
 							}
 						}
 					);
-					console.log('ok');
-					this.setState({ hiringInfo: { ...this.state.hiringInfo, ...getFieldsValue() } });
+					console.log("NAAAAA");
+					// console.log({ ...this.state.hiringInfo, ...getFieldsValue(),department:getFieldsValue().univDepartment })
+					this.setState({ hiringInfo: { ...this.state.hiringInfo, ...getFieldsValue(),department:getFieldsValue().univDepartment } });
 				} else {
 					console.log('error');
 				}
@@ -137,7 +138,6 @@ class RegisterPage extends React.Component {
 					const info = {
 						...getFieldsValue(),
 						...this.state.hiringInfo,
-						departmentId: this.state.hiringInfo?.univDepartment?.depId,
 						un_children: getFieldsValue()?.ages
 					};
 					this.setState({ hiringInfo: info });
@@ -173,9 +173,12 @@ class RegisterPage extends React.Component {
 					}
 					this.setState({ hiringInfo: info });
 
-					// ajaxRequest('POST', 'http://localhost:8085/hy360/hiring', JSON.stringify(info), (res) => {
-					// 	console.log(res);
-					// });
+					ajaxRequest('POST', 'http://localhost:8085/hy360/hiring', JSON.stringify(info), (res) => {
+						if(res.statusCode != 200) alert("Something went wrong");
+						else {
+							this.setState({ current: 0});
+						}
+					});
 					console.log(info);
 				} else {
 					console.log('error');
@@ -273,7 +276,7 @@ class RegisterPage extends React.Component {
 							</Form.Item>
 							<Form.Item label="Univ. Department" hasFeedback>
 								{getFieldDecorator('univDepartment', {
-									initialValue: { depId: '5' },
+									initialValue: { id: 1},
 									rules: [ { required: true, message: 'Please select your habitual residence!' } ]
 								})(<DepartmentSelect />)}
 							</Form.Item>
@@ -480,7 +483,7 @@ class RegisterPage extends React.Component {
 						</Col>
 					</Row>
 				</div>
-				<div className="steps-action">
+				{/* <div className="steps-action">
 					{current < steps.length - 1 && (
 						<Button type="primary" onClick={() => this.next()}>
 							Next
@@ -496,7 +499,7 @@ class RegisterPage extends React.Component {
 							Previous
 						</Button>
 					)}
-				</div>
+				</div> */}
 			</div>
 		);
 	}

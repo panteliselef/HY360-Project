@@ -73,12 +73,12 @@ function UpdateBasicSalPage(props) {
 		{
 			label: 'Library Bonus',
 			name: 'library_bonus',
-			suffix: '%'
+			suffix: '€'
 		},
 		{
 			label: 'Research Bonus',
 			name: 'research_bonus',
-			suffix: '%'
+			suffix: '€'
 		}
 	];
 	return (

@@ -7,6 +7,7 @@ import db.EmpDB;
 import db.SalaryDB;
 import model.Child;
 import model.Employee;
+import model.JSONResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -142,7 +143,7 @@ public class HiringServlet extends HttpServlet {
             SalaryDB.addSalary(emp);
             resp.setStatus(201);
             System.out.println(emp);
-            out.println(gson.toJson(emp));
+            out.println(gson.toJson(new JSONResponse("succes",200,emp)));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

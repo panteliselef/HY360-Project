@@ -4,14 +4,17 @@ import ajaxRequest from '../utils/ajax';
 
 const { Title } = Typography;
 const { Option } = Select;
-const {RangePicker} = DatePicker;
+const { RangePicker } = DatePicker;
 function StatisticsPage(props) {
 	const [ categoriesStats, setCategoriesStats ] = useState([]);
 	const [ sumSalaries, setSumSalaries ] = useState([]);
 
-	const [data,setDate] = useState([]);
+	const [ data, setDate ] = useState([]);
 
 	const [ category, setCategory ] = useState('perm_admin');
+	const [ bonusType,setBonusType ] = useState('payments');
+
+	const [ increasePercent,setIncreasePercent ] = useState([]);
 
 	const columns = [
 		{
@@ -38,8 +41,8 @@ function StatisticsPage(props) {
 			dataIndex: 'year'
 		},
 		{
-			title: 'Total Salaries',
-			dataIndex: 'amount'
+			title: 'Increase %',
+			dataIndex: 'value'
 		}
 	];
 
@@ -66,12 +69,13 @@ function StatisticsPage(props) {
 		() => {
 			// console.log("E",sumSalaries.filter((item) => item.categoryName === category));
 
-			const d = sumSalaries.filter(item => item.categoryName === category);
-			const d1 = d[0]?.total_salaries.map((item,i)=>{
+			const d = sumSalaries.filter((item) => item.categoryName === category);
+			const d1 = d[0]?.total_salaries.map((item, i) => {
 				return {
-					...item,key:i
-				}
-			})
+					...item,
+					key: i
+				};
+			});
 			setDate(d1);
 		},
 		[ category ]
@@ -82,6 +86,30 @@ function StatisticsPage(props) {
 			console.log(categoriesStats);
 		},
 		[ categoriesStats ]
+	);
+
+
+	useEffect(
+		() => {
+			ajaxRequest(
+			'GET',
+			`http://localhost:8085/hy360/stats?mode=avg_increase&category=${bonusType}`,
+			null,
+			(res) => {
+				console.log(res);
+				setIncreasePercent(res);
+				// setSumSalaries(
+				// 	res.map((r, i) => {
+				// 		return {
+				// 			...r,
+				// 			key: i
+				// 		};
+				// 	})
+				// );
+			}
+		);
+		},
+		[ bonusType ]
 	);
 
 	useEffect(() => {
@@ -100,6 +128,7 @@ function StatisticsPage(props) {
 		ajaxRequest('GET', `http://localhost:8085/hy360/stats?mode=sum`, null, (res) => {
 			console.log(res);
 			setSumSalaries(res);
+
 			// setSumSalaries(
 			// 	res.map((r, i) => {
 			// 		return {
@@ -115,22 +144,30 @@ function StatisticsPage(props) {
 		setCategory(value);
 	};
 
-	const handleRangeChange = (date,dateString) => {
-		console.log(date,dateString);
+	const handleBonusTypeChange = (value) => {
+		setBonusType(value);
+	};
 
+	const handleRangeChange = (date, dateString) => {
+		console.log(date, dateString);
 
-		ajaxRequest('GET', `http://localhost:8085/hy360/stats?mode=avg_increase&from=${dateString[0]}&until=${dateString[1]}`, null, (res) => {
-			console.log(res);
-			// setSumSalaries(
-			// 	res.map((r, i) => {
-			// 		return {
-			// 			...r,
-			// 			key: i
-			// 		};
-			// 	})
-			// );
-		});
-	}
+		ajaxRequest(
+			'GET',
+			`http://localhost:8085/hy360/stats?mode=avg_increase&from=${dateString[0]}&until=${dateString[1]}`,
+			null,
+			(res) => {
+				console.log(res);
+				// setSumSalaries(
+				// 	res.map((r, i) => {
+				// 		return {
+				// 			...r,
+				// 			key: i
+				// 		};
+				// 	})
+				// );
+			}
+		);
+	};
 	return (
 		<div>
 			<Table columns={columns} dataSource={categoriesStats} />
@@ -145,16 +182,22 @@ function StatisticsPage(props) {
 			</Select>
 			<Table columns={sumCols} dataSource={data} />
 
-			<br/>
-			<br/>
+			<br />
+			<br />
 			<Title level={2}>AVG increase of salaries and bonuses</Title>
-			
-			<RangePicker onChange={handleRangeChange}></RangePicker>
-			<br/>
-			<br/>
 
-			<Table columns={sumCols} />
-			<br/>
+			<Select defaultValue={bonusType} style={{ width: 300, display: 'block' }} onChange={handleBonusTypeChange}>
+				<Option value="payments">Salaries</Option>
+				<Option value="research_bonus">Reseach Bonus</Option>
+				<Option value="library_bonus">Library Bonus</Option>
+				<Option value="family_bonus">Family Bonus</Option>
+				<Option value="annual_bonus">Annual Bonus</Option>
+			</Select>
+			<br />
+			<br />
+
+			<Table columns={sumCols}  dataSource={increasePercent}/>
+			<br />
 		</div>
 	);
 }
