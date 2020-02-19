@@ -544,7 +544,7 @@ public class EmpDB {
 //                    emp.setAfter_bonus_sal(rs.getDouble("after_bonus_sal"));
 //                    emp.setB_sal(rs.getDouble("b_salary"));
 //                }
-                insQuery.append("SELECT employees.*,salaries.*,perm_admin_salaries.annual_bonus FROM employees,emp_salaries,salaries,perm_admin_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = perm_admin_salaries.sal_id");
+                insQuery.append("SELECT employees.*,salaries.*,perm_admin_salaries.annual_bonus FROM employees,emp_salaries,salaries,perm_admin_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = perm_admin_salaries.sal_id AND employees.emp_id = "+id+";");
                 statement = con.prepareStatement(insQuery.toString());
                 statement.executeQuery();
                 result = statement.getResultSet();
@@ -594,7 +594,7 @@ public class EmpDB {
 //                    emp.setB_sal(rs.getDouble("b_salary"));
 //                }
 //                return emp;
-                insQuery.append("SELECT employees.*,salaries.*,perm_teach_salaries.annual_bonus,perm_teach_salaries.research_bonus FROM employees,emp_salaries,salaries,perm_teach_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = perm_teach_salaries.sal_id");
+                insQuery.append("SELECT employees.*,salaries.*,perm_teach_salaries.annual_bonus,perm_teach_salaries.research_bonus FROM employees,emp_salaries,salaries,perm_teach_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = perm_teach_salaries.sal_id AND employees.emp_id = "+id+";");
                 statement = con.prepareStatement(insQuery.toString());
                 statement.executeQuery();
                 result = statement.getResultSet();
@@ -645,7 +645,7 @@ public class EmpDB {
 //                    emp.setPromo_date(rs.getDate("promotion_date"));
 //                }
 //                return emp;
-                insQuery.append("SELECT employees.*,salaries.*,temp_admin_salaries.start_date,temp_admin_salaries.end_date,temp_admin_salaries.promotion_date FROM employees,emp_salaries,salaries,temp_admin_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = temp_admin_salaries.sal_id");
+                insQuery.append("SELECT employees.*,salaries.*,temp_admin_salaries.start_date,temp_admin_salaries.end_date,temp_admin_salaries.promotion_date FROM employees,emp_salaries,salaries,temp_admin_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = temp_admin_salaries.sal_id AND employees.emp_id = "+id+";");
                 statement = con.prepareStatement(insQuery.toString());
                 statement.executeQuery();
                 result = statement.getResultSet();
@@ -699,7 +699,7 @@ public class EmpDB {
 //                }
 //                emp.setLibrary(sal.getLibrary_bonus());
 //                return emp;
-                insQuery.append("SELECT employees.*,salaries.*,temp_teach_salaries.start_date,temp_teach_salaries.end_date,temp_teach_salaries.promotion_date,temp_teach_salaries.library_bonus FROM employees,emp_salaries,salaries,temp_teach_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = temp_teach_salaries.sal_id");
+                insQuery.append("SELECT employees.*,salaries.*,temp_teach_salaries.start_date,temp_teach_salaries.end_date,temp_teach_salaries.promotion_date,temp_teach_salaries.library_bonus FROM employees,emp_salaries,salaries,temp_teach_salaries WHERE employees.emp_id = emp_salaries.emp_id AND emp_salaries.sal_id = salaries.sal_id AND emp_salaries.sal_id = temp_teach_salaries.sal_id AND employees.emp_id = "+id+";");
                 statement = con.prepareStatement(insQuery.toString());
                 statement.executeQuery();
                 result = statement.getResultSet();
