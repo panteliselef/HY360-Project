@@ -269,10 +269,12 @@ public class SalaryDB {
                     .append(" basic_salary_info;");
 
 
+
             stmt.executeQuery(insQuery.toString());
 
             ResultSet res = stmt.getResultSet();
             if (res.next()) {
+                System.out.println(res.getDouble(salaryOption));
                 return res.getDouble(salaryOption);
             }
 
